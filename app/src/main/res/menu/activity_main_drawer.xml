@@ -7,32 +7,20 @@
 
             android:title="@string/menu_cal"/>
         <item
-            android:id="@+id/nav_mec"
-
-            android:title="@string/menu_mec" />
-        <item
-            android:id="@+id/nav_cec"
-
-            android:title="@string/menu_cec" />
-        <item
             android:id="@+id/nav_rc"
 
             android:title="@string/menu_rc" />
         <item
-            android:id="@+id/nav_tc"
+            android:id="@+id/nav_ec"
 
-            android:title="@string/menu_tc" />
+            android:title="@string/menu_ec" />
         <item
-            android:id="@+id/nav_pjr"
+            android:id="@+id/nav_tr"
 
-            android:title="@string/menu_pjr" />
+            android:title="@string/menu_tr" />
         <item
             android:id="@+id/nav_set"
 
             android:title="@string/menu_set" />
-        <item
-            android:id="@+id/nav_hel"
-
-            android:title="@string/menu_hel" />
 
 </menu>

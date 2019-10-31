@@ -1,4 +1,4 @@
-package com.example.sonota.ui.hel;
+package com.example.sonota.ui.tr;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +11,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sonota.R;
 
-public class HelFragment extends Fragment {
+public class TrFragment extends Fragment {
 
-    private HelViewModel helViewModel;
+    private TrViewModel trViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        helViewModel =
-                ViewModelProviders.of(this).get(HelViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_hel, container, false);
+        trViewModel =
+                ViewModelProviders.of(this).get(TrViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_tr, container, false);
 
         return root;
     }

@@ -1,4 +1,4 @@
-package com.example.sonota.ui.mec;
+package com.example.sonota.ui.ec;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +11,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sonota.R;
 
-public class MecFragment extends Fragment {
+public class EcFragment extends Fragment {
 
-    private MecViewModel mecViewModel;
+    private EcViewModel ecViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mecViewModel =
-                ViewModelProviders.of(this).get(MecViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_mec, container, false);
+        ecViewModel =
+                ViewModelProviders.of(this).get(EcViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_ec, container, false);
 
         return root;
     }

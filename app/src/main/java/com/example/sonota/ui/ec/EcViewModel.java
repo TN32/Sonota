@@ -1,16 +1,16 @@
-package com.example.sonota.ui.mec;
+package com.example.sonota.ui.ec;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class MecViewModel extends ViewModel {
+public class EcViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public MecViewModel() {
+    public EcViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is gallery fragment");
     }
 
     public LiveData<String> getText() {

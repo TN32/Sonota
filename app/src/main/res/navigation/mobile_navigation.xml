@@ -10,43 +10,27 @@
         android:label="@string/menu_cal"
         tools:layout="@layout/fragment_cal" />
     <fragment
-        android:id="@+id/nav_mec"
-        android:name="com.example.sonota.ui.mec.MecFragment"
-        android:label="@string/menu_mec"
-        tools:layout="@layout/fragment_mec" />
-
-    <fragment
-        android:id="@+id/nav_cec"
-        android:name="com.example.sonota.ui.cec.CecFragment"
-        android:label="@string/menu_cec"
-        tools:layout="@layout/fragment_cec" />
-
-    <fragment
         android:id="@+id/nav_rc"
         android:name="com.example.sonota.ui.rc.RcFragment"
         android:label="@string/menu_rc"
         tools:layout="@layout/fragment_rc" />
 
     <fragment
-        android:id="@+id/nav_tc"
-        android:name="com.example.sonota.ui.tc.TcFragment"
-        android:label="@string/menu_tc"
-        tools:layout="@layout/fragment_tc" />
+        android:id="@+id/nav_ec"
+        android:name="com.example.sonota.ui.ec.EcFragment"
+        android:label="@string/menu_ec"
+        tools:layout="@layout/fragment_tr" />
 
     <fragment
-        android:id="@+id/nav_pjr"
-        android:name="com.example.sonota.ui.Pjr.PjrFragment"
-        android:label="@string/menu_pjr"
-        tools:layout="@layout/fragment_pjr" />
+        android:id="@+id/nav_tr"
+        android:name="com.example.sonota.ui.tr.TrFragment"
+        android:label="@string/menu_tr"
+        tools:layout="@layout/fragment_tr" />
 
     <fragment
         android:id="@+id/nav_set"
         android:name="com.example.sonota.ui.set.SetFragment"
         android:label="@string/menu_set"
         tools:layout="@layout/fragment_set" />
-    <fragment
-        android:id="@+id/nav_hel"
-        android:name="com.example.sonota.ui.hel.HelFragment"
-        android:label="@string/menu_hel"
-        tools:layout="@layout/fragment_hel" />
+
 </navigation>
