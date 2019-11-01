@@ -10,7 +10,8 @@
     <string name="menu_cal">カレンダー</string>
     <string name="menu_rc">収入確認</string>
     <string name="menu_ec">出費確認</string>
-    <string name="menu_tr">テンプレート登録</string>
+    <string name="menu_tmp">テンプレート</string>
+    <string name="menu_clc">クレジット・ローン確認</string>
     <string name="menu_set">設定</string>
 
 </resources>

@@ -22,10 +22,16 @@
         tools:layout="@layout/fragment_tr" />
 
     <fragment
-        android:id="@+id/nav_tr"
-        android:name="com.example.sonota.ui.tr.TrFragment"
-        android:label="@string/menu_tr"
-        tools:layout="@layout/fragment_tr" />
+        android:id="@+id/nav_tmp"
+        android:name="com.example.sonota.ui.tmp.TmpFragment"
+        android:label="@string/menu_tmp"
+        tools:layout="@layout/fragment_tmp" />
+    <fragment
+        android:id="@+id/nav_clc"
+        android:name="com.example.sonota.ui.clc.ClcFragment"
+        android:label="@string/menu_clc"
+        tools:layout="@layout/fragment_clc" />
+
 
     <fragment
         android:id="@+id/nav_set"

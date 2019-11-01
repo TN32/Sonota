@@ -7,20 +7,25 @@
 
             android:title="@string/menu_cal"/>
         <item
-            android:id="@+id/nav_rc"
-
-            android:title="@string/menu_rc" />
-        <item
             android:id="@+id/nav_ec"
 
             android:title="@string/menu_ec" />
         <item
-            android:id="@+id/nav_tr"
+            android:id="@+id/nav_rc"
 
-            android:title="@string/menu_tr" />
+            android:title="@string/menu_rc" />
+        <item
+            android:id="@+id/nav_tmp"
+
+            android:title="@string/menu_tmp" />
+        <item
+            android:id="@+id/nav_clc"
+
+            android:title="@string/menu_clc" />
         <item
             android:id="@+id/nav_set"
 
-            android:title="@string/menu_set" />
+            android:title="@string/menu_set"
+            />
 
 </menu>

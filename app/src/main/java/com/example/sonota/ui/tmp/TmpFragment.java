@@ -1,4 +1,4 @@
-package com.example.sonota.ui.tr;
+package com.example.sonota.ui.tmp;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,15 +11,15 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sonota.R;
 
-public class TrFragment extends Fragment {
+public class TmpFragment extends Fragment {
 
-    private TrViewModel trViewModel;
+    private TmpViewModel tmpViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        trViewModel =
-                ViewModelProviders.of(this).get(TrViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_tr, container, false);
+        tmpViewModel =
+                ViewModelProviders.of(this).get(TmpViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_tmp, container, false);
 
         return root;
     }

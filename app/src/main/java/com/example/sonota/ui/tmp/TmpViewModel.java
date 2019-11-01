@@ -1,14 +1,14 @@
-package com.example.sonota.ui.tr;
+package com.example.sonota.ui.tmp;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class TrViewModel extends ViewModel {
+public class TmpViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public TrViewModel() {
+    public TmpViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is send fragment");
     }
