@@ -1,12 +1,21 @@
 package com.example.sonota;
 
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.sonota.ui.cal.CalFragment;
+import com.example.sonota.ui.cal.CalFragmentControllAdapter;
+import com.example.sonota.ui.cal.CalendarFragment;
+import com.example.sonota.ui.cal.CalendarPagerAdapter;
+import com.example.sonota.ui.cal.CustomViewPager;
+import com.example.sonota.ui.cal.ScheduleListFragment;
+import com.example.sonota.ui.cal.SchedulePagerAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -18,12 +27,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.Menu;
+import android.widget.Button;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import static java.lang.Integer.max;
+import static java.lang.Integer.parseInt;
+
+public class MainActivity extends AppCompatActivity
+        implements CalendarFragment.OnFragmentInteractionListener, ScheduleListFragment.OnFragmentInteractionListener,
+        CalFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
+
+    private CalFragmentControllAdapter mCalFragmentControllAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
     }
 
     @Override
@@ -59,4 +85,37 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+    public void onFragmentInteraction(Uri uri){
+    }
+
+    public void onCalendarItemClick(String pickdate){
+    }
+
+    public void onCheckedDateChanged(Date afterDate){
+        if(mCalFragmentControllAdapter != null){
+            mCalFragmentControllAdapter.onCheckedDateChanged(afterDate);
+        }
+    }
+
+    //表示されているカレンダーの外の日付が選択されたとき、カレンダーのページを移動する
+    public void onCheckedNotCurrentMonth(boolean isNextMonth,boolean isOverCount){
+        if(mCalFragmentControllAdapter != null){
+        mCalFragmentControllAdapter.onCheckedNotCurrentMonth(isNextMonth,isOverCount);
+        }
+    }
+
+    //スケジュールページャーをスワイプしたときカレンダーの選択を変更する
+    public void onScheduleLIstPageChanged(Date newDate){
+        if(mCalFragmentControllAdapter != null){
+            mCalFragmentControllAdapter.onScheduleLIstPageChanged(newDate);
+        }
+    }
+
+    public void onCreateCalFlagment(CalFragmentControllAdapter adapter){
+        mCalFragmentControllAdapter = adapter;
+
+    }
+
+
 }
