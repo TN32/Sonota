@@ -1,5 +1,6 @@
 package com.example.sonota;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,6 +11,11 @@ import com.example.sonota.ui.cal.CalendarPagerAdapter;
 import com.example.sonota.ui.cal.CustomViewPager;
 import com.example.sonota.ui.cal.ScheduleListFragment;
 import com.example.sonota.ui.cal.SchedulePagerAdapter;
+import com.example.sonota.ui.clc.ClcFragment;
+import com.example.sonota.ui.ec.EcFragment;
+import com.example.sonota.ui.rc.RcFragment;
+import com.example.sonota.ui.set.SetFragment;
+import com.example.sonota.ui.tmp.TmpFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,12 +48,14 @@ import static java.lang.Integer.max;
 import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity
-        implements CalendarFragment.OnFragmentInteractionListener, ScheduleListFragment.OnFragmentInteractionListener,
-        CalFragment.OnFragmentInteractionListener {
+        implements FabControllInterface,CalendarFragment.OnFragmentInteractionListener, ScheduleListFragment.OnFragmentInteractionListener,
+        CalFragment.OnFragmentInteractionListener, ClcFragment.OnFragmentInteractionListener, EcFragment.OnFragmentInteractionListener, RcFragment.OnFragmentInteractionListener,
+        SetFragment.OnFragmentInteractionListener, TmpFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
     private CalFragmentControllAdapter mCalFragmentControllAdapter;
+    private String CurrrentFragmentID;
 
 
     @Override
@@ -69,6 +77,17 @@ public class MainActivity extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(CurrrentFragmentID.equals("CalFrragment")) {
+                }
+                Context context = getApplicationContext();
+                Toast.makeText(context , CurrrentFragmentID, Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
@@ -101,7 +120,7 @@ public class MainActivity extends AppCompatActivity
     //表示されているカレンダーの外の日付が選択されたとき、カレンダーのページを移動する
     public void onCheckedNotCurrentMonth(boolean isNextMonth,boolean isOverCount){
         if(mCalFragmentControllAdapter != null){
-        mCalFragmentControllAdapter.onCheckedNotCurrentMonth(isNextMonth,isOverCount);
+            mCalFragmentControllAdapter.onCheckedNotCurrentMonth(isNextMonth,isOverCount);
         }
     }
 
@@ -117,5 +136,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void setCurrrentFragmentID(String ID){
+        this.CurrrentFragmentID = ID;
+    }
 
 }

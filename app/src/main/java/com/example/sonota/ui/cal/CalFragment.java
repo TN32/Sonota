@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
 
 import java.text.SimpleDateFormat;
@@ -28,7 +29,6 @@ import static java.lang.Integer.parseInt;
 public class CalFragment extends Fragment {
 
     private final int INTEGER_NULL = -100000;
-    private CalViewModel calViewModel;
     private final int CALENDARPAGER_MAX_COUNT = 1000;
     private final int SCHEDULEPAGER_MAX_COUNT = 30000;
     private CustomViewPager calendarPager,schedulePager;
@@ -38,12 +38,11 @@ public class CalFragment extends Fragment {
     private Date beforeDate = new Date();
 
     private OnFragmentInteractionListener mListener;
+    private FabControllInterface mFabControllInterface;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        calViewModel =
-                ViewModelProviders.of(this).get(CalViewModel.class);
         View root = inflater.inflate(R.layout.fragment_cal, container, false);
 
         calendarPager = root.findViewById(R.id.CalendarPager);
@@ -197,6 +196,7 @@ public class CalFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mFabControllInterface = (FabControllInterface)context;
         if (context instanceof CalFragment.OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
@@ -207,8 +207,14 @@ public class CalFragment extends Fragment {
         mListener.onCreateCalFlagment(adapter);
     }
 
-    public void onPause() {
 
+    @Override
+    public void onResume() {
+        mFabControllInterface.setCurrrentFragmentID("CalFragment");
+        super.onResume();
+    }
+
+    public void onPause() {
         super.onPause();
     }
 

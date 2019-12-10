@@ -41,7 +41,7 @@ public class CalendarFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     public CalendarFragment() {
-        index = 500;
+        index = 0;
     }
 
     //フラグメントの引数付きコンストラクタはよろしくない　後でなおす必要あり
@@ -231,4 +231,6 @@ public class CalendarFragment extends Fragment {
         void onCheckedDateChanged(Date afterDate);
         void onCheckedNotCurrentMonth(boolean isNextMonth, boolean isOverCount);
     }
+
+
 }
