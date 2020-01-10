@@ -13,13 +13,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
-import com.example.sonota.ui.tmp.ParttimejobFragment;
 
 import java.util.ArrayList;
 
@@ -75,6 +73,18 @@ public class PaymentListFragment extends CustomFragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_ec_list_payment, container, false);
         Bundle args = getArguments();
+
+        TextView paymentListTextviewThismonth = (TextView)root.findViewById(R.id.PaymentListTextviewThisMonth);
+        //         当月の出費を表示
+        paymentListTextviewThismonth.setText("30000");
+
+        TextView paymentTextviewCashUsage = (TextView)root.findViewById(R.id.PaymentTextViewCashUsage);
+        // 当月の現金の出費を表示
+        paymentTextviewCashUsage.setText("20000");
+
+        TextView paymentTextviewCreditPayment = (TextView)root.findViewById(R.id.PaymentTextviewCreditPayment);
+        //　当月のクレジットの出費を表示
+        paymentTextviewCreditPayment.setText("15000");
 
 
 
@@ -152,7 +162,7 @@ public class PaymentListFragment extends CustomFragment {
 
         ArrayList<PaymentClass> listData = new ArrayList<>();
         for(int i = 1; i <=  12; i++) {
-            PaymentClass data = new PaymentClass(i, i + "日", true, "コンビニ", 30000000 + i);
+            PaymentClass data = new PaymentClass(i, i + "日", "コンビニ", 30000000 + i);
             listData.add(data);
         }
 
