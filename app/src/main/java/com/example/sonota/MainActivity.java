@@ -98,10 +98,12 @@ public class MainActivity extends AppCompatActivity
         fabclose2 = AnimationUtils.loadAnimation(this,R.anim.fab_close);
         fabclose3= AnimationUtils.loadAnimation(this,R.anim.fab_close);
 
-        TextView textView = findViewById(R.id.fabtext_top);
+
 
 // テキストを設定して表示
-        textView.setText("Test TextView");
+        text1.setText("ルビィちゃんA");
+        text2.setText("ルビィちゃんB");
+        text3.setText("ルビィちゃんC");
 
         setSupportActionBar(toolbar);
 
@@ -123,7 +125,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 //アニメーション
-                animateFab();
+                if (currentFragment.fabCount >= 2) {
+                    animateFab();
+                }else {
+                    //一つの時の処理
+                    currentFragment.onFab1Clicked(0);
+                }
             }
         });
 
@@ -278,6 +285,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         currentFragment = fragment;
+
+        //FABが1以下の時の画像変更
+        if (currentFragment.fabCount == 1){
+            fab.setImageResource(R.mipmap.ic_launcher_cledit_foreground);
+        }else {
+            fab.setImageResource(android.R.drawable.ic_input_add);
+        }
         view_dark.setVisibility(View.GONE);
         isOpen=false;
     }
