@@ -24,6 +24,8 @@ public class DetailEventFragment extends CustomFragment {
     private TextView pickerTextView;
     private String[] figures = new String[5];
 
+    private EditText et_cal_eventName;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
@@ -31,6 +33,8 @@ public class DetailEventFragment extends CustomFragment {
         View root = inflater.inflate(R.layout.fragment_tmp_detail_event, container, false);
 
         pickerTextView = root.findViewById(R.id.text_view);
+
+        et_cal_eventName = root.findViewById(R.id.et_cal_eventName);
 
         numPicker0 = root.findViewById(R.id.np_tmp_startTime1);
         numPicker1 = root.findViewById(R.id.np_tmp_startTime2);
@@ -66,7 +70,7 @@ public class DetailEventFragment extends CustomFragment {
 
 //                pickerTextView.setText(String.valueOf(fig));
 
-                Toast.makeText(getContext(),  bt_tmp_registration.getText() + "が完了しました!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"イベント名が変更されました!" +"("+ et_cal_eventName.getText().toString()+")" ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("Event", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
             }
@@ -98,6 +102,7 @@ public class DetailEventFragment extends CustomFragment {
 
             bt_tmp_registration.setText("更新");
         }
+
 
         return root;
     }
