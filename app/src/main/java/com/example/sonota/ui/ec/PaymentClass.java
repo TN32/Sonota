@@ -9,18 +9,27 @@ public class PaymentClass {
     private String date;
     private boolean isCregitPayment;
     private String memo;
+    private long creditcode;
 
-    private long Creditcode;
 
 
-    public PaymentClass( int code,String date,boolean isCregitPayment, String memo, int creditcode){
+    public PaymentClass( int code,String date,String memo, int amount){
         this.id = code;
         this.date = date;
-        this.isCregitPayment = isCregitPayment;
+
+        isCregitPayment = false;
         this.memo = memo;
 
-        this.Creditcode = creditcode;
+        this.Amount = amount;
+    }
 
+    public PaymentClass( int code,String date,String memo, int amount, long creditcode ){
+        this.id = code;
+        this.date = date;
+        isCregitPayment = true;
+        this.memo = memo;
+        this.Amount = amount;
+        this.creditcode = creditcode;
     }
 
 
@@ -64,13 +73,12 @@ public class PaymentClass {
         this.memo = memo;
     }
 
-
-
     public long getCreditcode() {
-        return Creditcode;
+        return creditcode;
     }
 
     public void setCreditcode(long creditcode) {
-        Creditcode = creditcode;
+        this.creditcode = creditcode;
     }
+
 }
