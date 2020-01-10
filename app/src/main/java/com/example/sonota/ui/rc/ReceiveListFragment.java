@@ -73,6 +73,10 @@ public class ReceiveListFragment extends CustomFragment {
         View root = inflater.inflate(R.layout.fragment_rc_list_receive, container, false);
         Bundle args = getArguments();
 
+        TextView tv_rc_revenue =(TextView)root.findViewById(R.id.tv_rc_revenue);
+        // 当月の予想収入を表示
+        tv_rc_revenue.setText("50000");
+
         this.year = args.getString("selectedYear");
         this.month = args.getString("selectedMonth");
 

@@ -9,9 +9,9 @@ public class CreditListDataClass {
 
     private String title = "";
 
-    private String amout = "";
+    private int amout;
 
-    private String count = "";
+    private int count;
 
     public long getId() {
         return id;
@@ -29,23 +29,23 @@ public class CreditListDataClass {
         this.title = title;
     }
 
-    public String getAmout() {
+    public int getAmout() {
         return amout;
     }
 
-    public void setAmout(String amout) {
+    public void setAmout(int amout) {
         this.amout = amout;
     }
 
-    public String getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(int count) {
         this.count = count;
     }
 
-    public CreditListDataClass(long id, String title, String amout, String count) {
+    public CreditListDataClass(long id, String title, int amout, int count) {
         this.id = id;
         this.title = title;
         this.amout = amout;

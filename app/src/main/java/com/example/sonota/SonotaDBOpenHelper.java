@@ -1,13 +1,14 @@
+
 package com.example.sonota;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+        import android.content.Context;
+        import android.database.sqlite.SQLiteDatabase;
+        import android.database.sqlite.SQLiteOpenHelper;
+        import android.util.Log;
 
 public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データーベースのバージョン
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     // データーベース名
     private static final String DATABASE_NAME = "SONOTA_DB";
 
@@ -68,7 +69,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String creditcard_dpayment = "creditcard_dpayment";
 
     //支払い表
-    private static final String TABLE_NAME8 = "t_creditcard";
+    private static final String TABLE_NAME8 = "t_payment";
     private static final String t_payment = "t_payment";
     private static final String payment_code = "payment_code";
     private static final String payment_money = "payment_money";
@@ -78,7 +79,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String payment_category = "payment_category";
 
     //収入表
-    private static final String TABLE_NAME9 = "t_creditcard";
+    private static final String TABLE_NAME9 = "t_income";
     private static final String t_income = "t_income";
     private static final String income_code = "income_code";
     private static final String income_money = "income_money";
@@ -86,7 +87,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String income_memo = "income_memo";
 
     //月別収入表
-    private static final String TABLE_NAME10 = "t_creditcard";
+    private static final String TABLE_NAME10 = "t_monthly";
     private static final String t_monthly = "t_monthly";
     private static final String monthly_month = "monthly_month";
     private static final String monthly_income = "monthly_income";
@@ -277,4 +278,3 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
         super.onOpen(db);
     }
 }
-

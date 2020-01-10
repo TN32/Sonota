@@ -85,7 +85,7 @@ public class PaymentListAdapter extends BaseAdapter {
 
 
         TextView Amount = (TextView) convertView.findViewById(R.id.ExpenceList_TextView_Price);
-        Amount.setText("￥" + data.getCreditcode());
+        Amount.setText("￥" + data.getAmount());
 
 
         return convertView;
