@@ -1,5 +1,6 @@
 package com.example.sonota;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -65,6 +66,9 @@ public class MainActivity extends AppCompatActivity
     boolean isOpen=false;
 
     private int fabCount = 0;
+
+    private SonotaDBOpenHelper helper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

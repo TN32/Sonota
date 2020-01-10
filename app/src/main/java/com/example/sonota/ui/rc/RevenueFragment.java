@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -75,6 +76,11 @@ public class RevenueFragment extends CustomFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_rc_list_revenue, container, false);
+
+        TextView tv_rc_revenue = (TextView)root.findViewById(R.id.tv_rc_revenue);
+        // 予想収入を表示
+        tv_rc_revenue.setText("50000");
+
 
         ArrayList<RevenueListClass> listData = new ArrayList<>();
         for(int i = 1; i <=  12; i++) {
