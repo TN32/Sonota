@@ -9,24 +9,31 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.sonota.CustomFragment;
 import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
-import com.example.sonota.ui.cal.CalFragment;
-import com.example.sonota.ui.cal.CalFragmentControllAdapter;
 
 public class EcFragment extends Fragment {
-    private OnFragmentInteractionListener mListener;
-    private FabControllInterface mFabControllInterface;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_ec, container, false);
 
+        ExpenceFragment mainFragment = new ExpenceFragment();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.ec_mainsection,mainFragment);
+        transaction.commit();
+
+
         return root;
     }
+
+
+    private OnFragmentInteractionListener mListener;
+    private FabControllInterface mFabControllInterface;
 
     @Override
     public void onAttach(Context context) {
@@ -42,7 +49,6 @@ public class EcFragment extends Fragment {
 
     @Override
     public void onResume() {
-        mFabControllInterface.setCurrrentFragmentID("EcFragment");
         super.onResume();
     }
 

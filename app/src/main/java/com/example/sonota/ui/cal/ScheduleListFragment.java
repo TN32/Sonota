@@ -96,7 +96,7 @@ public class ScheduleListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootview = inflater.inflate(R.layout.fragment_schedule_list, container, false);
+        View rootview = inflater.inflate(R.layout.fragment_cal_schedule_list, container, false);
 
         tvDate =rootview.findViewById(R.id.tvDate);
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日", Locale.US);

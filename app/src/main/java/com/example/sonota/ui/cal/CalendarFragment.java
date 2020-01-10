@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.sonota.MainActivity;
 import com.example.sonota.R;
 
 import java.util.Date;
@@ -39,6 +41,10 @@ public class CalendarFragment extends Fragment {
     private GridView calendarGridView;
     private int index;
     private OnFragmentInteractionListener mListener;
+
+    float down,move,DM =0;
+
+    private boolean listenMove = false;
 
     public CalendarFragment() {
         index = 0;
@@ -69,14 +75,41 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootview = inflater.inflate(R.layout.fragment_calendar, container, false);
-        tvTitle =rootview.findViewById(R.id.tvTitle);
+        View rootview = inflater.inflate(R.layout.fragment_cal_calendar, container, false);
+        tvTitle =rootview.findViewById(R.id.tv_cal_title);
 
-        calendarGridView = rootview.findViewById(R.id.calendarGridView);
+        calendarGridView = rootview.findViewById(R.id.calendargridview);
         mCalendarAdapter = new CalendarAdapter(getContext(),calendarGridView);
         calendarGridView.setAdapter(mCalendarAdapter);
         mCalendarAdapter.MoveMonthbyIndex(index);
         tvTitle.setText(mCalendarAdapter.getTitle());
+
+        tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.OnCalledYearShift();
+            }
+        });
+
+        calendarGridView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction()==MotionEvent.ACTION_DOWN)
+                    down = event.getY();
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    move = event.getY();
+                    DM = down-move;
+                    return true;
+                }
+                //MOVE検知で　ワンタップかスワイプかを検知
+                if (Math.abs(DM) >Math.abs(100))
+                    if (event.getAction() == MotionEvent.ACTION_UP){
+                        listenMove=false;
+                        return true;
+                    }
+                return false;
+            }
+        });
 
         //カレンダー上のセルをクリックしたときのイベント
         calendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,7 +134,7 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-    // Inflate the layout for this fragment
+        // Inflate the layout for this fragment
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -111,18 +144,13 @@ public class CalendarFragment extends Fragment {
 
     //mCalendarAdapterから取得したｄefaultPositionでsetItemCheckedTopositionを呼んで選択をtDefaultPositioｎに更新する
     public void setItemCheckedDefaultPosition(){
-        setItemCheckedToposition(mCalendarAdapter.getDefaultPosition());
+        setItemCheckedToposition(mCalendarAdapter.getPositionToDateString("1"));
     }
 
     //上のメソッドのオーバーロード
     //int diffを受け取るとその月の１日の位置にdiffの値を足した位置(その月のdiff日目の位置)に設定するようになる
-    public void setItemCheckedDefaultPosition(int diff){
-        int position = mCalendarAdapter.getFirstDayPosition() + diff - 1;
-
-        if(position < 0 || position >= mCalendarAdapter.getCount())
-            return;
-
-        setItemCheckedToposition(position);
+    public void setItemCheckedPosition(String date){
+        setItemCheckedToposition(mCalendarAdapter.getPositionToDateString(date));
     }
 
     //選択をカレンダーの一番右下(一番下の行が当月で埋まってる場合の最終日)に設定
@@ -144,6 +172,9 @@ public class CalendarFragment extends Fragment {
         }
     }
 
+    public int getCheckedItemPosition() {
+        return calendarGridView.getCheckedItemPosition();
+    }
     //選択されているセルの中身をDate型で返す
     public Date getCurrentDate(){
         int position = calendarGridView.getCheckedItemPosition();
@@ -193,10 +224,15 @@ public class CalendarFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser){
         super.setUserVisibleHint(isVisibleToUser);
-
         if(isVisibleToUser){
             if(calendarGridView != null){
-                setItemCheckedDefaultPosition();
+                int savedPosition = mListener.getSavedCalenderPosition();
+                if(savedPosition != -1){
+                    setItemCheckedToposition(savedPosition);
+                }
+                else {
+                    setItemCheckedDefaultPosition();
+                }
             }
         }
     }
@@ -230,7 +266,7 @@ public class CalendarFragment extends Fragment {
         void onCalendarItemClick(String pickdate);
         void onCheckedDateChanged(Date afterDate);
         void onCheckedNotCurrentMonth(boolean isNextMonth, boolean isOverCount);
+        void OnCalledYearShift();
+        int getSavedCalenderPosition();
     }
-
-
 }

@@ -9,25 +9,31 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
-import com.example.sonota.ui.cal.CalFragment;
-import com.example.sonota.ui.cal.CalFragmentControllAdapter;
 
 public class ClcFragment extends Fragment {
-
-    private OnFragmentInteractionListener mListener;
-    private FabControllInterface mFabControllInterface;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_clc, container, false);
 
+        PagerFragment fragment = new PagerFragment();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.clc_mainsection, fragment);
+        // 戻るボタンで戻ってこれるように
+        transaction.addToBackStack(null);
+        transaction.commit();
+
         return root;
     }
+
+    private OnFragmentInteractionListener mListener;
+    private FabControllInterface mFabControllInterface;
 
     @Override
     public void onAttach(Context context) {
@@ -43,7 +49,7 @@ public class ClcFragment extends Fragment {
 
     @Override
     public void onResume() {
-        mFabControllInterface.setCurrrentFragmentID("ClcFragment");
+
         super.onResume();
     }
 

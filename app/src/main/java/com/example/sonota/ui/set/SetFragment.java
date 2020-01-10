@@ -11,11 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.sonota.CustomFragment;
 import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
 import com.example.sonota.ui.ec.EcFragment;
 
-public class SetFragment extends Fragment {
+public class SetFragment extends CustomFragment {
 
 
     private OnFragmentInteractionListener mListener;
@@ -42,7 +43,6 @@ public class SetFragment extends Fragment {
 
     @Override
     public void onResume() {
-        mFabControllInterface.setCurrrentFragmentID("SetFragment");
         super.onResume();
     }
 

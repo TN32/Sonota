@@ -14,4 +14,21 @@
     <string name="menu_clc">クレジット・ローン確認</string>
     <string name="menu_set">設定</string>
 
+    <string name="ibento">イベント名</string>
+    <string name="ibento2">イベント</string>
+    <string name="baito">バイト</string>
+    <string name="kaisizikoku">開始時刻</string>
+    <string name="syuryouzikoku">終了時刻</string>
+    <string name="kara">～</string>
+    <string name="kaunin">登録</string>
+
+    <string-array name="list">
+        <item>Apple</item>
+        <item>Google</item>
+        <item>Yahoo!</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

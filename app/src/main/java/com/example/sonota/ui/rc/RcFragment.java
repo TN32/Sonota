@@ -8,24 +8,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.example.sonota.CustomFragment;
 import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
-import com.example.sonota.ui.cal.CalFragment;
-import com.example.sonota.ui.cal.CalFragmentControllAdapter;
-import com.example.sonota.ui.ec.EcFragment;
+import com.example.sonota.ui.ec.ExpenceFragment;
 
-public class RcFragment extends Fragment {
-
-    private OnFragmentInteractionListener mListener;
-    private FabControllInterface mFabControllInterface;
+public class RcFragment extends CustomFragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_rc, container, false);
+
+        RevenueFragment mainFragment = new RevenueFragment();
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.rc_mainsection,mainFragment);
+        transaction.commit();
 
         return root;
     }
@@ -34,17 +34,16 @@ public class RcFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mFabControllInterface = (FabControllInterface)context;
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+//        }
     }
 
 
     @Override
     public void onResume() {
-        mFabControllInterface.setCurrrentFragmentID("RcFragment");
         super.onResume();
     }
 
@@ -56,7 +55,7 @@ public class RcFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+//        mListener = null;
     }
 
 

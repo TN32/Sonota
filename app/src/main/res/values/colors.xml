@@ -9,4 +9,8 @@
     <color name="greenColor">#0F0</color>
     <color name="whiteColor">#FFF</color>
     <color name="blackColor">#000</color>
+    <color name="bright_color">#000000</color>
+    <color name="light_color">#B1B1B1</color>
+    <color name="colorUnderLineNormal">#000000</color>
+    <color name="colorUnderLineActivated">#FF4081</color>
 </resources>

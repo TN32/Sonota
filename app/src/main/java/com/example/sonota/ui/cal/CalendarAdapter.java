@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.sonota.R;
@@ -26,10 +27,12 @@ public class CalendarAdapter extends BaseAdapter {
     private GridView calendarGridView;
     private boolean firstGetView;
 
+    private ArrayList<String> positionToDate;
     private int firstDayPosition,todayPosition = -1;
 
     //カスタムセルを拡張したらここでWigetを定義
     private static class ViewHolder {
+        public LinearLayout contentArea;
         public TextView dateText;
     }
 
@@ -61,6 +64,7 @@ public class CalendarAdapter extends BaseAdapter {
             convertView = mLayoutInflater.inflate(R.layout.calendar_cell, null);
             holder = new ViewHolder();
             holder.dateText = convertView.findViewById(R.id.dateText);
+            holder.contentArea = convertView.findViewById(R.id.calender_cell_content);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
@@ -78,20 +82,9 @@ public class CalendarAdapter extends BaseAdapter {
         //当月以外のセルをグレーアウト
         if (mDateManager.isCurrentMonth(dateArray.get(position))){
             convertView.setBackgroundResource(R.drawable.selector);
+            holder.contentArea.setBackgroundColor(Color.WHITE);
         }else {
             convertView.setBackgroundColor(Color.LTGRAY);
-        }
-
-        //その月の１日の位置と、今月なら今日の位置を設定する
-        if(mDateManager.isToday(dateArray.get(position))){
-            todayPosition = position;
-            if(firstGetView == true){
-                calendarGridView.setItemChecked(position,true);
-                firstGetView = false;
-           }
-        }
-        else if(mDateManager.isFirstDay(dateArray.get(position))){
-            firstDayPosition = position;
         }
 
         //日曜日を赤、土曜日を青に
@@ -109,10 +102,27 @@ public class CalendarAdapter extends BaseAdapter {
         }
         holder.dateText.setTextColor(colorId);
 
+        //その月の１日の位置と、今月なら今日の位置を設定する
+        if(mDateManager.isToday(dateArray.get(position))){
+            int textColor = Color.WHITE;
+            if(colorId == Color.BLACK){
+                colorId = Color.GREEN;
+                textColor = Color.BLACK;
+            }
+            holder.dateText.setBackgroundColor(colorId);
+            holder.dateText.setTextColor(textColor);
+            todayPosition = position;
+            if(calendarGridView.getCheckedItemPosition() == -1 && firstGetView == true){
+                calendarGridView.setItemChecked(position,true);
+                firstGetView = false;
+            }
+        }
+        else if(mDateManager.isFirstDay(dateArray.get(position))){
+            firstDayPosition = position;
+        }
+
         return convertView;
     }
-
-
 
     @Override
     public long getItemId(int position) {
@@ -155,6 +165,20 @@ public class CalendarAdapter extends BaseAdapter {
         else{
             return firstDayPosition;
         }
+    }
+
+    public int getPositionToDateString(String dateString){
+        if(mDateManager.isthisMonth(mDateManager.mCalendar.getTime())){
+            return todayPosition;
+        }
+        for (int position = 0;position < dateArray.size();position++){
+            Date date = dateArray.get(position);
+            SimpleDateFormat format = new SimpleDateFormat("d", Locale.US);
+            if (dateString.equals(format.format(date))) {
+                return position;
+            }
+        }
+        return -1;
     }
 
     //１日の位置を返す

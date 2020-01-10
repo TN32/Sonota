@@ -39,16 +39,23 @@ public class CalendarPagerAdapter extends FragmentPagerAdapter {
         return mCarenderFragment.getCurrentDate();
     }
 
+    public int getCheckedItemPosition() {
+        if (mCarenderFragment == null)
+            return -1;
+        return mCarenderFragment.getCheckedItemPosition();
+    }
+
     public void setCalendarCheckedClear(){
-        mCarenderFragment.setCalendarCheckedClear();
+        if(mCarenderFragment != null)
+            mCarenderFragment.setCalendarCheckedClear();
     }
 
     public void setItemCheckedToDiff(int diff){
         mCarenderFragment.setItemCheckedToDiff(diff);
     }
 
-    public void setItemCheckedDefaultPosition(int diff){
-        mCarenderFragment.setItemCheckedDefaultPosition(diff);
+    public void setItemCheckedPosition(String date){
+        mCarenderFragment.setItemCheckedPosition(date);
     }
 
     public void setItemCheckedFirstDay(){

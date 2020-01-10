@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ui.cal.CalendarFragment">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -17,17 +15,17 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
             android:background="@color/whiteColor">
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/tv_cal_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:text="2018.2"
-                android:textSize="20sp"
-                android:layout_centerInParent="true"/>
+                android:textSize="20sp" />
 
         </RelativeLayout>
 
@@ -110,7 +108,7 @@
         </LinearLayout>
 
         <GridView
-            android:id="@+id/calendarGridView"
+            android:id="@+id/calendargridview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="15"
