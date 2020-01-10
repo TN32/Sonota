@@ -1,6 +1,7 @@
 package com.example.sonota.ui.cal;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,6 +10,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
@@ -32,6 +38,7 @@ public class AddExpenceFragment extends CustomFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    View root;
 
     public AddExpenceFragment() {
         // Required empty public constructor
@@ -67,8 +74,68 @@ public class AddExpenceFragment extends CustomFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        root = inflater.inflate(R.layout.fragment_cal_add_expence, container, false);
+        
+        super.onCreate(savedInstanceState);
+       
+
+        RadioGroup radiogroup = (RadioGroup)root.findViewById(R.id.radiogroup);
+        RadioGroup radiogroup2 = (RadioGroup)root.findViewById(R.id.radiogroup2);
+
+        radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int id) {
+
+                RadioButton radio = (RadioButton)root.findViewById(R.id.radioButton);
+                RadioButton radio1 = (RadioButton)root.findViewById(R.id.radioButton3);
+                RadioButton radio2 = (RadioButton)root.findViewById(R.id.radioButton4);
+                EditText etext = (EditText)root.findViewById(R.id.editText4);
+                TextView textView= (TextView)root.findViewById(R.id.textView9);
+                LinearLayout linearLayout = (LinearLayout)root.findViewById(R.id.linearlayout1);
+                LinearLayout aaaa = (LinearLayout)root.findViewById(R.id.aaaa);
+
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)aaaa.getLayoutParams();
+
+                if (id == R.id.radioButton) {
+                    radio1.setEnabled(false);
+                    radio2.setEnabled(false);
+                    etext.setEnabled(false);
+                    textView.setTextColor(Color.argb(255,128,128,128));
+                    linearLayout.setBackgroundColor(Color.argb(255,169,169,169));
+                    params.height = 0;
+                    aaaa.setLayoutParams(params);
+                } else if(id == R.id.radioButton2){
+                    radio1.setEnabled(true);
+                    radio2.setEnabled(true);
+                    etext.setEnabled(true);
+                    textView.setTextColor(Color.parseColor("#160000"));
+                    linearLayout.setBackgroundColor(Color.WHITE);
+                    params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    aaaa.setLayoutParams(params);
+                }
+            }
+        });
+        radiogroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+
+            public void onCheckedChanged(RadioGroup radioGroup, int id){
+                RadioButton radio1 = (RadioButton)root.findViewById(R.id.radioButton4);
+                RadioButton radio2 = (RadioButton)root.findViewById(R.id.radioButton3);
+                EditText etext = (EditText)root.findViewById(R.id.editText4);
+                TextView textView= (TextView)root.findViewById(R.id.textView9);
+                if(id == R.id.radioButton4){
+                    textView.setTextColor(Color.argb(255,128,128,128));
+
+                    etext.setEnabled(false);
+
+                } else if(id == R.id.radioButton3){
+                    etext.setEnabled(true);
+                    textView.setTextColor(Color.parseColor("#160000"));
+
+                }
+            }
+        });
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cal_add_expence, container, false);
+        return root;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,5 +1,7 @@
 package com.example.sonota.ui.cal;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 
 public class AddEventFragment extends CustomFragment {
 
@@ -33,6 +36,9 @@ public class AddEventFragment extends CustomFragment {
     private String[] figures = new String[5];
 
     Button bt_cal_registration;
+
+    private SonotaDBOpenHelper helper;
+    private SQLiteDatabase db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,6 +78,16 @@ public class AddEventFragment extends CustomFragment {
                 figures[2] = String.valueOf(numPicker2.getValue());
                 figures[3] = String.valueOf(numPicker3.getValue());
 
+                if (helper == null){
+                    helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+                }
+
+                if(db == null){
+                    db = helper.getWritableDatabase();
+                }
+
+                insertData(db, eventName, eventDate, figures[0] + ":" + figures[1], figures[2] + ":" + figures[3]);
+
                 Toast.makeText(getContext(),  bt_cal_registration.getText() + "が完了しました!\n " + eventName + "," + eventDate ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("CalenderContent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
@@ -85,6 +101,17 @@ public class AddEventFragment extends CustomFragment {
             bt_cal_registration.setText("登録");
         }
         return root;
+    }
+
+    private void insertData(SQLiteDatabase db, String name, String day, String stime, String etime){
+
+        ContentValues values = new ContentValues();
+        values.put("schedule_name", name);
+        values.put("schedule_day", day);
+        values.put("schedule_stime", stime);
+        values.put("schedule_etime", etime);
+
+        db.insert("t_schedule",null, values);
     }
 
 }

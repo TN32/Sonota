@@ -36,6 +36,13 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="-2dp" />
 
+        <View
+            android:id="@+id/view_dark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#40000000"
+            android:visibility="gone" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_parent"
             android:layout_width="wrap_content"
@@ -50,7 +57,9 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
+            app:backgroundTint="@android:color/holo_orange_dark"
             app:fabCustomSize="90dp"
+            app:maxImageSize="50dp"
             app:srcCompat="@android:drawable/ic_input_add" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -59,13 +68,14 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/fab_parent"
             android:layout_alignParentRight="true"
-
             android:layout_marginRight="31dp"
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:visibility="invisible"
+            app:backgroundTint="@android:color/holo_orange_light"
             app:fabCustomSize="60dp"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            app:maxImageSize="60dp"
+            app:srcCompat="@mipmap/ic_fab1" />
 
         <TextView
             android:id="@+id/fabtext_top"
@@ -74,9 +84,15 @@
             android:layout_alignBottom="@id/fab_child_top"
             android:layout_alignParentBottom="false"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="14dp"
             android:layout_toLeftOf="@id/fab_child_top"
+            android:background="@drawable/frame_style"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
             android:text="TextView"
+            android:textStyle="bold"
             android:visibility="invisible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -89,8 +105,10 @@
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:visibility="invisible"
+            app:backgroundTint="@android:color/holo_orange_light"
             app:fabCustomSize="60dp"
-            app:srcCompat="@android:drawable/ic_lock_lock" />
+            app:maxImageSize="60dp"
+            app:srcCompat="@mipmap/ic_launcher_fab2_foreground" />
 
         <TextView
             android:id="@+id/fabtext_middle"
@@ -98,9 +116,15 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/fab_child_middle"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="14dp"
             android:layout_toLeftOf="@id/fab_child_middle"
+            android:background="@drawable/frame_style"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
             android:text="TextView"
+            android:textStyle="bold"
             android:visibility="invisible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -114,8 +138,10 @@
             android:baselineAlignBottom="false"
             android:clickable="true"
             android:visibility="invisible"
+            app:backgroundTint="@android:color/holo_orange_light"
             app:fabCustomSize="60dp"
-            app:srcCompat="@android:drawable/button_onoff_indicator_on" />
+            app:maxImageSize="60dp"
+            app:srcCompat="@mipmap/ic_launcher_fab4_foreground" />
 
         <TextView
             android:id="@+id/fabtext_bottom"
@@ -123,17 +149,16 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/fab_child_bottom"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="14dp"
             android:layout_toLeftOf="@id/fab_child_bottom"
+            android:background="@drawable/frame_style"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp"
             android:text="TextView"
+            android:textStyle="bold"
             android:visibility="invisible" />
-
-        <View
-            android:id="@+id/view_dark"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#40000000"
-            android:visibility="gone" />
 
     </RelativeLayout>
 
