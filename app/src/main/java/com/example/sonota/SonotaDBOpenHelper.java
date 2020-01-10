@@ -1,9 +1,10 @@
+
 package com.example.sonota;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+        import android.content.Context;
+        import android.database.sqlite.SQLiteDatabase;
+        import android.database.sqlite.SQLiteOpenHelper;
+        import android.util.Log;
 
 public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データーベースのバージョン
@@ -277,4 +278,3 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
         super.onOpen(db);
     }
 }
-
