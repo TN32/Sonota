@@ -38,6 +38,10 @@ public class CreditListAdapter extends BaseAdapter {
         return data.size();
     }
 
+    public ArrayList<CreditListDataClass> getData() {
+        return data;
+    }
+
     /**
      * 指定された順番にある項目を返すメソッド
      * ※このメソッドは必ず記述すること
@@ -74,12 +78,12 @@ public class CreditListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_clc_creditdetail_title)).setText(data.getTitle());
+//        ((TextView) convertView.findViewById(R.id.tv_clc_creditdetail_title)).setText(data.getTitle());
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
         TextView sub = (TextView) convertView.findViewById(R.id.tv_clc_creditdetail_amout);
-        sub.setText(data.getAmout());
+        sub.setText(data.getAmout() + "円");
         // idがdescriptionのTextViewに、指定されたデータのdescriptionの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_count)).setText(data.getCount());
+        ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_count)).setText(data.getCount() + "回払い");
 
         return convertView;
     }

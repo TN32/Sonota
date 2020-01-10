@@ -181,6 +181,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="8"
+                    android:enabled="false"
                     android:gravity="right"
                     android:inputType="textPersonName"
                     android:maxLength="8"
@@ -214,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10sp"
                     android:layout_marginTop="10sp"
-                    android:text="残回数"
+                    android:text="残り回数"
                     android:textColor="#c4020516"
                     android:textSize="24sp"
                     android:textStyle="bold" />

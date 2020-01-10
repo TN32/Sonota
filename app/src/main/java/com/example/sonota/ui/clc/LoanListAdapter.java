@@ -77,9 +77,9 @@ public class LoanListAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_title)).setText(data.getTitle());
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
         TextView sub = (TextView) convertView.findViewById(R.id.tv_clc_loandetail_amout);
-        sub.setText(data.getAmout());
+        sub.setText(data.getAmout() + "円");
         // idがdescriptionのTextViewに、指定されたデータのdescriptionの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_count)).setText(data.getCount());
+        ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_count)).setText(data.getCount() + "回払い");
 
         return convertView;
     }

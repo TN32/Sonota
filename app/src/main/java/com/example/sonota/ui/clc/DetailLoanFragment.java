@@ -1,6 +1,8 @@
 package com.example.sonota.ui.clc;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,13 +18,19 @@ import androidx.fragment.app.FragmentManager;
 import com.example.sonota.CustomFragment;
 import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 
 public class DetailLoanFragment extends CustomFragment {
 
-    EditText name1, amout1, sprit1, perm1, remaining1;
+    EditText etName, etAmout, etSprit, etPerm, etRemaining;
+    boolean isNewItem = true;
+    int id;
+
+    private SonotaDBOpenHelper helper;
+    private SQLiteDatabase db;
 
     public DetailLoanFragment(){
-        int i = 0;
+
     }
 
     @Override
@@ -36,23 +44,22 @@ public class DetailLoanFragment extends CustomFragment {
 
         Bundle args = getArguments();
         if(args != null){
-
             int selected = args.getInt("selected");
 
-            name1 = (EditText)root.findViewById(R.id.etName);
-            name1.setHint(args.getString("Name1"));
+            etName = (EditText)root.findViewById(R.id.etName);
+            etName.setHint(args.getString("Name1"));
 
-            amout1 = (EditText)root.findViewById(R.id.etAmout);
-            amout1.setHint(args.getString("Amout1"));
+            etAmout = (EditText)root.findViewById(R.id.etAmout);
+            etAmout.setHint(args.getString("Amout1"));
 
-            sprit1 = (EditText)root.findViewById(R.id.etSplit);
-            sprit1.setHint(args.getString("Split1"));
+            etSprit = (EditText)root.findViewById(R.id.etSplit);
+            etSprit.setHint(args.getString("Split1"));
 
-            perm1 = (EditText)root.findViewById(R.id.etPerM);
-            perm1.setHint(args.getString("PerM1"));
+            etPerm = (EditText)root.findViewById(R.id.etPerM);
+            etPerm.setHint(args.getString("PerM1"));
 
-            remaining1 = (EditText)root.findViewById(R.id.etRemaining);
-            remaining1.setHint(args.getString("Remaining1"));
+            etRemaining = (EditText)root.findViewById(R.id.etRemaining);
+            etRemaining.setHint(args.getString("Remaining1"));
 
             bt_clc_loan_update.setText("更新");
         }
@@ -60,7 +67,42 @@ public class DetailLoanFragment extends CustomFragment {
         bt_clc_loan_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),  bt_clc_loan_update.getText() + "が完了しました!",Toast.LENGTH_SHORT).show();
+                String name = etName.getText().toString();
+                String amout = etAmout.getText().toString();
+                String split = etSprit.getText().toString();
+                String perm = etPerm.getText().toString();
+                String remaining = etRemaining.getText().toString();
+
+                Boolean capy = false;
+
+                if(isNewItem ==true)
+                {
+                    if (helper == null){
+                        helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+                    }
+
+                    if(db == null){
+                        db = helper.getWritableDatabase();
+                    }
+
+                    insertData(db, amout, split, capy, remaining);
+
+                    Toast.makeText(getContext(),  bt_clc_loan_update.getText() + "が完了しました!\n " + name + "," + amout ,Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager().popBackStack("Loan", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                }
+
+                if (helper == null){
+                    helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+                }
+
+                if(db == null){
+                    db = helper.getWritableDatabase();
+                }
+
+                insertData(db, amout, split, capy, remaining);
+
+                Toast.makeText(getContext(),  bt_clc_loan_update.getText() + "が完了しました!\n " + name + "," + amout ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("Loan", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
@@ -77,7 +119,6 @@ public class DetailLoanFragment extends CustomFragment {
 //        }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -87,16 +128,37 @@ public class DetailLoanFragment extends CustomFragment {
         super.onPause();
     }
 
-
     @Override
     public void onDetach() {
         super.onDetach();
     }
 
-
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void insertData(SQLiteDatabase db, String amout, String split, boolean capy, String name){
+
+        ContentValues values = new ContentValues();
+        values.put("partial_money", amout);
+        values.put("partial_fwithdrawel", split);
+        values.put("partial_cpay", capy);
+        values.put("partial_pmemo", name);
+
+        db.insert("t_partial",null, values);
+    }
+
+    private void updateDate(SQLiteDatabase db, String amout, String split, boolean capy, String name){
+
+        ContentValues values = new ContentValues();
+        values.put("partial_money", amout);
+        values.put("partial_fwithdrawel", split);
+        values.put("partial_cpay", capy);
+        values.put("partial_pmemo", name);
+
+        db.update("t_partial",values, "partial_code = " + id,null);
+
     }
 
 }
