@@ -102,7 +102,6 @@ public class AddExpenceFragment extends CustomFragment {
                     etext.setEnabled(false);
                     textView.setTextColor(Color.argb(255,128,128,128));
                     linearLayout.setBackgroundColor(Color.argb(255,169,169,169));
-
                     params.height = 0;
                     aaaa.setLayoutParams(params);
                 } else if(id == R.id.radioButton2){
@@ -111,7 +110,6 @@ public class AddExpenceFragment extends CustomFragment {
                     etext.setEnabled(true);
                     textView.setTextColor(Color.parseColor("#160000"));
                     linearLayout.setBackgroundColor(Color.WHITE);
-
                     params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                     aaaa.setLayoutParams(params);
                 }
