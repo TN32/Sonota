@@ -91,10 +91,10 @@ public class DetailParttimejobFragment extends CustomFragment {
  //       SonotaDBOpenHelper hlp = new SonotaDBOpenHelper(this);
  //       final SQLiteDatabase db = hlp.getReadableDatabase();
 
-        //データの更新
-        bt_tmp_registration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+     // //データの更新
+      //bt_tmp_registration.setOnClickListener(new View.OnClickListener() {
+        //  @Override
+       //   public void onClick(View v) {
 
    //             String spnner = sp_tmp_partName.setAdapter();
     //            String numberpicker1 = numPicker0.setValue();
@@ -105,8 +105,8 @@ public class DetailParttimejobFragment extends CustomFragment {
 
                 //データベースを更新
   //              db.update("person", val, "name=?", new String[]{name});
-            }
-        });
+      //    }
+      //});
 
         bt_tmp_registration = root.findViewById(R.id.bt_tmp_registration);
         bt_tmp_registration.setOnClickListener(new View.OnClickListener(){
