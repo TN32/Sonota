@@ -1,5 +1,7 @@
 package com.example.sonota.ui.tmp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
+import com.example.sonota.ui.ec.UpdateExpenceFragment;
 
 import java.util.ArrayList;
 import java.util.EventListener;
@@ -24,11 +27,73 @@ public class EventFragment extends CustomFragment {
     public EventFragment(){
         fabCount = 1;
     }
+    private int selectedPosition;
+    ListView listView;
+    EventListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tmp_event, container, false);
 
+        // idがlistのListViewを取得
+        listView = (ListView) view.findViewById(R.id.list_view);
+
+        listload();
+
+
+        //セルを選択された詳細画面フラグメントを呼び出す
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedPosition = position;
+                final String[] items = {"変更", "削除", "キャンセル"};
+                new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //                             item_which pressed
+                        switch (which) {
+                            case 0:
+                                // 詳細画面へ値を渡す
+                                DetailEventFragment fragment = new DetailEventFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("selected", selectedPosition);
+                                bundle.putString("Name",adapter.getCurrentTitle(selectedPosition));
+                                bundle.putString("starttime", adapter.getCurrentStartTime(selectedPosition));
+                                bundle.putString("finishtime", adapter.getCurrentFinishTime(selectedPosition));
+
+                                fragment.setArguments(bundle);
+                                //詳細画面を呼び出す
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                transaction.replace(R.id.tmp_mainsection, fragment);
+                                //戻るボタンで戻ってこれるように
+                                transaction.addToBackStack("Event");
+                                transaction.commit();
+
+                                break;
+                            case 1:
+                                adapter.getItemId(selectedPosition);
+                                String[] whereId = new String[1];
+                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
+                                db.delete(
+                                        "t_scheduletemplate",
+                                        "scheduletemplate_code=?",
+                                        whereId
+                                );
+                                listload();
+                                break;
+                            case 2:
+                                break;
+                        }
+                    }
+                }).show();
+            }
+        });
+
+        return view;
+    }
+
+    public void listload(){
         if (helper == null){
             helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
         }
@@ -36,7 +101,6 @@ public class EventFragment extends CustomFragment {
         if(db == null){
             db = helper.getWritableDatabase();
         }
-
 
         //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
         //  引数tableには、テーブル名を指定します。
@@ -73,39 +137,13 @@ public class EventFragment extends CustomFragment {
          * CustomAdapterを生成
          * R.layout.custom_list_layout : リストビュー自身のレイアウト。今回は自作。
          */
-         final EventListAdapter adapter = new EventListAdapter(
+        adapter = new EventListAdapter(
                 getContext(),
                 listData, // 使用するデータ
                 R.layout.list_tmp_event_cell // 自作したレイアウト
         );
 
-        // idがlistのListViewを取得
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
         listView.setAdapter(adapter);
-
-        //セルを選択された詳細画面フラグメントを呼び出す
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // 詳細画面へ値を渡す
-                DetailEventFragment fragment = new DetailEventFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("selected", position);
-                bundle.putString("Name",adapter.getCurrentTitle(position));
-                bundle.putString("starttime", adapter.getCurrentStartTime(position));
-                bundle.putString("finishtime", adapter.getCurrentFinishTime(position));
-
-                fragment.setArguments(bundle);
-                //詳細画面を呼び出す
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.tmp_mainsection, fragment);
-                //戻るボタンで戻ってこれるように
-                transaction.addToBackStack("Event");
-                transaction.commit();
-            }
-        });
-        return view;
     }
 
     @Override
