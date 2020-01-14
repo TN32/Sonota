@@ -280,7 +280,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/bt_caladd_add"
+
                 android:layout_width="wrap_content"
                 android:layout_height="70sp"
                 android:layout_gravity="bottom"
