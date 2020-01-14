@@ -16,13 +16,13 @@ public class SetCreditListAdapter extends BaseAdapter {
     private Context context = null;
 
     // ArrayListの中に独自クラスのCustomDataClassを指定
-    private ArrayList<com.example.sonota.ui.clc.CreditListDataClass> data = null;
+    private ArrayList<CreditListDataClass> data = null;
 
     private int resource = 0;
 
 
     // コンストラクタ  MainActivityでアダプターを生成する箇所で呼ばれている
-    public SetCreditListAdapter(Context context, ArrayList<com.example.sonota.ui.clc.CreditListDataClass> data, int resource){
+    public SetCreditListAdapter(Context context, ArrayList<CreditListDataClass> data, int resource){
         this.context = context;
         this.data = data;
         this.resource = resource;
