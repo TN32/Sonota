@@ -75,9 +75,13 @@ public class EventListAdapter extends BaseAdapter {
         // 画像割り当て
         ((TextView) convertView.findViewById(R.id.tv_cal_event_tille)).setText(data.getTitle());
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_tem_event_start)).setText(data.getStarttime());
+        TextView tvStartTime =  ((TextView) convertView.findViewById(R.id.tv_tem_event_start));
+        String[] sTime = data.getStarttime().split("_");
+        tvStartTime.setText(sTime[0] + "時" + sTime[1] + "分");
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
-        ((TextView) convertView.findViewById(R.id.tv_tem_event_filsh)).setText(data.getFinishtime());
+        TextView tvEndTime = ((TextView) convertView.findViewById(R.id.tv_tem_event_filsh));
+        String[] eTime = data.getFinishtime().split("_");
+        tvEndTime.setText(eTime[0] + "時" + eTime[1] + "分");
 
         return convertView;
     }
@@ -85,10 +89,10 @@ public class EventListAdapter extends BaseAdapter {
     public String getCurrentStartTime(int position){
         return data.get(position).getStarttime();
     }
-
     public String getCurrentFinishTime(int position){
         return data.get(position).getFinishtime();
     }
-
-
+    public String getCurrentTitle(int position){
+        return data.get(position).getTitle();
+    }
 }

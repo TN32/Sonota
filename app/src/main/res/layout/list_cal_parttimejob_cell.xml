@@ -10,7 +10,7 @@
         android:layout_gravity="right"
         android:text="TextView"
         android:textColor="#C4020516"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_weight="0"
             android:text="TextView"
             android:textColor="#848484"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_weight="0"
             android:text="~"
             android:textColor="#848484"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -45,7 +45,7 @@
             android:layout_weight="0"
             android:text="TextView"
             android:textColor="#848484"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -62,7 +62,7 @@
             android:layout_weight="0"
             android:text="休憩時間"
             android:textColor="#848484"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -72,7 +72,7 @@
             android:layout_weight="0"
             android:text="TextView"
             android:textColor="#848484"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
     </LinearLayout>

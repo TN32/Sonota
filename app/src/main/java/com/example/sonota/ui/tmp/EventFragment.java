@@ -91,6 +91,7 @@ public class EventFragment extends CustomFragment {
                 DetailEventFragment fragment = new DetailEventFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("selected", position);
+                bundle.putString("Name",adapter.getCurrentTitle(position));
                 bundle.putString("starttime", adapter.getCurrentStartTime(position));
                 bundle.putString("finishtime", adapter.getCurrentFinishTime(position));
 

@@ -82,7 +82,6 @@ public class DetailEventFragment extends CustomFragment {
 
                 Toast.makeText(getContext(),"イベント名が変更されました!" +"("+ et_tmp_eventName.getText().toString()+")" ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("Event", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
             }
         });
 
@@ -93,22 +92,22 @@ public class DetailEventFragment extends CustomFragment {
             int selected = args.getInt("selected");
 
             name1 = (EditText)root.findViewById(R.id.et_cal_eventName);
-            name1.setHint(args.getString("Name1"));
+            name1.setText(args.getString("Name"));
 
             String startTime = args.getString("starttime");
             String finishTime = args.getString("finishtime");
 
-            String[] splitStartTime = startTime.split("時");
+            String[] splitStartTime = startTime.split("_");
 
-            String[] splitFinishTime = finishTime.split("時");
+            String[] splitFinishTime = finishTime.split("_");
 
             numPicker0.setValue(Integer.valueOf(splitStartTime[0]));
 
-            numPicker1.setValue(Integer.valueOf(splitStartTime[1].split("分")[0]));
+            numPicker1.setValue(Integer.valueOf(splitStartTime[1]));
 
             numPicker2.setValue(Integer.valueOf(splitFinishTime[0]));
 
-            numPicker3.setValue(Integer.valueOf(splitFinishTime[1].split("分")[0]));
+            numPicker3.setValue(Integer.valueOf(splitFinishTime[1]));
 
             bt_tmp_registration.setText("更新");
             isNewItem = false;
@@ -126,5 +125,4 @@ public class DetailEventFragment extends CustomFragment {
 
         db.insert("t_scheduletemplate",null, values);
     }
-
 }
