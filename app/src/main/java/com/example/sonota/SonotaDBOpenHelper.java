@@ -8,7 +8,7 @@ package com.example.sonota;
 
 public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データーベースのバージョン
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 11;
     // データーベース名
     private static final String DATABASE_NAME = "SONOTA_DB";
 
@@ -21,7 +21,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String partial_pmemo = "partial_pmemo";
 
     //予定表
-    private static final String TABLE_NAME2 = "schedule_code";
+    private static final String TABLE_NAME2 = "t_schedule";
     private static final String schedule_code ="schedule_code";
     private static final String schedule_name = "schedule_name";
     private static final String schedule_day = "schedule_day";
@@ -29,14 +29,14 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String schedule_etime = "schedule_etime";
 
     //予定テンプレート表
-    private static final String TABLE_NAME3 = "scheduletemplate_code";
+    private static final String TABLE_NAME3 = "t_scheduletemplate";
     private static final String scheduletemplate_code = "scheduletemplate_code";
     private static final String scheduletemplate_name = "scheduletemplate_name";
     private static final String scheduletemplate_stime = "scheduletemplate_stime";
     private static final String scheduletemplate_etime = "scheduletemplate_etime";
 
     //バイトテンプレート表
-    private static final String TABLE_NAME4 = "Parttimejobtemplate_code";
+    private static final String TABLE_NAME4 = "t_Parttimejobtemplate";
     private static final String Parttimejobtemplate_code = "Parttimejobtemplate_code";
     private static final String Parttimejobtemplate_stime = " Parttimejobtemplate_stime";
     private static final String Parttimejobtemplate_etime = " Parttimejobtemplate_etime";
@@ -115,7 +115,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " +TABLE_NAME2;
 
-    //分割支払い表
+    //予定
     private static final String SQL_CREATE_ENTRIES2 =
 
             "CREATE TABLE " +  TABLE_NAME2 + " (" +
@@ -132,7 +132,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ENTRIES3 =
 
             "CREATE TABLE " +  TABLE_NAME3 + " (" +
-                    scheduletemplate_code + "  INTEGER PRIMARY KEY," +
+                    scheduletemplate_code + " INTEGER PRIMARY KEY," +
                     scheduletemplate_name + " TEXT," +
                     scheduletemplate_stime + " TEXT," +
                     scheduletemplate_etime + " TEXT)";
@@ -145,7 +145,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
 
             "CREATE TABLE " +  TABLE_NAME4 + " (" +
                     Parttimejobtemplate_code + "  INTEGER PRIMARY KEY," +
-                    byteahead_code + "INTEGER,"+
+                    byteahead_code + " INTEGER,"+
                     Parttimejobtemplate_stime + " TEXT," +
                     Parttimejobtemplate_etime + " TEXT," +
                     Parttimejobtemplate_btime + " INTEGER)";
@@ -239,11 +239,14 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        String s = SQL_CREATE_ENTRIES3;
+        String s2 = SQL_CREATE_ENTRIES2;
+
         // テーブル作成
         // SQLiteファイルがなければSQLiteファイルが作成される
         db.execSQL(SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES2);
-        db.execSQL(SQL_CREATE_ENTRIES3);
+        db.execSQL("CREATE TABLE t_scheduletemplate (scheduletemplate_code INTEGER PRIMARY KEY,scheduletemplate_name TEXT,scheduletemplate_stime TEXT,scheduletemplate_etime TEXT)");
         db.execSQL(SQL_CREATE_ENTRIES4);
         db.execSQL(SQL_CREATE_ENTRIES5);
         db.execSQL(SQL_CREATE_ENTRIES6);
@@ -258,16 +261,9 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データベースをバージョンアップした時に実行される処理
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_CREATE_ENTRIES);
-        db.execSQL(SQL_DELETE_ENTRIES2);
-        db.execSQL(SQL_DELETE_ENTRIES3);
-        db.execSQL(SQL_DELETE_ENTRIES4);
-        db.execSQL(SQL_DELETE_ENTRIES5);
-        db.execSQL(SQL_DELETE_ENTRIES6);
-        db.execSQL(SQL_DELETE_ENTRIES7);
-        db.execSQL(SQL_DELETE_ENTRIES8);
-        db.execSQL(SQL_CREATE_ENTRIES9);
-        db.execSQL(SQL_CREATE_ENTRIES10);
+        db.execSQL(
+                SQL_DELETE_ENTRIES
+        );
         onCreate(db);
     }
 

@@ -1,6 +1,7 @@
 package com.example.sonota;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.widget.Toast;
 
@@ -16,13 +17,16 @@ public class CustomFragment extends Fragment {
     protected int fabCount = 0;
     protected boolean isSetToCurrentFragment = true;
 
+    protected SonotaDBOpenHelper helper;
+    protected SQLiteDatabase db;
+
     public String truncDate(Date date){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd", Locale.US);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd", Locale.US);
         return format.format(date);
     }
 
     public String[] splitDate(String dateString){
-        return dateString.split(".");
+        return dateString.split("_");
     }
 
     @Override

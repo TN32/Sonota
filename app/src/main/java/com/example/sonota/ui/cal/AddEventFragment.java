@@ -86,7 +86,7 @@ public class AddEventFragment extends CustomFragment {
                     db = helper.getWritableDatabase();
                 }
 
-                insertData(db, eventName, eventDate, figures[0] + ":" + figures[1], figures[2] + ":" + figures[3]);
+                insertData(db, eventName, eventDate, figures[0] + "_" + figures[1], figures[2] + "_" + figures[3]);
 
                 Toast.makeText(getContext(),  bt_cal_registration.getText() + "が完了しました!\n " + eventName + "," + eventDate ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("CalenderContent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -104,7 +104,6 @@ public class AddEventFragment extends CustomFragment {
     }
 
     private void insertData(SQLiteDatabase db, String name, String day, String stime, String etime){
-
         ContentValues values = new ContentValues();
         values.put("schedule_name", name);
         values.put("schedule_day", day);
@@ -113,5 +112,4 @@ public class AddEventFragment extends CustomFragment {
 
         db.insert("t_schedule",null, values);
     }
-
 }

@@ -1,5 +1,7 @@
 package com.example.sonota.ui.tmp;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 
 public class DetailEventFragment extends CustomFragment {
 
@@ -23,8 +26,9 @@ public class DetailEventFragment extends CustomFragment {
     private NumberPicker numPicker0, numPicker1, numPicker2, numPicker3;
     private TextView pickerTextView;
     private String[] figures = new String[5];
+    private boolean isNewItem = true;
 
-    private EditText et_cal_eventName;
+    private EditText et_tmp_eventName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +38,7 @@ public class DetailEventFragment extends CustomFragment {
 
         pickerTextView = root.findViewById(R.id.text_view);
 
-        et_cal_eventName = root.findViewById(R.id.et_cal_eventName);
+        et_tmp_eventName = root.findViewById(R.id.et_cal_eventName);
 
         numPicker0 = root.findViewById(R.id.np_tmp_startTime1);
         numPicker1 = root.findViewById(R.id.np_tmp_startTime2);
@@ -59,18 +63,24 @@ public class DetailEventFragment extends CustomFragment {
         bt_tmp_registration = root.findViewById(R.id.bt_tmp_registration);
         bt_tmp_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-//                figures[0] = String.valueOf(numPicker0.getValue());
-//                figures[1] = String.valueOf(numPicker1.getValue());
-//                figures[2] = String.valueOf(numPicker2.getValue());
-//                figures[3] = String.valueOf(numPicker3.getValue());
-//
-//                String str = String.format("%s%s%s.%s%s",
-//                        figures[0], figures[1], figures[2], figures[3]);
-//                Float fig = Float.parseFloat(str);
+                String eventName = et_tmp_eventName.getText().toString();
 
-//                pickerTextView.setText(String.valueOf(fig));
+                figures[0] = String.valueOf(numPicker0.getValue());
+                figures[1] = String.valueOf(numPicker1.getValue());
+                figures[2] = String.valueOf(numPicker2.getValue());
+                figures[3] = String.valueOf(numPicker3.getValue());
 
-                Toast.makeText(getContext(),"イベント名が変更されました!" +"("+ et_cal_eventName.getText().toString()+")" ,Toast.LENGTH_SHORT).show();
+                if (helper == null){
+                    helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+                }
+
+                if(db == null){
+                    db = helper.getWritableDatabase();
+                }
+
+                insertData(db, eventName,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3]);
+
+                Toast.makeText(getContext(),"イベント名が変更されました!" +"("+ et_tmp_eventName.getText().toString()+")" ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("Event", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
             }
@@ -101,10 +111,20 @@ public class DetailEventFragment extends CustomFragment {
             numPicker3.setValue(Integer.valueOf(splitFinishTime[1].split("分")[0]));
 
             bt_tmp_registration.setText("更新");
+            isNewItem = false;
         }
 
 
         return root;
+    }
+
+    private void insertData(SQLiteDatabase db, String name, String stime, String etime){
+        ContentValues values = new ContentValues();
+        values.put("scheduletemplate_name", name);
+        values.put("scheduletemplate_stime", stime);
+        values.put("scheduletemplate_etime", etime);
+
+        db.insert("t_scheduletemplate",null, values);
     }
 
 }

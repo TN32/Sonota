@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_tem_event_tille"
+        android:id="@+id/tv_cal_event_tille"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

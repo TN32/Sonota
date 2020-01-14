@@ -74,7 +74,7 @@ public class ParttimeJobListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
         // 画像割り当て
-        ((TextView) convertView.findViewById(R.id.tv_tem_event_tille)).setText(data.getTitle());
+        ((TextView) convertView.findViewById(R.id.tv_cal_event_tille)).setText(data.getTitle());
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
         ((TextView) convertView.findViewById(R.id.tv_tem_event_start)).setText(data.getStarttime());
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？

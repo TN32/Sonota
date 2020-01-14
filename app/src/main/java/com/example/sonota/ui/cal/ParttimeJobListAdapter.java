@@ -1,4 +1,4 @@
-package com.example.sonota.ui.tmp;
+package com.example.sonota.ui.cal;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,18 +11,19 @@ import com.example.sonota.R;
 
 import java.util.ArrayList;
 
-public class EventListAdapter extends BaseAdapter {
+public class ParttimeJobListAdapter extends BaseAdapter {
+
     // contextはおまじないと思って記述してください（説明が難しいため）
     private Context context = null;
 
     // ArrayListの中に独自クラスのCustomDataClassを指定
-    private ArrayList<EventListClass> data = null;
+    private ArrayList<ParttimeJobListClass> data = null;
 
     private int resource = 0;
 
 
     // コンストラクタ  MainActivityでアダプターを生成する箇所で呼ばれている
-    public EventListAdapter(Context context, ArrayList<EventListClass> data, int resource){
+    public ParttimeJobListAdapter(Context context, ArrayList<ParttimeJobListClass> data, int resource){
         this.context = context;
         this.data = data;
         this.resource = resource;
@@ -62,7 +63,7 @@ public class EventListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Activity activity = (Activity) context;
         // 指定された位置のデータを取得
-        EventListClass data = (EventListClass) getItem(position);
+        ParttimeJobListClass data = (ParttimeJobListClass) getItem(position);
 
         // 再利用可能なビューが無かったら生成する
         if(convertView == null){
@@ -75,9 +76,11 @@ public class EventListAdapter extends BaseAdapter {
         // 画像割り当て
         ((TextView) convertView.findViewById(R.id.tv_cal_event_tille)).setText(data.getTitle());
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_tem_event_start)).setText(data.getStarttime());
+        ((TextView) convertView.findViewById(R.id.tv_cal_event_start)).setText(data.getStarttime());
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
-        ((TextView) convertView.findViewById(R.id.tv_tem_event_filsh)).setText(data.getFinishtime());
+        ((TextView) convertView.findViewById(R.id.tv_cal_event_filsh)).setText(data.getFinishtime());
+        // idがdescriptionのTextViewに、指定されたデータのdescriptionの値を格納している
+        ((TextView) convertView.findViewById(R.id.tv_cal_parttimejob_breaktime)).setText( data.getBreaktime() + "分");
 
         return convertView;
     }
@@ -89,6 +92,6 @@ public class EventListAdapter extends BaseAdapter {
     public String getCurrentFinishTime(int position){
         return data.get(position).getFinishtime();
     }
-
-
 }
+
+

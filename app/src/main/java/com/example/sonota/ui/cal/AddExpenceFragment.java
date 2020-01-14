@@ -1,6 +1,8 @@
 package com.example.sonota.ui.cal;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -134,6 +136,8 @@ public class AddExpenceFragment extends CustomFragment {
                 }
             }
         });
+
+
         // Inflate the layout for this fragment
         return root;
     }
@@ -176,4 +180,35 @@ public class AddExpenceFragment extends CustomFragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    private void insertDateMoney(SQLiteDatabase db, String date, String money, String memo){
+        ContentValues values = new ContentValues();
+        values.put("payment_date", date);
+        values.put("payment_money", money);
+        values.put("payment_memo", memo);
+        values.put("payment_cpay", false);
+
+        db.insert("t_payment",null, values);
+    }
+
+    private void insertDateCredit(SQLiteDatabase db, String date, String money, String memo){
+        ContentValues values = new ContentValues();
+        values.put("payment_date", date);
+        values.put("payment_money", money);
+        values.put("payment_memo", memo);
+        values.put("payment_cpay", true);
+
+        db.insert("t_payment",null, values);
+    }
+
+    private void insertDatePartial(SQLiteDatabase db, String date, String money, String fwithdrawel, String memo){
+        ContentValues values = new ContentValues();
+        values.put("partial_money", money);
+        values.put("partial_fwithdrawel", fwithdrawel);
+        values.put("partial_pmemo", memo);
+        values.put("partial_cpay", true);
+
+        db.insert("t_partial",null, values);
+    }
+
 }

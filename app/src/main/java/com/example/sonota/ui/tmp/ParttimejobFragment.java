@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -76,7 +75,7 @@ public class ParttimejobFragment extends CustomFragment {
     @Override
     public void onFab1Clicked(int fabId){
         switch (fabId){
-            case 1:
+            case 0:
                 DetailParttimejobFragment fragment = new DetailParttimejobFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
