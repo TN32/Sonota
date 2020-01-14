@@ -8,7 +8,7 @@ package com.example.sonota;
 
 public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データーベースのバージョン
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     // データーベース名
     private static final String DATABASE_NAME = "SONOTA_DB";
 
@@ -158,7 +158,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
 
             "CREATE TABLE " +  TABLE_NAME5 + " (" +
                     shift_code + "  INTEGER PRIMARY KEY," +
-                    byteahead_code + "INTEGER,"+
+                    byteahead_code + " INTEGER,"+
                     shift_date + " TEXT," +
                     shift_stime + " TEXT," +
                     shift_etime + " TEXT," +

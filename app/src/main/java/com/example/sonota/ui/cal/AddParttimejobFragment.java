@@ -73,7 +73,8 @@ public class AddParttimejobFragment extends CustomFragment {
         numPicker2.setMinValue(0);
 
         numPicker3.setMaxValue(59);
-        numPicker3.setMinValue(0);
+        numPicker3.setMinValue(0)
+        ;
 
         bTime =root.findViewById(R.id.et_cal_braekTime);
 

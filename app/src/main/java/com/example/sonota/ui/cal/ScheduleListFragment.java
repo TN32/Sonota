@@ -155,12 +155,12 @@ public class ScheduleListFragment extends Fragment {
 
        cursor = db.query(
                 "t_shift",
-               new String[]{"shift_code","shift_date","shift_stime","shift_etime","shift_btime"},
+               new String[]{"shift_code","shift_stime","shift_etime","shift_btime"},
+               "shift_date=?",
+               selectData,
                 null,
-               null,
                 null,
-                null,
-                null,
+                "shift_stime",
                 null
        );
 
