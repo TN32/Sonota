@@ -36,6 +36,7 @@ import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -77,6 +78,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+
         fab = findViewById(R.id.fab_parent);
         fab1 = findViewById(R.id.fab_child_top);
         fab2 = findViewById(R.id.fab_child_middle);
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity
         text2.setText("ルビィちゃんB");
         text3.setText("ルビィちゃんC");
 
-        setSupportActionBar(toolbar);
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -216,24 +220,12 @@ public class MainActivity extends AppCompatActivity
             isOpen=true;
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_rc,
-                R.id.nav_set,R.id.nav_ec,R.id.nav_cal,R.id.nav_clc,R.id.nav_tmp)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
