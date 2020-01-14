@@ -88,17 +88,17 @@ public class AddExpenceFragment extends CustomFragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int id) {
 
-                RadioButton radio = (RadioButton)root.findViewById(R.id.radioButton);
-                RadioButton radio1 = (RadioButton)root.findViewById(R.id.radioButton3);
-                RadioButton radio2 = (RadioButton)root.findViewById(R.id.radioButton4);
-                EditText etext = (EditText)root.findViewById(R.id.editText4);
+                RadioButton radio = (RadioButton)root.findViewById(R.id.rb_caladd_cash);
+                RadioButton radio1 = (RadioButton)root.findViewById(R.id.rb_caladd_installments);
+                RadioButton radio2 = (RadioButton)root.findViewById(R.id.rb_caladd_noinstallments);
+                EditText etext = (EditText)root.findViewById(R.id.et_caladd_insnumber);
                 TextView textView= (TextView)root.findViewById(R.id.textView9);
                 LinearLayout linearLayout = (LinearLayout)root.findViewById(R.id.linearlayout1);
-                LinearLayout aaaa = (LinearLayout)root.findViewById(R.id.aaaa);
+                LinearLayout aaaa = (LinearLayout)root.findViewById(R.id.ll_caladd_ccdetail);
 
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)aaaa.getLayoutParams();
 
-                if (id == R.id.radioButton) {
+                if (id == R.id.rb_caladd_cash) {
                     radio1.setEnabled(false);
                     radio2.setEnabled(false);
                     etext.setEnabled(false);
@@ -106,7 +106,7 @@ public class AddExpenceFragment extends CustomFragment {
                     linearLayout.setBackgroundColor(Color.argb(255,169,169,169));
                     params.height = 0;
                     aaaa.setLayoutParams(params);
-                } else if(id == R.id.radioButton2){
+                } else if(id == R.id.rb_caladd_cc){
                     radio1.setEnabled(true);
                     radio2.setEnabled(true);
                     etext.setEnabled(true);
@@ -120,16 +120,16 @@ public class AddExpenceFragment extends CustomFragment {
         radiogroup2.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 
             public void onCheckedChanged(RadioGroup radioGroup, int id){
-                RadioButton radio1 = (RadioButton)root.findViewById(R.id.radioButton4);
-                RadioButton radio2 = (RadioButton)root.findViewById(R.id.radioButton3);
-                EditText etext = (EditText)root.findViewById(R.id.editText4);
+                RadioButton radio1 = (RadioButton)root.findViewById(R.id.rb_caladd_noinstallments);
+                RadioButton radio2 = (RadioButton)root.findViewById(R.id.rb_caladd_installments);
+                EditText etext = (EditText)root.findViewById(R.id.et_caladd_insnumber);
                 TextView textView= (TextView)root.findViewById(R.id.textView9);
-                if(id == R.id.radioButton4){
+                if(id == R.id.rb_caladd_noinstallments){
                     textView.setTextColor(Color.argb(255,128,128,128));
 
                     etext.setEnabled(false);
 
-                } else if(id == R.id.radioButton3){
+                } else if(id == R.id.rb_caladd_installments){
                     etext.setEnabled(true);
                     textView.setTextColor(Color.parseColor("#160000"));
 

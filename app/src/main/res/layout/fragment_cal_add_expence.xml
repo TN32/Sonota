@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView12"
+            android:id="@+id/tv_caladd_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
@@ -36,7 +36,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/et_caladd_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -78,7 +78,7 @@
                 android:layout_marginLeft="10sp">
 
                 <RadioButton
-                    android:id="@+id/radioButton"
+                    android:id="@+id/rb_caladd_cash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -87,7 +87,7 @@
                     android:textSize="24sp" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
+                    android:id="@+id/rb_caladd_cc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="クレジットカード"
@@ -99,7 +99,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/aaaa"
+            android:id="@+id/ll_caladd_ccdetail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="vertical"
@@ -138,7 +138,7 @@
                             android:textStyle="bold" />
 
                         <Spinner
-                            android:id="@+id/spinner"
+                            android:id="@+id/sp_caladd_usecc"
                             style="@style/Widget.AppCompat.Spinner.Underlined"
                             android:layout_width="300sp"
                             android:layout_height="40sp"
@@ -178,7 +178,7 @@
                                 android:gravity="center|fill_horizontal">
 
                                 <RadioButton
-                                    android:id="@+id/radioButton4"
+                                    android:id="@+id/rb_caladd_noinstallments"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:checked="true"
@@ -187,7 +187,7 @@
                                     android:textSize="24sp" />
 
                                 <RadioButton
-                                    android:id="@+id/radioButton3"
+                                    android:id="@+id/rb_caladd_installments"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:enabled="true"
@@ -210,7 +210,7 @@
                                 android:orientation="horizontal">
 
                                 <EditText
-                                    android:id="@+id/editText4"
+                                    android:id="@+id/et_caladd_insnumber"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center|clip_vertical"
@@ -262,7 +262,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/et_caladd_memo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
@@ -280,7 +280,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/bt_caladd_add"
                 android:layout_width="wrap_content"
                 android:layout_height="70sp"
                 android:layout_gravity="bottom"
