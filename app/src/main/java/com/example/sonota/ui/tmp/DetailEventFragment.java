@@ -78,7 +78,12 @@ public class DetailEventFragment extends CustomFragment {
                     db = helper.getWritableDatabase();
                 }
 
-                insertData(db, eventName,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3]);
+                if (isNewItem){
+                    insertData(db, eventName,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3]);
+                }
+                else {
+                    updata(db, eventName,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3]);
+                }
 
                 Toast.makeText(getContext(),"イベント名が変更されました!" +"("+ et_tmp_eventName.getText().toString()+")" ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("Event", FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -115,6 +120,15 @@ public class DetailEventFragment extends CustomFragment {
 
 
         return root;
+    }
+
+    private void updata(SQLiteDatabase db, String name, String stime, String etime){
+        ContentValues values = new ContentValues();
+        values.put("scheduletemplate_name", name);
+        values.put("scheduletemplate_stime", stime);
+        values.put("scheduletemplate_etime", etime);
+
+        db.update("t_scheduletemplate",values, null,null);
     }
 
     private void insertData(SQLiteDatabase db, String name, String stime, String etime){

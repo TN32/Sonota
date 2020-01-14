@@ -206,6 +206,8 @@ public class PaymentListFragment extends CustomFragment {
             }
         });
 
+
+
         return root;
     }
 
