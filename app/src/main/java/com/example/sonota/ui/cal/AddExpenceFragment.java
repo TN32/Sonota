@@ -175,7 +175,7 @@ public class AddExpenceFragment extends CustomFragment {
                 }else if(!isPartialPayment){
                     insertDateCredit(db,addDate,money,memo);
                 }else {
-                    insertDatePartial(db,addDate,money,insnumber,memo);
+                    insertDatePartial(db,money,insnumber,memo);
                 }
 
                 Toast.makeText(getContext(),  "登録が完了しました!" ,Toast.LENGTH_SHORT).show();
@@ -253,14 +253,14 @@ public class AddExpenceFragment extends CustomFragment {
         db.insert("t_payment",null, values);
     }
 
-    private void insertDatePartial(SQLiteDatabase db, String date, String money, String fwithdrawel, String memo){
+    private void insertDatePartial(SQLiteDatabase db, String money, String fwithdrawel, String memo){
         ContentValues values = new ContentValues();
-        values.put("partial_money", money);
-        values.put("partial_fwithdrawel", fwithdrawel);
+        values.put("partial_amount", money);
+        values.put("partialr__amount", money);
+        values.put("partial_times", fwithdrawel);
         values.put("partial_pmemo", memo);
         values.put("partial_cpay", true);
 
         db.insert("t_partial",null, values);
     }
-
 }

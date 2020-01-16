@@ -10,7 +10,7 @@
 
 
         <TextView
-            android:id="@+id/tv_set_credit_title"
+            android:id="@+id/tv_clc_credit_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

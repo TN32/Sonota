@@ -1,6 +1,7 @@
 package com.example.sonota.ui.clc;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 
 import java.util.ArrayList;
 
@@ -30,39 +32,35 @@ public class CreditFragment extends CustomFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_clc_credit, container, false);
 
-        return view;
-    }
+        if (helper == null){
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+        }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+        if(db == null){
+            db = helper.getWritableDatabase();
+        }
 
         // ListViewに表示する項目を生成
-        ArrayList<CreditListDataClass> listData = new ArrayList<>();
-        for(int i = 1; i <=  5; i++){
-            switch (i){
-                case 1:
-                    CreditListDataClass data = new CreditListDataClass(R.mipmap.ic_launcher, "ベース", 275000, 11);
-                    listData.add(data);
-                    break;
-                case 2:
-                    CreditListDataClass data1 = new CreditListDataClass(R.mipmap.ic_launcher, "ギター", 100000, 2);
-                    listData.add(data1);
-                    break;
-                case 3:
-                    CreditListDataClass data2 = new CreditListDataClass(R.mipmap.ic_launcher, "バイク", 32000, 4);
-                    listData.add(data2);
-                    break;
-                case 4:
-                    CreditListDataClass data3 = new CreditListDataClass(R.mipmap.ic_launcher, "NintendoSwitch", 24000, 2);
-                    listData.add(data3);
-                    break;
-                case 5:
-                    CreditListDataClass data4 = new CreditListDataClass(R.mipmap.ic_launcher, "PlayStation4", 24000, 2);
-                    listData.add(data4);
-                    break;
-            }
+        Cursor cursor = db.query(
+                "t_partial",
+                new String[]{"partial_code","partial_pmemo","partialr__amount","partial_amount","partial_times"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
 
+        cursor.moveToFirst();
+        ArrayList<CreditListDataClass> listData = new ArrayList<CreditListDataClass>();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            CreditListDataClass data = new CreditListDataClass(cursor.getInt(0),cursor.getString(1),cursor.getInt(2),cursor.getInt(3),cursor.getInt(4));
+            listData.add(data);
+            cursor.moveToNext();
         }
+
+        cursor.close();
 
         /**
          * CustomAdapterを生成
@@ -88,11 +86,11 @@ public class CreditFragment extends CustomFragment {
                 CreditListDataClass currentClass =(CreditListDataClass)adapter.getItem(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt("selected",(int)currentClass.getId());
-                bundle.putString("Name",currentClass.getTitle());
+                bundle.putString("Name",currentClass.getMemo());
                 bundle.putInt("Amout",currentClass.getAmout());
-                bundle.putInt("Split",currentClass.getCount());
-                bundle.putInt("PerM",currentClass.getAmout() / currentClass.getCount());
-                bundle.putString("Remaining","11");
+                bundle.putInt("Split",currentClass.getrAmount() / currentClass.getTimes());
+                bundle.putInt("PerM",currentClass.getrAmount());
+                bundle.putString("Remaining",String.valueOf(currentClass.getTimes()));
 
                 fragment.setArguments(bundle);
                 //詳細画面を呼び出す
@@ -104,6 +102,13 @@ public class CreditFragment extends CustomFragment {
                 transaction.commit();
             }
         });
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState){
+
+
     }
 
     @Override

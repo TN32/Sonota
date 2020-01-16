@@ -4,14 +4,22 @@ import java.util.Random;
 
 public class CreditListDataClass {
 
+
     // リストの一項目自体を識別するためのid
-    private long id = 0;
+    private long id;
 
-    private String title = "";
-
+    private String memo;
+    private int rAmount;
     private int amout;
+    private int times;
 
-    private int count;
+    public CreditListDataClass(long id, String memo, int rAmount, int amout, int times) {
+        this.id = id;
+        this.memo = memo;
+        this.rAmount = rAmount;
+        this.amout = amout;
+        this.times = times;
+    }
 
     public long getId() {
         return id;
@@ -21,12 +29,20 @@ public class CreditListDataClass {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getMemo() {
+        return memo;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public int getrAmount() {
+        return rAmount;
+    }
+
+    public void setrAmount(int rAmount) {
+        this.rAmount = rAmount;
     }
 
     public int getAmout() {
@@ -37,18 +53,11 @@ public class CreditListDataClass {
         this.amout = amout;
     }
 
-    public int getCount() {
-        return count;
+    public int getTimes() {
+        return times;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public CreditListDataClass(long id, String title, int amout, int count) {
-        this.id = id;
-        this.title = title;
-        this.amout = amout;
-        this.count = count;
+    public void setTimes(int times) {
+        this.times = times;
     }
 }

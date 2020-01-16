@@ -8,14 +8,16 @@ package com.example.sonota;
 
 public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データーベースのバージョン
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 15;
     // データーベース名
     private static final String DATABASE_NAME = "SONOTA_DB";
 
     //分割支払い表
     private static final String TABLE_NAME1 = "t_partial";
     private static final String partial_code = "partial_code";
-    private static final String partial_money ="partial_money";
+    private static final String partial_amount ="partial_amount";
+    private static final String partial_r_amount ="partialr__amount";
+    private static final String partial_times ="partial_times";
     private static final String partial_fwithdrawel = "partial_fwithdrawel";
     private static final String partial_cpay = "partial_cpay";
     private static final String partial_pmemo = "partial_pmemo";
@@ -106,7 +108,9 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
             //分割支払い表
             "CREATE TABLE " + TABLE_NAME1 + " (" +
                     partial_code + "  INTEGER PRIMARY KEY," +
-                    partial_money + " INTEGER," +
+                    partial_amount + " INTEGER," +
+                    partial_r_amount + " INTEGER," +
+                    partial_times + " INTEGER," +
                     partial_fwithdrawel + " TEXT," +
                     partial_cpay + " BOOLEAN," +
                     partial_pmemo + " TEXT)";

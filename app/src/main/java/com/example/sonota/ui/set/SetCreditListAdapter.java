@@ -73,7 +73,7 @@ public class SetCreditListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_set_credit_title)).setText(data.getName());
+        ((TextView) convertView.findViewById(R.id.tv_clc_credit_title)).setText(data.getName());
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
         TextView sub = (TextView) convertView.findViewById(R.id.tv_set_credit_closingdate);
         sub.setText(data.getClosingday());

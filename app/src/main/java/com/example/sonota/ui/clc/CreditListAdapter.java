@@ -83,7 +83,7 @@ public class CreditListAdapter extends BaseAdapter {
         TextView sub = (TextView) convertView.findViewById(R.id.tv_clc_creditdetail_amout);
         sub.setText(data.getAmout() + "円");
         // idがdescriptionのTextViewに、指定されたデータのdescriptionの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_count)).setText(data.getCount() + "回払い");
+        ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_count)).setText("残り" + data.getTimes() + "回");
 
         return convertView;
     }
