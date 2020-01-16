@@ -12,12 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.ActionBarContextView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.sonota.CustomFragment;
-import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
 
@@ -53,14 +50,14 @@ public class DetailCerditFragment extends CustomFragment {
             etAmout = (EditText)root.findViewById(R.id.etAmout);
             etAmout.setHint(String.valueOf(args.getInt("Amout")));
 
-            etSprit = (EditText)root.findViewById(R.id.etSplit);
-            etSprit.setHint(String.valueOf(args.getInt("Split")));
-
             etPerm = (EditText)root.findViewById(R.id.etPerM);
             etPerm.setHint(String.valueOf(args.getInt("PerM")));
 
             etRemaining = (EditText)root.findViewById(R.id.etRemaining);
             etRemaining.setHint(args.getString("Remaining"));
+
+            etSprit = (EditText)root.findViewById(R.id.etSplit);
+            etSprit.setHint(String.valueOf(args.getInt("Split")));
 
             isNewItem = false;
 

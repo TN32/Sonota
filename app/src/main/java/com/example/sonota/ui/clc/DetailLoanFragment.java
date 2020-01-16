@@ -12,11 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.sonota.CustomFragment;
-import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
 
@@ -58,7 +56,7 @@ public class DetailLoanFragment extends CustomFragment {
             etPerm = (EditText)root.findViewById(R.id.etPerM);
             etPerm.setHint(args.getString("PerM1"));
 
-            etRemaining = (EditText)root.findViewById(R.id.etRemaining);
+            etRemaining = (EditText)root.findViewById(R.id.etSplit);
             etRemaining.setHint(args.getString("Remaining1"));
 
             bt_clc_loan_update.setText("更新");

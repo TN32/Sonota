@@ -89,11 +89,12 @@ public class LoanFragment extends CustomFragment {
                 LoanListDataClass currentClass =(LoanListDataClass)adapter.getItem(position);
                 Bundle bundle = new Bundle();
                 bundle.putInt("selected",(int)currentClass.getId());
-                bundle.putString("Name",currentClass.getTitle());
-                bundle.putInt("Amout",currentClass.getAmout());
-                bundle.putInt("Split",currentClass.getCount());
+                bundle.putString("Name",currentClass.getTitle());    //メモ
+                bundle.putInt("Amout",currentClass.getAmout());      //合計金額
+                bundle.putInt("Split",currentClass.getCount());      //残り金額
+                bundle.putString("Remaining","11");         //
                 bundle.putInt("PerM",currentClass.getAmout() / currentClass.getCount());
-                bundle.putString("Remaining","11");
+
 
                 fragment.setArguments(bundle);
                 //詳細画面を呼び出す
