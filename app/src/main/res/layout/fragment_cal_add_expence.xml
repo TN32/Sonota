@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_caladd_date"
+            android:id="@+id/tv_cal_adddate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
@@ -36,7 +36,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/et_caladd_money"
+                android:id="@+id/et_cal_add_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -191,7 +191,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:enabled="true"
-                                    android:text="分割払い"
+                                    android:text="分割"
                                     android:textSize="24sp" />
 
                             </RadioGroup>
@@ -267,7 +267,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10sp"
                 android:ems="10"
-                android:hint="品名に関する情報"
+                android:hint="購入内容をメモ"
                 android:inputType="textMultiLine"
                 android:lines="2"
                 android:maxLength="20" />
@@ -281,8 +281,9 @@
 
             <Button
 
+                android:id="@+id/bt_cal_registration"
                 android:layout_width="wrap_content"
-                android:layout_height="70sp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:text="追加"

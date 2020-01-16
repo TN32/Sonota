@@ -40,7 +40,6 @@ public class EventFragment extends CustomFragment {
 
         listload();
 
-
         //セルを選択された詳細画面フラグメントを呼び出す
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -56,7 +55,7 @@ public class EventFragment extends CustomFragment {
                                 // 詳細画面へ値を渡す
                                 DetailEventFragment fragment = new DetailEventFragment();
                                 Bundle bundle = new Bundle();
-                                bundle.putInt("selected", selectedPosition);
+                                bundle.putInt("selected", (int)adapter.getItemId(selectedPosition));
                                 bundle.putString("Name",adapter.getCurrentTitle(selectedPosition));
                                 bundle.putString("starttime", adapter.getCurrentStartTime(selectedPosition));
                                 bundle.putString("finishtime", adapter.getCurrentFinishTime(selectedPosition));

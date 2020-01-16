@@ -16,9 +16,6 @@ public class ParttimeJobListClass {
 
     private int breaktime;
 
-    public ParttimeJobListClass(int i, String s, String s1, String s2) {
-    }
-
     public long getId() {
         return id;
     }

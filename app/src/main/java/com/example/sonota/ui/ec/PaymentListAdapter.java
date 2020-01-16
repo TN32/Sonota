@@ -91,7 +91,14 @@ public class PaymentListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public String getCurrentDateText(int position){
-        return dateTextList.get(position);
+    public String getCurrentMemo(int position){
+        return data.get(position).getMemo();
     }
+    public boolean isCregitPayment(int position){
+        return data.get(position).isCregitPayment();
+    }
+    public int getAmount(int position){
+        return data.get(position).getAmount();
+    }
+    public String getDate(int position){ return data.get(position).getDate(); }
 }

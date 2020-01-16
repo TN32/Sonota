@@ -29,6 +29,7 @@ public class DetailEventFragment extends CustomFragment {
     private boolean isNewItem = true;
 
     private EditText et_tmp_eventName;
+    int selected;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,7 +95,7 @@ public class DetailEventFragment extends CustomFragment {
         Bundle args = getArguments();
         if(args != null){
 
-            int selected = args.getInt("selected");
+            selected = args.getInt("selected");
 
             name1 = (EditText)root.findViewById(R.id.et_cal_eventName);
             name1.setText(args.getString("Name"));
@@ -128,7 +129,9 @@ public class DetailEventFragment extends CustomFragment {
         values.put("scheduletemplate_stime", stime);
         values.put("scheduletemplate_etime", etime);
 
-        db.update("t_scheduletemplate",values, null,null);
+        String[] whereArgs = {String.valueOf(selected)};
+
+        db.update("t_scheduletemplate",values, "scheduletemplate_code=?",whereArgs);
     }
 
     private void insertData(SQLiteDatabase db, String name, String stime, String etime){

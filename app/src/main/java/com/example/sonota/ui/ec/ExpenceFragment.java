@@ -22,6 +22,7 @@ import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -43,10 +44,16 @@ public class ExpenceFragment extends CustomFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
-
     private SonotaDBOpenHelper helper;
     private SQLiteDatabase db;
+
+    TextView expenceTextviewThismonth;
+
+    TextView expenceTextviewCashUsage;
+
+    TextView expenceTextviewCreditPayment;
+    ListView listView;
+    ExpenceListAdapter adapter;
 
 
     public ExpenceFragment() {
@@ -94,67 +101,15 @@ public class ExpenceFragment extends CustomFragment {
             db = helper.getWritableDatabase();
         }
 
-        //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
-        //  引数tableには、テーブル名を指定します。
-        //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
-        //  引数selectionには、検索条件を指定します。
-        //  引数selectionArgsには、検索条件のパラメータ（？で指定）に置き換わる値を指定します。
-        //  引数groupByには、groupBy句を指定します。
-        //  引数havingには、having句を指定します。
-        //  引数orderByには、orderBy句を指定します。
-        //  引数limitには、検索結果の上限レコードを数を指定します
-        Cursor cursor = db.query(
-                "t_payment",
-                new String[]{"payment_money"},
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+        listView = (ListView)root.findViewById(R.id.listview);
 
-        cursor.moveToFirst();
-        int sumAll = 0;
+        expenceTextviewThismonth = (TextView) root.findViewById(R.id.PaymentListTextviewThisMonth);
 
-        StringBuilder sbuilder = new StringBuilder();
+        expenceTextviewCashUsage = (TextView) root.findViewById(R.id.PaymentTextViewCashUsage);
 
-        for (int i = 0; i < cursor.getCount(); i++) {
-            sumAll += cursor.getInt(0);
-            cursor.moveToNext();
-        }
+        expenceTextviewCreditPayment = (TextView) root.findViewById(R.id.PaymentTextviewCreditPayment);
 
-        cursor.close();
-
-
-
-        TextView expenceTextviewThismonth = (TextView) root.findViewById(R.id.PaymentListTextviewThisMonth);
-
-        // 今月の出費を表示
-        expenceTextviewThismonth.setText(String.valueOf(sumAll));
-
-        TextView expenceTextviewCashUsage = (TextView) root.findViewById(R.id.PaymentTextViewCashUsage);
-
-        // 今月の現金の出費を表示
-        expenceTextviewCashUsage.setText("20000");
-
-        TextView expenceTextviewCreditPayment = (TextView) root.findViewById(R.id.PaymentTextviewCreditPayment);
-
-        // 今月のクレジットの出費を表示
-        expenceTextviewCreditPayment.setText("15000");
-
-        ArrayList<ExpenseListClass> listData = new ArrayList<>();
-        for(int i = 1; i <=  12; i++) {
-            ExpenseListClass data = new ExpenseListClass(i, "2019年" + i + "月", 30000 + i);
-            listData.add(data);
-        }
-
-
-        final ExpenceListAdapter arrayAdapter = new ExpenceListAdapter(getContext(),listData,R.layout.list_ec_expence_cell);
-
-        // idがlistのListViewを取得
-        ListView listView = (ListView) root.findViewById(R.id.listview);
-        listView.setAdapter(arrayAdapter);
+        listload();
 
         // セルを選択されたら一覧画面フラグメント呼び出す
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,7 +118,7 @@ public class ExpenceFragment extends CustomFragment {
                 // 一覧画面へ値を渡す
                 PaymentListFragment fragment = new PaymentListFragment();
                 Bundle bundle = new Bundle();
-                String dateText = arrayAdapter.getCurrentDateText(position);
+                String dateText = adapter.getCurrentDateText(position);
                 String[] splityear = dateText.split("年", -1);
                 String[] splitmonth = splityear[1].split("月",-1);
 
@@ -182,6 +137,82 @@ public class ExpenceFragment extends CustomFragment {
 
 
         return root;
+    }
+
+    public void listload(){
+        if (helper == null){
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+        }
+
+        if(db == null){
+            db = helper.getWritableDatabase();
+        }
+
+        //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
+        //  引数tableには、テーブル名を指定します。
+        //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
+        //  引数selectionには、検索条件を指定します。
+        //  引数selectionArgsには、検索条件のパラメータ（？で指定）に置き換わる値を指定します。
+        //  引数groupByには、groupBy句を指定します。
+        //  引数havingには、having句を指定します。
+        //  引数orderByには、orderBy句を指定します。
+        //  引数limitには、検索結果の上限レコードを数を指定します
+        Cursor cursor = db.query(
+                "t_payment",
+                new String[]{"payment_code","payment_date","payment_money"},
+                null,
+                null,
+                null,
+                null,
+                "payment_date desc"
+        );
+
+
+        cursor.moveToFirst();
+        ArrayList<ExpenseListClass> listData = new ArrayList<ExpenseListClass>();
+        int total = 0,cash = 0,credit = 0;
+        String[] thisMonthSplit = splitDate(truncDate(new Date()));
+
+        for (int i = 0; i < cursor.getCount();) {
+            String[] monthSplit = splitDate(cursor.getString(1));
+            String[] currentMonth = monthSplit;
+            int currentMonthTotal = 0;
+            do{
+                if(monthSplit[0].equals(thisMonthSplit[0]) && monthSplit[1].equals(thisMonthSplit[1]))
+                    total += cursor.getInt(2);
+                currentMonthTotal += cursor.getInt(2);
+                String s = cursor.getString(1);
+                cursor.moveToNext();
+                i++;
+                if(i < cursor.getCount()){
+                    currentMonth = splitDate(cursor.getString(1));
+                }
+                else {
+                    break;
+                }
+            }while (monthSplit[0].equals(currentMonth[0]) && monthSplit[1].equals(currentMonth[1]));
+
+            ExpenseListClass data = new ExpenseListClass(i,monthSplit[0] + "年" + monthSplit[1] + "月",currentMonthTotal);
+            listData.add(data);
+        }
+
+        expenceTextviewThismonth.setText(String.valueOf(total));
+        expenceTextviewCashUsage.setText(String.valueOf(cash));
+        expenceTextviewCreditPayment.setText(String.valueOf(credit));
+
+        cursor.close();
+
+        /**
+         * CustomAdapterを生成
+         * R.layout.custom_list_layout : リストビュー自身のレイアウト。今回は自作。
+         */
+        adapter = new ExpenceListAdapter(
+                getContext(),
+                listData, // 使用するデータ
+                R.layout.list_ec_expence_cell // 自作したレイアウト
+        );
+
+        listView.setAdapter(adapter);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

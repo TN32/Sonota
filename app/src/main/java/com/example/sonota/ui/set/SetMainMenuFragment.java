@@ -72,11 +72,27 @@ public class SetMainMenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_set_main_menu, container, false);
         final Button bt_set_credit = (Button)root.findViewById(R.id.bt_set_credit);
+        final Button bt_set_parttimejob = (Button)root.findViewById(R.id.bt_set_parttimejob);
 
         bt_set_credit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SetCreditListFragment fragment = new SetCreditListFragment();
+                Bundle bundle = new Bundle();
+
+                fragment.setArguments(bundle);
+                //一覧画面を呼び出す
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.set_mainsection, fragment);
+                transaction.commit();
+            }
+        });
+
+        bt_set_parttimejob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SetParttimejobListFragment fragment = new SetParttimejobListFragment();
                 Bundle bundle = new Bundle();
 
                 fragment.setArguments(bundle);

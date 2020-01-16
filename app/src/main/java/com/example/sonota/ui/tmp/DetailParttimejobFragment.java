@@ -38,6 +38,8 @@ public class DetailParttimejobFragment extends CustomFragment {
     Spinner sp_tmp_partName;
 
     private EditText et_tmp_braekTime;
+    boolean isNewItem = true;
+    Spinner spinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,12 +47,11 @@ public class DetailParttimejobFragment extends CustomFragment {
 
         View root = inflater.inflate(R.layout.fragment_tmp_detail_parttimejob, container, false);
 
-
         super.onCreate(savedInstanceState);
 
-        Spinner spinner = root.findViewById(R.id.sp_tmp_partName);
-
         et_tmp_braekTime = root.findViewById(R.id.et_tmp_braekTime);
+
+        spinner = root.findViewById(R.id.sp_tmp_partName);
 
         ArrayAdapter<String> adapter = new ArrayAdapter(
                 getContext(),
@@ -66,7 +67,6 @@ public class DetailParttimejobFragment extends CustomFragment {
         numPicker1 = root.findViewById(R.id.np_tmp_startTime2);
         numPicker2 = root.findViewById(R.id.np_tmp_endTime1);
         numPicker3 = root.findViewById(R.id.np_tmp_endTime2);
-        spinner = root.findViewById(R.id.sp_tmp_partName);
 
 
 
@@ -91,73 +91,93 @@ public class DetailParttimejobFragment extends CustomFragment {
  //       SonotaDBOpenHelper hlp = new SonotaDBOpenHelper(this);
  //       final SQLiteDatabase db = hlp.getReadableDatabase();
 
-     // //データの更新
-      //bt_tmp_registration.setOnClickListener(new View.OnClickListener() {
-        //  @Override
-       //   public void onClick(View v) {
-
-   //             String spnner = sp_tmp_partName.setAdapter();
-    //            String numberpicker1 = numPicker0.setValue();
-  //              String numberpicker2 = numpicker1.setValue();
- //               String numberpicker3 = numPicker2.setValue();
- //               String numberpicker4 = numPicker3.setValue();
- //               String edittext = et_tmp_braekTime.getText();
-
-                //データベースを更新
-  //              db.update("person", val, "name=?", new String[]{name});
-      //    }
-      //});
-
         bt_tmp_registration = root.findViewById(R.id.bt_tmp_registration);
         bt_tmp_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-//                figures[0] = String.valueOf(numPicker0.getValue());
-//                figures[1] = String.valueOf(numPicker1.getValue());
-//                figures[2] = String.valueOf(numPicker2.getValue());
-//                figures[3] = String.valueOf(numPicker3.getVal//ue());
-//                figures[4] = String.valueOf(spinner.getValue());
-//                figures[5] = String.valueOf(edittext.getValue());
-//
-//                String str = String.format("%s%s%s.%s%s",
-//                        figures[0], figures[1], figures[2], figures[3], figures[4],  figures[5]);
-//                Float fig = Float.parseFloat(str);
+                int parttimejobCode = (int)spinner.getSelectedItemId();
+                int breakTime;
 
-//                pickerTextView.setText(String.valueOf(fig));
+                if(et_tmp_braekTime.getText().toString() == null || et_tmp_braekTime.getText().toString().equals("")){
+                    breakTime = 0;
+                }
+                else {
+                    breakTime = Integer.valueOf(et_tmp_braekTime.getText().toString());
+                }
 
-                Toast.makeText(getContext(),  "アルバイトの変更が完了しました!"+"休憩時間は"+et_tmp_braekTime.getText().toString() +"分です。",Toast.LENGTH_SHORT).show();
+                figures[0] = String.valueOf(numPicker0.getValue());
+                figures[1] = String.valueOf(numPicker1.getValue());
+                figures[2] = String.valueOf(numPicker2.getValue());
+                figures[3] = String.valueOf(numPicker3.getValue());
+
+                if (helper == null){
+                    helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+                }
+
+                if(db == null){
+                    db = helper.getWritableDatabase();
+                }
+
+                if (isNewItem){
+                    insertData(db, parttimejobCode,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3],breakTime);
+                }
+                else {
+                    updata(db, parttimejobCode,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3],breakTime);
+                }
+
+                Toast.makeText(getContext(),"アルバイトテンプレートを登録しました!" ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("Parttimejob", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
             }
         });
-
 
 
         Bundle args = getArguments();
         if(args != null){
 
-            int selected = args.getInt("selected");
+            selected = args.getInt("selected");
 
             String startTime = args.getString("starttime");
             String finishTime = args.getString("finishtime");
 
-            String[] splitStartTime = startTime.split("時");
+            String[] splitStartTime = startTime.split("_");
 
-            String[] splitFinishTime = finishTime.split("時");
+            String[] splitFinishTime = finishTime.split("_");
 
             numPicker0.setValue(Integer.valueOf(splitStartTime[0]));
 
-            numPicker1.setValue(Integer.valueOf(splitStartTime[1].split("分")[0]));
+            numPicker1.setValue(Integer.valueOf(splitStartTime[1]));
 
             numPicker2.setValue(Integer.valueOf(splitFinishTime[0]));
 
-            numPicker3.setValue(Integer.valueOf(splitFinishTime[1].split("分")[0]));
+            numPicker3.setValue(Integer.valueOf(splitFinishTime[1]));
 
             bt_tmp_registration.setText("更新");
+            et_tmp_braekTime.setText(String.valueOf(args.getInt("bteaktime")));
         }
 
         return root;
     }
 
+    int selected;
 
+    private void updata(SQLiteDatabase db, int byteahead_code, String stime, String etime,int btime){
+        ContentValues values = new ContentValues();
+        values.put("byteahead_code", byteahead_code);
+        values.put("Parttimejobtemplate_stime", stime);
+        values.put("Parttimejobtemplate_etime", etime);
+        values.put("Parttimejobtemplate_btime", btime);
 
+        String[] whereArgs = {String.valueOf(selected)};
+
+        db.update("t_Parttimejobtemplate",values, "Parttimejobtemplate_code=?",whereArgs);
+    }
+
+    private void insertData(SQLiteDatabase db, int byteahead_code, String stime, String etime,int btime){
+        ContentValues values = new ContentValues();
+        values.put("byteahead_code", byteahead_code);
+        values.put("Parttimejobtemplate_stime", stime);
+        values.put("Parttimejobtemplate_etime", etime);
+        values.put("Parttimejobtemplate_btime", btime);
+
+        db.insert("t_Parttimejobtemplate",null, values);
+    }
 }

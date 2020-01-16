@@ -23,15 +23,17 @@ public class PaymentClass {
         this.Amount = amount;
     }
 
-    public PaymentClass( int code,String date,String memo, int amount, long creditcode ){
+    public PaymentClass( int code,String date,String memo, int amount, String CregitPayment ){
         this.id = code;
         this.date = date;
-        isCregitPayment = true;
+        if (CregitPayment.equals("1")){
+            this.isCregitPayment = true;
+        }else {
+            this.isCregitPayment = false;
+        }
         this.memo = memo;
         this.Amount = amount;
-        this.creditcode = creditcode;
     }
-
 
     public long getId() {
         return id;
@@ -80,5 +82,4 @@ public class PaymentClass {
     public void setCreditcode(long creditcode) {
         this.creditcode = creditcode;
     }
-
 }

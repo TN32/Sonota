@@ -2,21 +2,17 @@ package com.example.sonota.ui.tmp;
 
 public class ParttimeJobListClass {
     private  long id;
-    private String title;
+    private int parttimejobId;
     private String starttime;
     private String finishtime;
+    private int breaktime;
 
-    public ParttimeJobListClass(long id, String title, String starttime, String finishtime, int breaktime) {
+    public ParttimeJobListClass(long id, int parttimejobId, String starttime, String finishtime, int breaktime) {
         this.id = id;
-        this.title = title;
+        this.parttimejobId = parttimejobId;
         this.starttime = starttime;
         this.finishtime = finishtime;
         this.breaktime = breaktime;
-    }
-
-    private int breaktime;
-
-    public ParttimeJobListClass(int i, String s, String s1, String s2) {
     }
 
     public long getId() {
@@ -27,12 +23,12 @@ public class ParttimeJobListClass {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public int getParttimejobId() {
+        return parttimejobId;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setParttimejobId(int parttimejobId) {
+        this.parttimejobId = parttimejobId;
     }
 
     public String getStarttime() {

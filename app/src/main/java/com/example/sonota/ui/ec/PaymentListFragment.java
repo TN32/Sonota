@@ -3,6 +3,7 @@ package com.example.sonota.ui.ec;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,8 +19,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class PaymentListFragment extends CustomFragment {
@@ -34,7 +37,14 @@ public class PaymentListFragment extends CustomFragment {
 
     private OnFragmentInteractionListener mListener;
 
+    ListView listView;
+    PaymentListAdapter adapter;
     String year,month;
+    TextView paymentListTextviewThismonth;
+    TextView paymentTextviewCashUsage;
+    TextView paymentTextviewCreditPayment;
+
+    int selectedPosition;
 
     public PaymentListFragment() {
         // Required empty public constructor
@@ -74,22 +84,20 @@ public class PaymentListFragment extends CustomFragment {
         View root = inflater.inflate(R.layout.fragment_ec_list_payment, container, false);
         Bundle args = getArguments();
 
-        TextView paymentListTextviewThismonth = (TextView)root.findViewById(R.id.PaymentListTextviewThisMonth);
-        //         当月の出費を表示
-        paymentListTextviewThismonth.setText("30000");
 
-        TextView paymentTextviewCashUsage = (TextView)root.findViewById(R.id.PaymentTextViewCashUsage);
-        // 当月の現金の出費を表示
-        paymentTextviewCashUsage.setText("20000");
 
-        TextView paymentTextviewCreditPayment = (TextView)root.findViewById(R.id.PaymentTextviewCreditPayment);
-        //　当月のクレジットの出費を表示
-        paymentTextviewCreditPayment.setText("15000");
+        paymentListTextviewThismonth = (TextView)root.findViewById(R.id.PaymentListTextviewThisMonth);;
+        paymentTextviewCashUsage = (TextView)root.findViewById(R.id.PaymentTextViewCashUsage);
+        paymentTextviewCreditPayment = (TextView)root.findViewById(R.id.PaymentTextviewCreditPayment);
 
 
 
         this.year = args.getString("selectedYear");
         this.month = args.getString("selectedMonth");
+
+        if(Integer.valueOf(month) < 10){
+            month = "0" + Integer.valueOf(month);
+        }
 
         String selected = year + "年" + month + "月";
 
@@ -160,33 +168,33 @@ public class PaymentListFragment extends CustomFragment {
             }
         });
 
-        ArrayList<PaymentClass> listData = new ArrayList<>();
-        for(int i = 1; i <=  12; i++) {
-            PaymentClass data = new PaymentClass(i, i + "日", "コンビニ", 30000000 + i);
-            listData.add(data);
-        }
-
-        final PaymentListAdapter arrayAdapter = new PaymentListAdapter(getContext(),listData,R.layout.list_ec_payment_cell);
-
         // idがlistのListViewを取得
-        ListView listView = (ListView) root.findViewById(R.id.listview);
-        listView.setAdapter(arrayAdapter);
+        listView = (ListView) root.findViewById(R.id.listview);
 
-
+        listload();
 
         // ここにダイアログイベントを発生
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedPosition = position;
                 final String[] items = {"変更", "削除", "キャンセル"};
                 new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //                             item_which pressed
-
                         switch (which) {
                             case 0:
                                 UpdateExpenceFragment fragment = new UpdateExpenceFragment();
                                 Bundle bundle = new Bundle();
+
+                                bundle.putInt("selected", (int)adapter.getItemId(selectedPosition));
+                                bundle.putString("Memo",adapter.getCurrentMemo(selectedPosition));
+                                bundle.putInt("Amount", adapter.getAmount(selectedPosition));
+                                bundle.putString("addDate", adapter.getDate(selectedPosition));
+                                if(adapter.isCregitPayment(selectedPosition))
+                                    bundle.putString("isCredit", "true");
+                                else
+                                    bundle.putString("isCredit", "false");
 
                                 fragment.setArguments(bundle);
                                 // 変更画面を呼び出す
@@ -194,9 +202,19 @@ public class PaymentListFragment extends CustomFragment {
                                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                                 transaction.replace(R.id.ec_mainsection, fragment);
                                 // 戻るボタンで戻ってこれるように
-                                transaction.addToBackStack(null);
+                                transaction.addToBackStack("PaymentList");
                                 transaction.commit();
+                                break;
                             case 1:
+                                adapter.getItemId(selectedPosition);
+                                String[] whereId = new String[1];
+                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
+                                db.delete(
+                                        "t_payment",
+                                        "payment_code=?",
+                                        whereId
+                                );
+                                listload();
                                 break;
                             case 2:
                                 break;
@@ -206,15 +224,74 @@ public class PaymentListFragment extends CustomFragment {
             }
         });
 
-
-
         return root;
     }
 
+    public void listload(){
+        if (helper == null){
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+        }
+
+        if(db == null){
+            db = helper.getWritableDatabase();
+        }
+
+        String[] selectArgs = {year + "_" + month + "%"};
+
+        //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
+        //  引数tableには、テーブル名を指定します。
+        //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
+        //  引数selectionには、検索条件を指定します。
+        //  引数selectionArgsには、検索条件のパラメータ（？で指定）に置き換わる値を指定します。
+        //  引数groupByには、groupBy句を指定します。
+        //  引数havingには、having句を指定します。
+        //  引数orderByには、orderBy句を指定します。
+        //  引数limitには、検索結果の上限レコードを数を指定します
+        Cursor cursor = db.query(
+                "t_payment",
+                new String[]{"payment_code","payment_date","payment_memo","payment_money","payment_cpay"},
+                "payment_date like ?",
+                selectArgs,
+                null,
+                null,
+                "payment_date desc"
+        );
 
 
+        cursor.moveToFirst();
+        ArrayList<PaymentClass> listData = new ArrayList<PaymentClass>();
+        int total = 0,cash = 0,credit = 0;
 
+        for (int i = 0; i < cursor.getCount(); i++) {
+            PaymentClass data = new PaymentClass(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getInt(3),cursor.getString(4));
+            listData.add(data);
+            total += data.getAmount();
+            if(data.isCregitPayment()){
+                credit += data.getAmount();
+            }else {
+                cash += data.getAmount();
+            }
+            cursor.moveToNext();
+        }
 
+        paymentListTextviewThismonth.setText(String.valueOf(total));
+        paymentTextviewCashUsage.setText(String.valueOf(cash));
+        paymentTextviewCreditPayment.setText(String.valueOf(credit));
+
+        cursor.close();
+
+        /**
+         * CustomAdapterを生成
+         * R.layout.custom_list_layout : リストビュー自身のレイアウト。今回は自作。
+         */
+        adapter = new PaymentListAdapter(
+                getContext(),
+                listData, // 使用するデータ
+                R.layout.list_ec_payment_cell // 自作したレイアウト
+        );
+
+        listView.setAdapter(adapter);
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event

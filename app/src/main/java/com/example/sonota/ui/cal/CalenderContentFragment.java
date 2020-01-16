@@ -204,6 +204,7 @@ public class CalenderContentFragment extends CustomFragment {
         switch (fabId){
             case 1:
                 fragment = new AddExpenceFragment();
+                fragment.setArguments(bundle);
                 transaction.replace(R.id.cal_mainsection, fragment);
                 //戻るボタンで戻ってこれるように
                 transaction.addToBackStack("CalenderContent");

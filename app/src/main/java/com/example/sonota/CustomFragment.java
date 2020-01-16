@@ -29,6 +29,11 @@ public class CustomFragment extends Fragment {
         return dateString.split("_");
     }
 
+    public String sharpingDate(String dateString){
+        String[] dateText = splitDate(dateString);
+        return dateText[0] + "年" + dateText[1] + "月" + dateText[2] + "日";
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
