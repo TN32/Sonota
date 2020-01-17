@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.sonota.R;
+
 import java.util.ArrayList;
 
 public class ParttimejobListAdapter extends BaseAdapter {
@@ -14,14 +16,14 @@ public class ParttimejobListAdapter extends BaseAdapter {
     private Context context = null;
 
     // ArrayListの中に独自クラスのCustomDataClassを指定
-    private ArrayList<parttimejoblistdateclass> data = null;
+    private ArrayList<ParttimejobListDataClass> data = null;
 
     private int resource = 0;
-    private ArrayList<parttimejoblistdateclass> dataList = new ArrayList<parttimejoblistdateclass>();
+    private ArrayList<ParttimejobListDataClass> dataList = new ArrayList<ParttimejobListDataClass>();
 
 
     // コンストラクタ  MainActivityでアダプターを生成する箇所で呼ばれている
-    public ParttimejobListAdapter(Context context, ArrayList<parttimejoblistdateclass> data, int resource){
+    public ParttimejobListAdapter(Context context, ArrayList<ParttimejobListDataClass> data, int resource){
         this.context = context;
         this.data = data;
         this.resource = resource;
@@ -51,6 +53,18 @@ public class ParttimejobListAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return data.get(position).getId();
     }
+    public String getItemName(int position) {
+        return data.get(position).getName();
+    }
+    public int getItemHwagev(int position) {
+        return data.get(position).getHwage();
+    }
+    public String getItemCday(int position) {
+        return data.get(position).getCday();
+    }
+    public String getItemPday(int position) {
+        return data.get(position).getPday();
+    }
 
     /**
      * リスト項目を表示するためのメソッド
@@ -61,7 +75,7 @@ public class ParttimejobListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Activity activity = (Activity) context;
         // 指定された位置のデータを取得
-        parttimejoblistdateclass data = (parttimejoblistdateclass) getItem(position);
+        ParttimejobListDataClass data = (ParttimejobListDataClass) getItem(position);
 
         // 再利用可能なビューが無かったら生成する
         if(convertView == null){
@@ -71,12 +85,14 @@ public class ParttimejobListAdapter extends BaseAdapter {
         /**
          * ここから各項目に値を割り当てる処理
          */
-        // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-       // ((TextView) convertView.findViewById(R.id.tv_parttimejobname)).setText(data.getName());
-        // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
-       // TextView Amount = (TextView) convertView.findViewById(R.id.tv_hwage);
-       // Amount.setText("￥" + data.getHwage());
+//         idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
+        ((TextView) convertView.findViewById(R.id.tv_parttimejobname)).setText(data.getName());
+//         こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
+        TextView Amount = (TextView) convertView.findViewById(R.id.tv_hwage);
+        Amount.setText("￥" + data.getHwage());
 
         return convertView;
     }
+
+
 }

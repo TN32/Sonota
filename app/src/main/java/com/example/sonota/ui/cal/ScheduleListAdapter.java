@@ -77,12 +77,25 @@ public class ScheduleListAdapter extends BaseAdapter {
         ((TextView) convertView.findViewById(R.id.tv_cal_schedule_title)).setText(data.getTitle());
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
         TextView sub = (TextView) convertView.findViewById(R.id.tv_cal_schedule_starttime);
-        String[] sTime = data.getStartTime().split("_");
+        String[] sTime = data.getStarttime().split("_");
         sub.setText(sTime[0] + "時" + sTime[1] + "分");
         // idがdescriptionのTextViewに、指定されたデータのdescriptionの値を格納している
-        String[] eTime = data.getEndTime().split("_");
+        String[] eTime = data.getFinishtime().split("_");
         ((TextView) convertView.findViewById(R.id.tv_cal_schedule_endtime)).setText(eTime[0] + "時" + eTime[1] + "分");
 
+        String[] split = data.getTitle().split("]");
+        if(split[0].equals("[アルバイト")) {
+            ((TextView) convertView.findViewById(R.id.tv_cal_parttimejob_breaktime)).setText("休憩時間:" + data.getBreaktime() + "分");
+        } else {
+            ((TextView) convertView.findViewById(R.id.tv_cal_parttimejob_breaktime)).setText("");
+        }
         return convertView;
+    }
+    public boolean isPtj(int position){
+        String[] split = data.get(position).getTitle().split("]");
+        if(split[0].equals("[アルバイト")) {
+            return true;
+        }
+        return false;
     }
 }

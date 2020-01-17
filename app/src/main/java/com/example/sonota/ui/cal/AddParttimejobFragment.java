@@ -1,6 +1,7 @@
 package com.example.sonota.ui.cal;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import androidx.fragment.app.FragmentManager;
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
+
+import java.util.ArrayList;
 
 public class AddParttimejobFragment extends CustomFragment {
 
@@ -48,11 +51,52 @@ public class AddParttimejobFragment extends CustomFragment {
 
         spinner = root.findViewById(R.id.sp_cal_partName);
 
+        if (helper == null) {
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+        }
+
+        if (db == null) {
+            db = helper.getWritableDatabase();
+        }
+
+        //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
+        //  引数tableには、テーブル名を指定します。
+        //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
+        //  引数selectionには、検索条件を指定します。
+        //  引数selectionArgsには、検索条件のパラメータ（？で指定）に置き換わる値を指定します。
+        //  引数groupByには、groupBy句を指定します。
+        //  引数havingには、having句を指定します。
+        //  引数orderByには、orderBy句を指定します。
+        //  引数limitには、検索結果の上限レコードを数を指定します
+        Cursor cursor = db.query(
+                "t_byteahead",
+                new String[]{"byteahead_code","byteahead_name","byteahead_hwage"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        ArrayList<String> listData = new ArrayList<>();
+        final ArrayList<String> listId = new ArrayList<>();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            String data = cursor.getString(1) + " : 時給 " + cursor.getInt(2) + "円";
+            listData.add(data);
+            listId.add(String.valueOf(cursor.getInt(0)));
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
         ArrayAdapter<String> adapter = new ArrayAdapter(
                 getContext(),
                 R.layout.custom_spnner,
-                getResources().getStringArray(R.array.list)
+                listData
         );
+
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
         spinner.setAdapter(adapter);
 
@@ -82,7 +126,7 @@ public class AddParttimejobFragment extends CustomFragment {
         bt_cal_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 String eventDate = tv_cal_adddate.getText().toString();
-                int byteaheadCode = (int)spinner.getAdapter().getItemId(spinner.getSelectedItemPosition());
+                int byteaheadCode = Integer.valueOf(listId.get((int)spinner.getAdapter().getItemId(spinner.getSelectedItemPosition())));
 
                 int btime;
                 if(bTime.getText().toString() == null || bTime.getText().toString().equals("")){
@@ -115,19 +159,21 @@ public class AddParttimejobFragment extends CustomFragment {
 
         Bundle args = getArguments();
         if(args != null){
-            String addDate = args.getString("addDate");
+            addDate = args.getString("addDate");
             tv_cal_adddate = root.findViewById(R.id.tv_cal_adddate);
-            tv_cal_adddate.setText(addDate);
+            tv_cal_adddate.setText(sharpingDate(addDate));
             bt_cal_registration.setText("登録");
         }
 
         return root;
     }
 
+    String addDate;
+
     private void insertData(SQLiteDatabase db, int byteahead_code, String date, String stime, String etime,int btime){
         ContentValues values = new ContentValues();
         values.put("byteahead_code", byteahead_code);
-        values.put("shift_date", date);
+        values.put("shift_date", addDate);
         values.put("shift_stime", stime);
         values.put("shift_etime", etime);
         values.put("shift_btime", btime);

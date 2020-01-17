@@ -48,10 +48,6 @@ public class ExpenceFragment extends CustomFragment {
     private SQLiteDatabase db;
 
     TextView expenceTextviewThismonth;
-
-    TextView expenceTextviewCashUsage;
-
-    TextView expenceTextviewCreditPayment;
     ListView listView;
     ExpenceListAdapter adapter;
 
@@ -104,10 +100,6 @@ public class ExpenceFragment extends CustomFragment {
         listView = (ListView)root.findViewById(R.id.listview);
 
         expenceTextviewThismonth = (TextView) root.findViewById(R.id.PaymentListTextviewThisMonth);
-
-        expenceTextviewCashUsage = (TextView) root.findViewById(R.id.PaymentTextViewCashUsage);
-
-        expenceTextviewCreditPayment = (TextView) root.findViewById(R.id.PaymentTextviewCreditPayment);
 
         listload();
 
@@ -197,8 +189,6 @@ public class ExpenceFragment extends CustomFragment {
         }
 
         expenceTextviewThismonth.setText(String.valueOf(total));
-        expenceTextviewCashUsage.setText(String.valueOf(cash));
-        expenceTextviewCreditPayment.setText(String.valueOf(credit));
 
         cursor.close();
 

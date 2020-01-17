@@ -3,6 +3,7 @@ package com.example.sonota;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,11 @@ public class CustomFragment extends Fragment {
 
     protected SonotaDBOpenHelper helper;
     protected SQLiteDatabase db;
+
+    protected ListView listView;
+    protected int selectedPosition;
+
+    protected boolean isNewItem;
 
     public String truncDate(Date date){
         SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd", Locale.US);

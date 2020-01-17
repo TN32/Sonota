@@ -8,11 +8,11 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_cal">カレンダー</string>
-    <string name="menu_rc">収入確認</string>
-    <string name="menu_ec">出費確認</string>
+    <string name="menu_rc">収入管理</string>
+    <string name="menu_ec">出費管理</string>
     <string name="menu_tmp">テンプレート</string>
-    <string name="menu_clc">クレジット・ローン確認</string>
-    <string name="menu_set">設定</string>
+    <string name="menu_clc">分割払い管理</string>
+    <string name="menu_set">アルバイト先管理</string>
 
     <string name="ibento">イベント名</string>
     <string name="ibento2">イベント</string>

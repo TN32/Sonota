@@ -74,7 +74,7 @@ public class ParttimeJobListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
         // 画像割り当て
-        ((TextView) convertView.findViewById(R.id.tv_cal_event_tille)).setText("id_" + data.getParttimejobId());
+        ((TextView) convertView.findViewById(R.id.tv_cal_event_tille)).setText(data.getTitle());
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
         String[] sTime = data.getStarttime().split("_");
         ((TextView) convertView.findViewById(R.id.tv_tem_event_start)).setText(sTime[0] + "時" + sTime[1] + "分");

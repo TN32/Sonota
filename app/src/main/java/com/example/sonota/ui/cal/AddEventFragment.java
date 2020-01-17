@@ -95,21 +95,25 @@ public class AddEventFragment extends CustomFragment {
 
         Bundle args = getArguments();
         if(args != null){
-            String addDate = args.getString("addDate");
+            addDate = args.getString("addDate");
             tv_cal_adddate = root.findViewById(R.id.tv_cal_adddate);
-            tv_cal_adddate.setText(addDate);
+            tv_cal_adddate.setText(sharpingDate(addDate));
             bt_cal_registration.setText("登録");
         }
         return root;
     }
 
+    String addDate;
+
     private void insertData(SQLiteDatabase db, String name, String day, String stime, String etime){
         ContentValues values = new ContentValues();
         values.put("schedule_name", name);
-        values.put("schedule_day", day);
+        values.put("schedule_day", addDate);
         values.put("schedule_stime", stime);
         values.put("schedule_etime", etime);
 
         db.insert("t_schedule",null, values);
     }
+
+
 }

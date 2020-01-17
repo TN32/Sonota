@@ -1,6 +1,7 @@
 package com.example.sonota.ui.tmp;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
+
+import java.util.ArrayList;
 
 public class DetailParttimejobFragment extends CustomFragment {
 
@@ -51,13 +54,52 @@ public class DetailParttimejobFragment extends CustomFragment {
 
         et_tmp_braekTime = root.findViewById(R.id.et_tmp_braekTime);
 
+        if (helper == null) {
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+        }
+
+        if (db == null) {
+            db = helper.getWritableDatabase();
+        }
+
+        //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
+        //  引数tableには、テーブル名を指定します。
+        //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
+        //  引数selectionには、検索条件を指定します。
+        //  引数selectionArgsには、検索条件のパラメータ（？で指定）に置き換わる値を指定します。
+        //  引数groupByには、groupBy句を指定します。
+        //  引数havingには、having句を指定します。
+        //  引数orderByには、orderBy句を指定します。
+        //  引数limitには、検索結果の上限レコードを数を指定します
+        Cursor cursor = db.query(
+                "t_byteahead",
+                new String[]{"byteahead_code","byteahead_name","byteahead_hwage"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        ArrayList<String> listData = new ArrayList<>();
+        final ArrayList<String> listId = new ArrayList<>();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            String data = cursor.getString(1) + " : 時給 " + cursor.getInt(2) + "円";
+            listData.add(data);
+            listId.add(String.valueOf(cursor.getInt(0)));
+            cursor.moveToNext();
+        }
+
         spinner = root.findViewById(R.id.sp_tmp_partName);
 
         ArrayAdapter<String> adapter = new ArrayAdapter(
                 getContext(),
                 R.layout.custom_spnner,
-                getResources().getStringArray(R.array.list)
+                listData
         );
+
         adapter.setDropDownViewResource(R.layout.custom_spinner_dropdown);
         spinner.setAdapter(adapter);
 
@@ -94,7 +136,7 @@ public class DetailParttimejobFragment extends CustomFragment {
         bt_tmp_registration = root.findViewById(R.id.bt_tmp_registration);
         bt_tmp_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                int parttimejobCode = (int)spinner.getSelectedItemId();
+                int byteaheadCode = Integer.valueOf(listId.get((int)spinner.getAdapter().getItemId(spinner.getSelectedItemPosition())));
                 int breakTime;
 
                 if(et_tmp_braekTime.getText().toString() == null || et_tmp_braekTime.getText().toString().equals("")){
@@ -118,10 +160,10 @@ public class DetailParttimejobFragment extends CustomFragment {
                 }
 
                 if (isNewItem){
-                    insertData(db, parttimejobCode,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3],breakTime);
+                    insertData(db, byteaheadCode,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3],breakTime);
                 }
                 else {
-                    updata(db, parttimejobCode,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3],breakTime);
+                    updata(db, byteaheadCode,figures[0] + "_" + figures[1], figures[2] + "_" + figures[3],breakTime);
                 }
 
                 Toast.makeText(getContext(),"アルバイトテンプレートを登録しました!" ,Toast.LENGTH_SHORT).show();

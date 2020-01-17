@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
+import com.example.sonota.ui.cal.ParttimejobPlaceClass;
 
 import java.util.ArrayList;
 
@@ -81,6 +82,26 @@ public class ParttimejobFragment extends CustomFragment {
         //  引数orderByには、orderBy句を指定します。
         //  引数limitには、検索結果の上限レコードを数を指定します
         Cursor cursor = db.query(
+                "t_byteahead",
+                new String[]{"byteahead_code","byteahead_name","byteahead_hwage"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        ArrayList<ParttimejobPlaceClass> pPlace = new ArrayList<>();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            ParttimejobPlaceClass data = new ParttimejobPlaceClass(cursor.getInt(0),cursor.getString(1));
+            pPlace.add(data);
+            cursor.moveToNext();
+        }
+
+
+        cursor = db.query(
                 "t_Parttimejobtemplate",
                 new String[]{"Parttimejobtemplate_code","byteahead_code","Parttimejobtemplate_stime","Parttimejobtemplate_etime","Parttimejobtemplate_btime"},
                 null,
@@ -94,7 +115,7 @@ public class ParttimejobFragment extends CustomFragment {
         ArrayList<ParttimeJobListClass> listData = new ArrayList<ParttimeJobListClass>();
 
         for (int i = 0; i < cursor.getCount(); i++) {
-            ParttimeJobListClass data = new ParttimeJobListClass(cursor.getInt(0),cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getInt(4));
+            ParttimeJobListClass data = new ParttimeJobListClass(cursor.getInt(0),cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getInt(4),pPlace);
             listData.add(data);
             cursor.moveToNext();
         }

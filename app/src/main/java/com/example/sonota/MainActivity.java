@@ -109,11 +109,9 @@ public class MainActivity extends AppCompatActivity
 
 
 // テキストを設定して表示
-        text1.setText("ルビィちゃんA");
-        text2.setText("ルビィちゃんB");
-        text3.setText("ルビィちゃんC");
-
-
+        text1.setText("支出の登録");
+        text2.setText("アルバイトのシフト登録");
+        text3.setText("スケジュールを登録");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);

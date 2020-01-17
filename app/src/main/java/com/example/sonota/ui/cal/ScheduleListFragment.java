@@ -1,6 +1,8 @@
 package com.example.sonota.ui.cal;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -8,10 +10,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.R;
 import com.example.sonota.SonotaDBOpenHelper;
@@ -50,6 +55,8 @@ public class ScheduleListFragment extends Fragment {
     TextView tvDate;
     ScheduleListAdapter adapter;
     ParttimeJobListAdapter pAdapter;
+    int selectedPosition;
+    ListView elistView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -112,6 +119,73 @@ public class ScheduleListFragment extends Fragment {
         SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日", Locale.US);
         tvDate.setText(format.format(mCalendar.getTime()));
 
+        // idがlistのListViewを取得
+        elistView = (ListView) rootview.findViewById(R.id.list_view);
+
+        listload();
+
+        elistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                selectedPosition = position;
+                final String[] items = { "削除", "キャンセル"};
+                new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //                             item_which pressed
+                        switch (which) {
+//                            case 0:
+//                                UpdateExpenceFragment fragment = new UpdateExpenceFragment();
+//                                Bundle bundle = new Bundle();
+//
+//                                bundle.putInt("selected", (int)adapter.getItemId(selectedPosition));
+//                                bundle.putString("Memo",adapter.getCurrentMemo(selectedPosition));
+//                                bundle.putInt("Amount", adapter.getAmount(selectedPosition));
+//                                bundle.putString("addDate", adapter.getDate(selectedPosition));
+//                                if(adapter.isCregitPayment(selectedPosition))
+//                                    bundle.putString("isCredit", "true");
+//                                else
+//                                    bundle.putString("isCredit", "false");
+//
+//                                fragment.setArguments(bundle);
+//                                // 変更画面を呼び出す
+//                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+//                                transaction.replace(R.id.ec_mainsection, fragment);
+//                                // 戻るボタンで戻ってこれるように
+//                                transaction.addToBackStack("PaymentList");
+//                                transaction.commit();
+//                                break;
+                            case 0:
+                                adapter.getItemId(selectedPosition);
+                                String[] whereId = new String[1];
+                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
+                                if(adapter.isPtj(position)){
+                                    db.delete(
+                                            "t_shift",
+                                            "shift_code=?",
+                                            whereId
+                                    );
+                                } else {
+                                    db.delete(
+                                            "t_schedule",
+                                            "schedule_code=?",
+                                            whereId
+                                    );                                }
+                                listload();
+                                break;
+                            case 1:
+                                break;
+                        }
+                    }
+                }).show();
+            }
+        });
+
+        // Inflate the layout for this fragment
+        return rootview;
+    }
+
+    public void listload() {
         if (helper == null){
             helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
         }
@@ -153,25 +227,45 @@ public class ScheduleListFragment extends Fragment {
             cursor.moveToNext();
         }
 
-       cursor = db.query(
+        cursor = db.query(
+                "t_byteahead",
+                new String[]{"byteahead_code","byteahead_name","byteahead_hwage"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        ArrayList<ParttimejobPlaceClass> pPlace = new ArrayList<>();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            ParttimejobPlaceClass data = new ParttimejobPlaceClass(cursor.getInt(0),cursor.getString(1));
+            pPlace.add(data);
+            cursor.moveToNext();
+        }
+
+        cursor = db.query(
                 "t_shift",
-               new String[]{"shift_code","shift_stime","shift_etime","shift_btime"},
-               "shift_date=?",
-               selectData,
+                new String[]{"shift_code","byteahead_code","shift_stime","shift_etime","shift_btime"},
+                "shift_date=?",
+                selectData,
                 null,
                 null,
                 "shift_stime",
                 null
-       );
+        );
 
         cursor.moveToFirst();
-        ArrayList<ParttimeJobListClass> plistData = new ArrayList<ParttimeJobListClass>();
 
         for (int i = 0; i < cursor.getCount(); i++) {
-            ParttimeJobListClass data = new ParttimeJobListClass(cursor.getInt(0) ,"アルバイト先名",cursor.getString(1),cursor.getString(2),cursor.getInt(3));
-            plistData.add(data);
+            ScheduleListClass data = new ScheduleListClass(cursor.getInt(0) ,cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getInt(4),pPlace);
+            listData.add(data);
             cursor.moveToNext();
         }
+
+
 
         cursor.close();
 
@@ -185,21 +279,8 @@ public class ScheduleListFragment extends Fragment {
                 R.layout.list_cal_schedule_cell // 自作したレイアウト
         );
 
-        // idがlistのListViewを取得
-        ListView elistView = (ListView) rootview.findViewById(R.id.list_view);
+
         elistView.setAdapter(adapter);
-
-        pAdapter = new ParttimeJobListAdapter(
-                getContext(),
-                plistData, // 使用するデータ
-                R.layout.list_cal_parttimejob_cell // 自作したレイアウト
-        );
-
-        ListView plistView = (ListView) rootview.findViewById(R.id.parttime_list_view);
-        plistView.setAdapter(pAdapter);
-
-        // Inflate the layout for this fragment
-        return rootview;
     }
 
     public String truncDate(Date date){

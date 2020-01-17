@@ -1,20 +1,39 @@
 package com.example.sonota.ui.cal;
 
+import java.util.ArrayList;
+
 public class ScheduleListClass {
-    private long id = 0;
+    private  long id;
+    private String title;
+    private String starttime;
+    private String finishtime;
+    private int breaktime;
 
-    private String title = "";
-
-    private String startTime;
-
-    private String endTime;
-
-    public ScheduleListClass(long id, String title, String startTime, String endTime) {
+    public ScheduleListClass(long id, int aheadId, String starttime, String finishtime, int breaktime, ArrayList<ParttimejobPlaceClass> pDatat) {
         this.id = id;
-        this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.title = "[アルバイト]　" + getPNameById(aheadId,pDatat);
+        this.starttime = starttime;
+        this.finishtime = finishtime;
+        this.breaktime = breaktime;
     }
+
+    public ScheduleListClass(long id, String title, String starttime, String finishtime) {
+        this.id = id;
+        this.title = "[イベント]　" + title;
+        this.starttime = starttime;
+        this.finishtime = finishtime;
+        this.breaktime = -1;
+    }
+
+    private String getPNameById(int id, ArrayList<ParttimejobPlaceClass> pData){
+        for (int index = 0;index < pData.size();index++){
+            if(id == pData.get(index).getId()){
+                return pData.get(index).getParttimejobPlace();
+            }
+        }
+        return "すでに削除されたアルバイト先です.";
+    }
+
 
     public long getId() {
         return id;
@@ -32,19 +51,27 @@ public class ScheduleListClass {
         this.title = title;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getStarttime() {
+        return starttime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStarttime(String starttime) {
+        this.starttime = starttime;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getFinishtime() {
+        return finishtime;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setFinishtime(String finishtime) {
+        this.finishtime = finishtime;
+    }
+
+    public int getBreaktime() {
+        return breaktime;
+    }
+
+    public void setBreaktime(int breaktime) {
+        this.breaktime = breaktime;
     }
 }
