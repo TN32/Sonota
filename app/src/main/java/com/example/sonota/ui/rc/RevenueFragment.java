@@ -18,8 +18,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -36,6 +38,7 @@ public class RevenueFragment extends CustomFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -44,7 +47,7 @@ public class RevenueFragment extends CustomFragment {
 
     public RevenueFragment() {
         // Required empty public constructor
-        fabCount = 1;
+        fabCount = 0;
     }
 
     /**
@@ -95,6 +98,8 @@ public class RevenueFragment extends CustomFragment {
 
         // idがlistのListViewを取得
         ListView listView = (ListView) root.findViewById(R.id.listview);
+
+
         listView.setAdapter(arrayAdapter);
 
         // セルを選択されたら一覧画面フラグメント呼び出す
@@ -121,45 +126,10 @@ public class RevenueFragment extends CustomFragment {
             }
         });
 
-        init();
 
         return root;
     }
 
-    private void init(){
-        listView.setOnTouchListener(new View.OnTouchListener() {
-            int oldX = 0, oldY = 0;
-            int originX,originY;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch(event.getAction()){
-                    case MotionEvent.ACTION_DOWN:
-                        oldX = (int) event.getX();
-                        oldY = (int) event.getY();
-
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        originX = (int) event.getX();
-                        originY = (int) event.getY();
-                        onViewScroll(originX, originY, oldX, oldY);
-                        //スクロールイベントの発生を知らせる
-                        oldX = originX;
-                        oldY = originY;
-
-                        break;
-                }
-
-                return false;
-            }
-        });
-    }
-
-    /**タッチイベントが起こったら呼ばれる*/
-    public void onViewScroll(int orgX, int orgY, int oldX, int oldY)
-    {
-
-    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

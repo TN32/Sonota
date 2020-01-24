@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,6 +38,31 @@ public class EventFragment extends CustomFragment {
 
         // idがlistのListViewを取得
         listView = (ListView) view.findViewById(R.id.list_view);
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            int oldX = 0, oldY = 0;
+            int originX,originY;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        oldX = (int) event.getX();
+                        oldY = (int) event.getY();
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        originX = (int) event.getX();
+                        originY = (int) event.getY();
+                        onViewScroll(originX, originY, oldX, oldY);
+                        //スクロールイベントの発生を知らせる
+                        oldX = originX;
+                        oldY = originY;
+
+                        break;
+                }
+
+                return false;
+            }
+        });
 
         listload();
 
@@ -90,6 +116,20 @@ public class EventFragment extends CustomFragment {
         });
 
         return view;
+    }
+    public void onViewScroll(int orgX, int orgY, int oldX, int oldY)
+    {
+        if (oldY>orgY){
+            if (fabCount == 1) {
+                fabCount = 0;
+                mFabControllInterface.setFabCount(fabCount);
+            }
+        }else {
+            if (fabCount == 0) {
+                fabCount = 1;
+                mFabControllInterface.setFabCount(fabCount);
+            }
+        }
     }
 
     public void listload(){
