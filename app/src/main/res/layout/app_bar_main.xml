@@ -59,7 +59,7 @@
             android:clickable="true"
             app:backgroundTint="@android:color/holo_orange_dark"
             app:fabCustomSize="90dp"
-            app:maxImageSize="50dp"
+            app:maxImageSize="40dp"
             app:srcCompat="@android:drawable/ic_input_add" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

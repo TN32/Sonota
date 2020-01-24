@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,6 +38,7 @@ public class ReceiveListFragment extends CustomFragment {
 
     public ReceiveListFragment() {
         // Required empty public constructor
+        fabCount =1;
     }
 
     /**
@@ -156,6 +158,31 @@ public class ReceiveListFragment extends CustomFragment {
 
         // idがlistのListViewを取得
         ListView listView = (ListView) root.findViewById(R.id.listview);
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            int oldX = 0, oldY = 0;
+            int originX,originY;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        oldX = (int) event.getX();
+                        oldY = (int) event.getY();
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        originX = (int) event.getX();
+                        originY = (int) event.getY();
+                        onViewScroll(originX, originY, oldX, oldY);
+                        //スクロールイベントの発生を知らせる
+                        oldX = originX;
+                        oldY = originY;
+
+                        break;
+                }
+
+                return false;
+            }
+        });
         listView.setAdapter(arrayAdapter);
 
         // セルを選択されたら一覧画面フラグメント呼び出す
@@ -168,7 +195,20 @@ public class ReceiveListFragment extends CustomFragment {
         return root;
     }
 
-
+    public void onViewScroll(int orgX, int orgY, int oldX, int oldY)
+    {
+        if (oldY>orgY){
+            if (fabCount == 1) {
+                fabCount = 0;
+                mFabControllInterface.setFabCount(fabCount);
+            }
+        }else {
+            if (fabCount == 0) {
+                fabCount = 1;
+                mFabControllInterface.setFabCount(fabCount);
+            }
+        }
+    }
 
 
 
