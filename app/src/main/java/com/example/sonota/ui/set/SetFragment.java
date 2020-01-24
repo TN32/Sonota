@@ -29,7 +29,7 @@ public class SetFragment extends CustomFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_set, container, false);
 
-        SetMainMenuFragment fragment = new SetMainMenuFragment();
+        SetParttimejobListFragment fragment = new SetParttimejobListFragment();
         Bundle bundle = new Bundle();
 
         fragment.setArguments(bundle);

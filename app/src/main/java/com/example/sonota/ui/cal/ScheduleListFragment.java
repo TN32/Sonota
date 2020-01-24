@@ -198,6 +198,9 @@ public class ScheduleListFragment extends Fragment {
         String[] selectData = new  String[1];
         selectData[0] = cDate;
 
+
+        ArrayList<ScheduleListClass> listData = new ArrayList<ScheduleListClass>();
+
         //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
         //  引数tableには、テーブル名を指定します。
         //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
@@ -208,26 +211,6 @@ public class ScheduleListFragment extends Fragment {
         //  引数orderByには、orderBy句を指定します。
         //  引数limitには、検索結果の上限レコードを数を指定します
         Cursor cursor = db.query(
-                "t_schedule",
-                new String[]{"schedule_code","schedule_name","schedule_stime","schedule_etime"},
-                "schedule_day=?",
-                selectData,
-                null,
-                null,
-                "schedule_stime",
-                null
-        );
-
-        cursor.moveToFirst();
-        ArrayList<ScheduleListClass> listData = new ArrayList<ScheduleListClass>();
-
-        for (int i = 0; i < cursor.getCount(); i++) {
-            ScheduleListClass data = new ScheduleListClass(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
-            listData.add(data);
-            cursor.moveToNext();
-        }
-
-        cursor = db.query(
                 "t_byteahead",
                 new String[]{"byteahead_code","byteahead_name","byteahead_hwage"},
                 null,
@@ -265,7 +248,24 @@ public class ScheduleListFragment extends Fragment {
             cursor.moveToNext();
         }
 
+        cursor = db.query(
+                "t_schedule",
+                new String[]{"schedule_code","schedule_name","schedule_stime","schedule_etime"},
+                "schedule_day=?",
+                selectData,
+                null,
+                null,
+                "schedule_stime",
+                null
+        );
 
+        cursor.moveToFirst();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            ScheduleListClass data = new ScheduleListClass(cursor.getInt(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
+            listData.add(data);
+            cursor.moveToNext();
+        }
 
         cursor.close();
 
