@@ -1,6 +1,8 @@
 package com.example.sonota.ui.cal;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class CalendarAdapter extends BaseAdapter {
 
     private ArrayList<String> positionToDate;
     private int firstDayPosition,todayPosition = -1;
+    ArrayList<ParttimejobPlaceClass> pPlace;
 
     //カスタムセルを拡張したらここでWigetを定義
     private static class ViewHolder {
@@ -52,6 +56,9 @@ public class CalendarAdapter extends BaseAdapter {
         firstGetView = true;
     }
 
+    protected SonotaDBOpenHelper helper;
+    protected SQLiteDatabase db;
+
     @Override
     public int getCount() {
         return dateArray.size();
@@ -66,6 +73,7 @@ public class CalendarAdapter extends BaseAdapter {
             holder.dateText = convertView.findViewById(R.id.dateText);
             holder.contentArea = convertView.findViewById(R.id.calender_cell_content);
             convertView.setTag(holder);
+            Colorling(position,holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
@@ -124,6 +132,119 @@ public class CalendarAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void setpPlace(){
+        Cursor cursor = db.query(
+                "t_byteahead",
+                new String[]{"byteahead_code","byteahead_name","byteahead_hwage"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        pPlace = new ArrayList<>();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            ParttimejobPlaceClass data = new ParttimejobPlaceClass(cursor.getInt(0),cursor.getString(1));
+            pPlace.add(data);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+    }
+
+    public void Colorling(int position,ViewHolder holder){
+        String cDate = truncDate(dateArray.get(position));
+        String[] selectData = new  String[1];
+        selectData[0] = cDate;
+
+        if (helper == null){
+            helper = new SonotaDBOpenHelper(mContext.getApplicationContext());
+        }
+
+        if(db == null){
+            db = helper.getWritableDatabase();
+        }
+
+        if(pPlace == null){
+            setpPlace();
+        }
+
+        if(pPlace == null){
+            setpPlace();
+        }
+
+        int a = pPlace.size();
+
+        a = 110000;
+
+        Cursor cursor = db.query(
+                "t_shift",
+                new String[]{"shift_code","byteahead_code","shift_stime","shift_etime","shift_btime"},
+                "shift_date=?",
+                selectData,
+                null,
+                null,
+                "shift_stime",
+                null
+        );
+
+        cursor.moveToFirst();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            TextView tv = new TextView(mContext);
+            tv.setBackgroundColor(Color.RED);
+            tv.setTextColor(Color.WHITE);
+            tv.setTextSize(12);
+            String jName = getPNameById(cursor.getInt(1),pPlace);
+            tv.setText(jName);
+            holder.contentArea.addView(tv);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+
+        cursor = db.query(
+                "t_schedule",
+                new String[]{"schedule_code","schedule_name","schedule_stime","schedule_etime"},
+                "schedule_day=?",
+                selectData,
+                null,
+                null,
+                "schedule_stime",
+                null
+        );
+
+        cursor.moveToFirst();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            TextView tv = new TextView(mContext);
+            tv.setBackgroundColor(Color.BLUE);
+            tv.setTextColor(Color.WHITE);
+            tv.setTextSize(12);
+            tv.setText(cursor.getString(1));
+            holder.contentArea.addView(tv);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+    }
+
+    private String getPNameById(int id, ArrayList<ParttimejobPlaceClass> pData){
+        for (int index = 0;index < pData.size();index++){
+            if(id == pData.get(index).getId()){
+                return pData.get(index).getParttimejobPlace();
+            }
+        }
+        return "すでに削除されたアルバイト先です.";
+    }
+
+    public String truncDate(Date date){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd", Locale.US);
+        return format.format(date);
+    }
+
     @Override
     public long getItemId(int position) {
         return 0;
@@ -133,7 +254,6 @@ public class CalendarAdapter extends BaseAdapter {
     public Object getItem(int position) {
         return null;
     }
-
 
     //mDateManagerのisCurrentMonthの結果を返す
     public boolean isCurrentMonth(Date date){
