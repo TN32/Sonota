@@ -211,7 +211,7 @@ public class CalenderContentFragment extends CustomFragment {
                 transaction.commit();
                 return;
             case 2:
-                fragment = new AddParttimejobFragment();
+                fragment = new AddIncomeFragment();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.cal_mainsection, fragment);
                 //戻るボタンで戻ってこれるように
@@ -219,6 +219,14 @@ public class CalenderContentFragment extends CustomFragment {
                 transaction.commit();
                 return;
             case 3:
+                fragment = new AddParttimejobFragment();
+                fragment.setArguments(bundle);
+                transaction.replace(R.id.cal_mainsection, fragment);
+                //戻るボタンで戻ってこれるように
+                transaction.addToBackStack("CalenderContent");
+                transaction.commit();
+                return;
+            case 4:
                 fragment = new AddEventFragment();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.cal_mainsection, fragment);
