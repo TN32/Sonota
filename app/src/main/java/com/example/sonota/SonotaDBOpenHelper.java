@@ -8,7 +8,7 @@ package com.example.sonota;
 
 public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データーベースのバージョン
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 17;
     // データーベース名
     private static final String DATABASE_NAME = "SONOTA_DB";
 
@@ -117,7 +117,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
 
 
     private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " +TABLE_NAME2;
+            "DROP TABLE IF EXISTS " +TABLE_NAME1;
 
     //予定
     private static final String SQL_CREATE_ENTRIES2 =
@@ -265,7 +265,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     // データベースをバージョンアップした時に実行される処理
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_DELETE_ENTRIES);
         db.execSQL(SQL_DELETE_ENTRIES2);
         db.execSQL(SQL_DELETE_ENTRIES3);
         db.execSQL(SQL_DELETE_ENTRIES4);
@@ -273,8 +273,8 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES6);
         db.execSQL(SQL_DELETE_ENTRIES7);
         db.execSQL(SQL_DELETE_ENTRIES8);
-        db.execSQL(SQL_CREATE_ENTRIES9);
-        db.execSQL(SQL_CREATE_ENTRIES10);
+        db.execSQL(SQL_DELETE_ENTRIES9);
+        db.execSQL(SQL_DELETE_ENTRIES10);
         onCreate(db);
     }
 
