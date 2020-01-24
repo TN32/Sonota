@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,8 +18,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -34,6 +38,7 @@ public class RevenueFragment extends CustomFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -42,6 +47,7 @@ public class RevenueFragment extends CustomFragment {
 
     public RevenueFragment() {
         // Required empty public constructor
+        fabCount = 0;
     }
 
     /**
@@ -92,6 +98,8 @@ public class RevenueFragment extends CustomFragment {
 
         // idがlistのListViewを取得
         ListView listView = (ListView) root.findViewById(R.id.listview);
+
+
         listView.setAdapter(arrayAdapter);
 
         // セルを選択されたら一覧画面フラグメント呼び出す
@@ -121,6 +129,7 @@ public class RevenueFragment extends CustomFragment {
 
         return root;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -159,5 +168,10 @@ public class RevenueFragment extends CustomFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onFab1Clicked(int fabId){
+        Toast.makeText(getContext() , "このFragmentのFAB" + fabId + "は未実装です。", Toast.LENGTH_LONG).show();
     }
 }
