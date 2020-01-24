@@ -40,7 +40,7 @@ public class CalenderContentFragment extends CustomFragment {
     private FabControllInterface mFabControllInterface;
 
     public CalenderContentFragment(){
-        fabCount = 3;
+        fabCount = 4;
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,

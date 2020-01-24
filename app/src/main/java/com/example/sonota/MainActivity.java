@@ -19,7 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -36,7 +35,6 @@ import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,13 +53,13 @@ public class MainActivity extends AppCompatActivity
     private CalenderContentFragmentControllAdapter mCalFragmentControllAdapter;
     CustomFragment currentFragment;
 
-    FloatingActionButton fab,fab1,fab2,fab3;
-    TextView text1,text2,text3;
+    FloatingActionButton fab,fab1,fab2,fab3,fab4;
+    TextView text1,text2,text3,text4;
 
     GridView gridView;
     private int savedCalenderPosition;
 
-    Animation sclup,scldown,fabopen1,fabopen2,fabopen3,fabclose,fabclose1,fabclose2,fabclose3;
+    Animation sclup,scldown,fabopen1,fabopen2,fabopen3,fabopen4,fabclose,fabclose1,fabclose2,fabclose3,fabclose4;
     View view_dark;
     private float originalWeight;
     boolean isOpen=false;
@@ -82,13 +80,16 @@ public class MainActivity extends AppCompatActivity
 
 
         fab = findViewById(R.id.fab_parent);
-        fab1 = findViewById(R.id.fab_child_top);
-        fab2 = findViewById(R.id.fab_child_middle);
-        fab3 = findViewById(R.id.fab_child_bottom);
+        fab1 = findViewById(R.id.fab_child_1);
+        fab2 = findViewById(R.id.fab_child_2);
+        fab3 = findViewById(R.id.fab_child_3);
+        fab4 = findViewById(R.id.fab_child_4);
 
-        text1 = findViewById(R.id.fabtext_top);
-        text2 = findViewById(R.id.fabtext_middle);
-        text3 = findViewById(R.id.fabtext_bottom);
+        text1 = findViewById(R.id.fabtext_1);
+        text2 = findViewById(R.id.fabtext_2);
+        text3 = findViewById(R.id.fabtext_3);
+        text4 = findViewById(R.id.fabtext_4);
+
 
         gridView = (GridView)findViewById(R.id.calendargridview);
 
@@ -100,18 +101,21 @@ public class MainActivity extends AppCompatActivity
         fabopen1 = AnimationUtils.loadAnimation(this,R.anim.fab_open);
         fabopen2 = AnimationUtils.loadAnimation(this,R.anim.fab_open);
         fabopen3 = AnimationUtils.loadAnimation(this,R.anim.fab_open);
+        fabopen4 = AnimationUtils.loadAnimation(this,R.anim.fab_open);
 
         fabclose = AnimationUtils.loadAnimation(this,R.anim.fab_close);
         fabclose1 = AnimationUtils.loadAnimation(this,R.anim.fab_close);
         fabclose2 = AnimationUtils.loadAnimation(this,R.anim.fab_close);
-        fabclose3= AnimationUtils.loadAnimation(this,R.anim.fab_close);
+        fabclose3 = AnimationUtils.loadAnimation(this,R.anim.fab_close);
+        fabclose4 = AnimationUtils.loadAnimation(this,R.anim.fab_close);
 
 
 
 // テキストを設定して表示
         text1.setText("支出の登録");
-        text2.setText("アルバイトのシフト登録");
-        text3.setText("スケジュールを登録");
+        text2.setText("収入の登録");
+        text3.setText("アルバイトのシフト登録");
+        text4.setText("スケジュールを登録");
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -171,6 +175,14 @@ public class MainActivity extends AppCompatActivity
                 animateFab();
             }
         });
+
+        fab4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentFragment.onFab1Clicked(4);
+                animateFab();
+            }
+        });
     }
 
     //アニメソッド（FAB）
@@ -190,6 +202,11 @@ public class MainActivity extends AppCompatActivity
                         fab3.startAnimation(fabclose3);
                         text3.startAnimation(fabclose3);
                         fab3.setClickable(false);
+                        if (currentFragment.fabCount > 3){
+                            fab4.startAnimation(fabclose4);
+                            text4.startAnimation(fabclose4);
+                            fab4.setClickable(false);
+                        }
                     }
                 }
             }
@@ -211,6 +228,11 @@ public class MainActivity extends AppCompatActivity
                         fab3.startAnimation(fabopen3);
                         text3.startAnimation(fabopen3);
                         fab3.setClickable(true);
+                        if(currentFragment.fabCount > 3) {
+                            fab4.startAnimation(fabopen4);
+                            text4.startAnimation(fabopen4);
+                            fab4.setClickable(true);
+                        }
                     }
                 }
             }

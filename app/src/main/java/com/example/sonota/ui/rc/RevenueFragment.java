@@ -4,11 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -42,6 +44,7 @@ public class RevenueFragment extends CustomFragment {
 
     public RevenueFragment() {
         // Required empty public constructor
+        fabCount = 1;
     }
 
     /**
@@ -118,8 +121,44 @@ public class RevenueFragment extends CustomFragment {
             }
         });
 
+        init();
 
         return root;
+    }
+
+    private void init(){
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            int oldX = 0, oldY = 0;
+            int originX,originY;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()){
+                    case MotionEvent.ACTION_DOWN:
+                        oldX = (int) event.getX();
+                        oldY = (int) event.getY();
+
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        originX = (int) event.getX();
+                        originY = (int) event.getY();
+                        onViewScroll(originX, originY, oldX, oldY);
+                        //スクロールイベントの発生を知らせる
+                        oldX = originX;
+                        oldY = originY;
+
+                        break;
+                }
+
+                return false;
+            }
+        });
+    }
+
+    /**タッチイベントが起こったら呼ばれる*/
+    public void onViewScroll(int orgX, int orgY, int oldX, int oldY)
+    {
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -159,5 +198,10 @@ public class RevenueFragment extends CustomFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @Override
+    public void onFab1Clicked(int fabId){
+        Toast.makeText(getContext() , "このFragmentのFAB" + fabId + "は未実装です。", Toast.LENGTH_LONG).show();
     }
 }

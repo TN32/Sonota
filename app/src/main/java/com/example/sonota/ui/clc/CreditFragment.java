@@ -114,7 +114,7 @@ public class CreditFragment extends CustomFragment {
     @Override
     public void onFab1Clicked(int fabId){
         switch (fabId){
-            case 1:
+            case 0:
                 DetailCerditFragment fragment = new DetailCerditFragment();
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
