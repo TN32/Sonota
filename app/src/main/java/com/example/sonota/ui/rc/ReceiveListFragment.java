@@ -1,6 +1,7 @@
 package com.example.sonota.ui.rc;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 import com.example.sonota.ui.ec.UpdateExpenceFragment;
 
 import java.util.ArrayList;
@@ -35,6 +37,9 @@ public class ReceiveListFragment extends CustomFragment {
     private OnFragmentInteractionListener mListener;
 
     String year,month;
+
+    TextView tv_rc_revenue;
+    ReceiveListAdapter arrayAdapter;
 
     public ReceiveListFragment() {
         // Required empty public constructor
@@ -75,12 +80,15 @@ public class ReceiveListFragment extends CustomFragment {
         View root = inflater.inflate(R.layout.fragment_rc_list_receive, container, false);
         Bundle args = getArguments();
 
-        TextView tv_rc_revenue =(TextView)root.findViewById(R.id.tv_rc_revenue);
+         tv_rc_revenue =(TextView)root.findViewById(R.id.tv_rc_revenue);
         // 当月の予想収入を表示
-        tv_rc_revenue.setText("50000");
 
         this.year = args.getString("selectedYear");
         this.month = args.getString("selectedMonth");
+
+        if(Integer.valueOf(month) < 10){
+            month = "0" + Integer.valueOf(month);
+        }
 
         String selected = year + "年" + month + "月";
 
@@ -149,12 +157,12 @@ public class ReceiveListFragment extends CustomFragment {
             }
         });
 
-        ArrayList<ReceiveClass> listData = new ArrayList<>();
-        ReceiveClass data = new ReceiveClass(0, "Apple", 18000, 880);
-        listData.add(data);
+        ArrayList<ReceiveListClass> listData = new ArrayList<>();
+        listView = (ListView) root.findViewById(R.id.listview);
 
+        arrayAdapter = new ReceiveListAdapter(getContext(),listData,R.layout.list_rc_receive_cell);
 
-        final ReceiveListAdapter arrayAdapter = new ReceiveListAdapter(getContext(),listData,R.layout.list_rc_receive_cell);
+        listload();
 
         // idがlistのListViewを取得
         ListView listView = (ListView) root.findViewById(R.id.listview);
@@ -192,7 +200,71 @@ public class ReceiveListFragment extends CustomFragment {
             }
         });
 
+
+
         return root;
+    }
+
+    public void listload(){
+        if (helper == null){
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+        }
+
+        if(db == null){
+            db = helper.getWritableDatabase();
+        }
+
+        String[] selectArgs = {year + "_" + month + "%"};
+
+        //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
+        //  引数tableには、テーブル名を指定します。
+        //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
+        //  引数selectionには、検索条件を指定します。
+        //  引数selectionArgsには、検索条件のパラメータ（？で指定）に置き換わる値を指定します。
+        //  引数groupByには、groupBy句を指定します。
+        //  引数havingには、having句を指定します。
+        //  引数orderByには、orderBy句を指定します。
+        //  引数limitには、検索結果の上限レコードを数を指定します
+        Cursor cursor = db.query(
+                "t_income",
+                new String[]{"income_code","income_day","income_memo","income_money"},
+                "income_day like ?",
+                selectArgs,
+                null,
+                null,
+                "income_day desc"
+        );
+
+
+        cursor.moveToFirst();
+        ArrayList<ReceiveListClass> listData = new ArrayList<ReceiveListClass>();
+        int total = 0,cash = 0,credit = 0;
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            ReceiveListClass data = new ReceiveListClass(cursor.getInt(0),cursor.getString(2),cursor.getInt(3),cursor.getString(1));
+            listData.add(data);
+            total += data.getMoney();
+
+            cursor.moveToNext();
+        }
+
+
+        tv_rc_revenue.setText(String.valueOf(total));
+
+
+        cursor.close();
+
+        /**
+         * CustomAdapterを生成
+         * R.layout.custom_list_layout : リストビュー自身のレイアウト。今回は自作。
+         */
+        arrayAdapter = new ReceiveListAdapter(
+                getContext(),
+                listData, // 使用するデータ
+                R.layout.list_rc_receive_cell // 自作したレイアウト
+        );
+
+        listView.setAdapter(arrayAdapter);
     }
 
     public void onViewScroll(int orgX, int orgY, int oldX, int oldY)

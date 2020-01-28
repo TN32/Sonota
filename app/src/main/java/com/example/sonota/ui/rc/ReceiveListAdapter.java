@@ -16,14 +16,14 @@ public class ReceiveListAdapter extends BaseAdapter {
     private Context context = null;
 
     // ArrayListの中に独自クラスのCustomDataClassを指定
-    private ArrayList<ReceiveClass> data = null;
+    private ArrayList<ReceiveListClass> data = null;
 
     private int resource = 0;
     private ArrayList<String> dateTextList = new ArrayList();
 
 
     // コンストラクタ  MainActivityでアダプターを生成する箇所で呼ばれている
-    public ReceiveListAdapter(Context context, ArrayList<ReceiveClass> data, int resource){
+    public ReceiveListAdapter(Context context, ArrayList<ReceiveListClass> data, int resource){
         this.context = context;
         this.data = data;
         this.resource = resource;
@@ -51,7 +51,7 @@ public class ReceiveListAdapter extends BaseAdapter {
      * ※このメソッドは必ず記述すること
      */
     public long getItemId(int position) {
-        return data.get(position).getId();
+        return data.get(position).getCode();
     }
 
     /**
@@ -63,7 +63,7 @@ public class ReceiveListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Activity activity = (Activity) context;
         // 指定された位置のデータを取得
-        ReceiveClass data = (ReceiveClass) getItem(position);
+        ReceiveListClass data = (ReceiveListClass) getItem(position);
 
         // 再利用可能なビューが無かったら生成する
         if(convertView == null){
@@ -74,17 +74,16 @@ public class ReceiveListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
 
-        TextView title = (TextView) convertView.findViewById(R.id.tv_rc_receivetitle);
-        title.setText(data.getTitle() + "  →  ￥");
+        TextView memo = (TextView) convertView.findViewById(R.id.tv_rc_title);
+        memo.setText(data.getMemo() + "  ");
 
-        TextView receive = (TextView) convertView.findViewById(R.id.tv_rc_receive);
-        receive.setText(data.getAmount() + "");
 
-        TextView worktime = (TextView) convertView.findViewById(R.id.tv_rc_worktime);
-        worktime.setText(data.getWorktime() + "分");
 
-        TextView enduranc = (TextView) convertView.findViewById(R.id.tv_rc_endurance);
-        enduranc.setText("￥" + data.getEndurance() + "/１ｈ");
+        TextView worktime = (TextView) convertView.findViewById(R.id.tv_rc_money);
+        worktime.setText(data.getMoney() + "");
+
+        TextView enduranc = (TextView) convertView.findViewById(R.id.tv_rc_day);
+        enduranc.setText(  data.getDay() );
 
         return convertView;
     }

@@ -12,18 +12,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_rc_receivetitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:gravity="right"
-            android:text="TextView"
-            android:textColor="#000000"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_rc_receive"
+            android:id="@+id/tv_rc_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -44,7 +33,7 @@
 
 
         <TextView
-            android:id="@+id/tv_rc_worktime"
+            android:id="@+id/tv_rc_money"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -52,7 +41,7 @@
             android:textSize="24dp" />
 
         <TextView
-            android:id="@+id/tv_rc_endurance"
+            android:id="@+id/tv_rc_day"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
