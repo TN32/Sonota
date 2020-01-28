@@ -76,7 +76,8 @@ public class PaymentListAdapter extends BaseAdapter {
 
 
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-        ((TextView) convertView.findViewById(R.id.expenceList_TextView_Date_cell)).setText(data.getDate());
+        String[] dateText = data.getDate().split("_");
+        ((TextView) convertView.findViewById(R.id.expenceList_TextView_Date_cell)).setText(dateText[0] + "年" + dateText[1] + "月" + dateText[2] + "日");
         dateTextList.add(data.getDate());
 
 
