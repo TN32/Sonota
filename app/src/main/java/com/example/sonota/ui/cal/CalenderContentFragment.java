@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.sonota.CustomFragment;
 import com.example.sonota.FabControllInterface;
 import com.example.sonota.R;
+import com.example.sonota.db.DBDatafholder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,6 +47,8 @@ public class CalenderContentFragment extends CustomFragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_cal_calender_content, container, false);
+
+        DBDatafholder dataHolder =  new DBDatafholder(getContext());
 
         calendarPager = root.findViewById(R.id.CalendarPager);
         mCalendarPagerAdapter = new CalendarPagerAdapter(getChildFragmentManager(),CALENDARPAGER_MAX_COUNT);
