@@ -224,6 +224,7 @@ public class SonotaDBOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_ENTRIES9 =
             "DROP TABLE IF EXISTS " +TABLE_NAME9;
 
+
     private static final String SQL_CREATE_ENTRIES10 =
 
             "CREATE TABLE " +  TABLE_NAME10 + " (" +
