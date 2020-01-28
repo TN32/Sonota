@@ -95,9 +95,9 @@ public class AddIncomeFragment extends CustomFragment {
         Button buttonAddincomeAdd = root.findViewById(R.id.bt_cal_registration);
         buttonAddincomeAdd.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                String memo = edittextAddincomeMoney.getText().toString();
+                String memo = editTextAddincomeMemo.getText().toString();
                 String date = textviewAddincomeToday.getText().toString();
-                String money = editTextAddincomeMemo.getText().toString();
+                String money = edittextAddincomeMoney.getText().toString();
 
 
                 if (helper == null){
@@ -107,6 +107,7 @@ public class AddIncomeFragment extends CustomFragment {
                 if(db == null){
                     db = helper.getWritableDatabase();
                 }
+
 
                 insertData(db, money, date, memo);
 

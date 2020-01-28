@@ -1,6 +1,7 @@
 package com.example.sonota.ui.rc;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,9 +19,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -40,6 +43,10 @@ public class RevenueFragment extends CustomFragment {
 
 
     // TODO: Rename and change types of parameters
+
+    RevenueListAdapter arrayAdapter;
+    TextView tv_rc_revenue;
+    
     private String mParam1;
     private String mParam2;
 
@@ -83,24 +90,22 @@ public class RevenueFragment extends CustomFragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_rc_list_revenue, container, false);
 
-        TextView tv_rc_revenue = (TextView)root.findViewById(R.id.tv_rc_revenue);
-        // 予想収入を表示
-        tv_rc_revenue.setText("50000");
+        tv_rc_revenue = (TextView)root.findViewById(R.id.tv_rc_revenue);
 
-
-        ArrayList<RevenueListClass> listData = new ArrayList<>();
-        for(int i = 1; i <=  12; i++) {
-            RevenueListClass data = new RevenueListClass(i, "2019年" + i + "月", 30000 + i);
-            listData.add(data);
+        if (helper == null){
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
         }
 
-        final RevenueListAdapter arrayAdapter = new RevenueListAdapter(getContext(),listData,R.layout.list_rc_revenue_cell);
+        if(db == null){
+            db = helper.getWritableDatabase();
+        }
+        listView = (ListView)root.findViewById(R.id.listview);
 
-        // idがlistのListViewを取得
+//        expenceTextviewThismonth = (TextView) root.findViewById(R.id.PaymentListTextviewThisMonth);
+
         ListView listView = (ListView) root.findViewById(R.id.listview);
 
-
-        listView.setAdapter(arrayAdapter);
+        listload();
 
         // セルを選択されたら一覧画面フラグメント呼び出す
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -129,6 +134,79 @@ public class RevenueFragment extends CustomFragment {
 
         return root;
     }
+
+    public void listload(){
+        if (helper == null){
+            helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+        }
+
+        if(db == null){
+            db = helper.getWritableDatabase();
+        }
+
+        //  引数distinctには、trueを指定すると検索結果から重複する行を削除します。
+        //  引数tableには、テーブル名を指定します。
+        //  引数columnsには、検索結果に含める列名を指定します。nullを指定すると全列の値が含まれます。
+        //  引数selectionには、検索条件を指定します。
+        //  引数selectionArgsには、検索条件のパラメータ（？で指定）に置き換わる値を指定します。
+        //  引数groupByには、groupBy句を指定します。
+        //  引数havingには、having句を指定します。
+        //  引数orderByには、orderBy句を指定します。
+        //  引数limitには、検索結果の上限レコードを数を指定します
+        Cursor cursor = db.query(
+                "t_income",
+                new String[]{"income_code","income_day","income_memo"},
+                null,
+                null,
+                null,
+                null,
+                "income_day desc"
+        );
+
+
+        cursor.moveToFirst();
+        ArrayList<RevenueListClass> listData = new ArrayList<RevenueListClass>();
+        int total = 0,cash = 0,credit = 0;
+        String[] thisMonthSplit = splitDate(truncDate(new Date()));
+
+        for (int i = 0; i < cursor.getCount();) {
+            String[] monthSplit = splitDate(cursor.getString(1));
+            String[] currentMonth = monthSplit;
+            int currentMonthTotal = 0;
+            do{
+                currentMonthTotal += cursor.getInt(2);
+                String s = cursor.getString(1);
+                cursor.moveToNext();
+                i++;
+                if(i < cursor.getCount()){
+                    currentMonth = splitDate(cursor.getString(1));
+                }
+                else {
+                    break;
+                }
+            }while (monthSplit[0].equals(currentMonth[0]) && monthSplit[1].equals(currentMonth[1]));
+
+            RevenueListClass data = new RevenueListClass(i,monthSplit[0] + "年" + monthSplit[1] + "月",currentMonthTotal);
+            listData.add(data);
+        }
+
+        tv_rc_revenue.setText(String.valueOf(total));
+
+        cursor.close();
+
+        /**
+         * CustomarrayAdapterを生成
+         * R.layout.custom_list_layout : リストビュー自身のレイアウト。今回は自作。
+         */
+        arrayAdapter = new RevenueListAdapter(
+                getContext(),
+                listData, // 使用するデータ
+                R.layout.list_rc_revenue_cell // 自作したレイアウト
+        );
+
+        listView.setAdapter(arrayAdapter);
+    }
+
 
 
     // TODO: Rename method, update argument and hook method into UI event
