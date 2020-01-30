@@ -155,7 +155,7 @@ public class RevenueFragment extends CustomFragment {
         //  引数limitには、検索結果の上限レコードを数を指定します
         Cursor cursor = db.query(
                 "t_income",
-                new String[]{"income_code","income_day","income_memo"},
+                new String[]{"income_code","income_day","income_money"},
                 null,
                 null,
                 null,

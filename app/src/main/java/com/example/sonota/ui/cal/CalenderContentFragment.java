@@ -48,8 +48,6 @@ public class CalenderContentFragment extends CustomFragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_cal_calender_content, container, false);
 
-        DBDatafholder dataHolder =  new DBDatafholder(getContext());
-
         calendarPager = root.findViewById(R.id.CalendarPager);
         mCalendarPagerAdapter = new CalendarPagerAdapter(getChildFragmentManager(),CALENDARPAGER_MAX_COUNT);
 
@@ -68,8 +66,6 @@ public class CalenderContentFragment extends CustomFragment {
     }
 
     public void setListtener(View root){
-
-
         calendarPager.addOnPageChangeListener(new CustomViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

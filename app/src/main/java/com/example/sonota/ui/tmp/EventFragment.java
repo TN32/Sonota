@@ -117,6 +117,7 @@ public class EventFragment extends CustomFragment {
 
         return view;
     }
+
     public void onViewScroll(int orgX, int orgY, int oldX, int oldY)
     {
         if (oldY>orgY){

@@ -353,7 +353,6 @@ public class MainActivity extends AppCompatActivity
     public class ResizeAnimation extends Animation {
         final float addWeight;
         View view;
-        android.text.Layout Layout;
         float startWeight;
 
         public ResizeAnimation(View view, float addWeight, float startWeight) {
@@ -387,6 +386,8 @@ public class MainActivity extends AppCompatActivity
         final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.cal_CalenderSection);
         final LinearLayout.LayoutParams params=(LinearLayout.LayoutParams) linearLayout.getLayoutParams();
 
+        setFabCount(4);
+
         // ビューを開くアニメーションを生成
         final ResizeAnimation expandAnimation = new ResizeAnimation(linearLayout, originalWeight, 0);
         expandAnimation.setDuration(200);
@@ -400,6 +401,8 @@ public class MainActivity extends AppCompatActivity
     public void animedown(){
         final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.cal_CalenderSection);
         final LinearLayout.LayoutParams params=(LinearLayout.LayoutParams) linearLayout.getLayoutParams();
+
+        setFabCount(0);
 
         // ビューを閉じるアニメーションを生成
         final ResizeAnimation collapseAnimation = new ResizeAnimation(linearLayout, -params.weight, params.weight);
