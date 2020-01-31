@@ -1,29 +1,35 @@
-package com.example.sonota.ui.set;
+package com.example.sonota.ui.rc;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
+import com.example.sonota.SonotaDBOpenHelper;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SetMainMenuFragment.OnFragmentInteractionListener} interface
+ * {@link UpdateReceiveFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SetMainMenuFragment#newInstance} factory method to
+ * Use the {@link UpdateReceiveFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SetMainMenuFragment extends Fragment {
+public class UpdateReceiveFragment extends CustomFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,9 +39,16 @@ public class SetMainMenuFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    View root;
+    EditText edittextAddincomeMoney;
+    EditText edittextAddincomeMemo;
+    TextView textviewAddincomeToday;
+
+    String addDate;
+
     private OnFragmentInteractionListener mListener;
 
-    public SetMainMenuFragment() {
+    public UpdateReceiveFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +58,11 @@ public class SetMainMenuFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SetMainMenuFragment.
+     * @return A new instance of fragment UpdateReceiveFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SetMainMenuFragment newInstance(String param1, String param2) {
-        SetMainMenuFragment fragment = new SetMainMenuFragment();
+    public static UpdateReceiveFragment newInstance(String param1, String param2) {
+        UpdateReceiveFragment fragment = new UpdateReceiveFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -69,44 +82,54 @@ public class SetMainMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        root = inflater.inflate(R.layout.fragment_update_receive, container, false);
+        super.onCreate(savedInstanceState);
+
+        edittextAddincomeMemo = (EditText)root.findViewById(R.id.edittextAddincomeMemo);
+        edittextAddincomeMoney = (EditText)root.findViewById(R.id.edittextAddincomeMoney);
+        textviewAddincomeToday = (TextView)root.findViewById(R.id.textviewAddincomeToday);
+
+        Button bt_cal_registration = root.findViewById(R.id.bt_cal_registration);
+
+        bt_cal_registration.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+
+                String memo = edittextAddincomeMemo.getText().toString();
+                String money = edittextAddincomeMoney.getText().toString();
+
+                if (helper == null){
+                    helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
+                }
+
+                if(db == null){
+                    db = helper.getWritableDatabase();
+                }
+
+                updateIncome(db,addDate,money,memo);
+
+                Toast.makeText(getContext(),  "登録が完了しました!" ,Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().popBackStack("IncomeList", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            }
+        });
+
+        Bundle args = getArguments();
+        if(args != null){
+            selected = args.getInt("selected");
+            addDate = args.getString("addDay");
+            textviewAddincomeToday = root.findViewById(R.id.textviewAddincomeToday);
+            textviewAddincomeToday.setText(sharpingDate(addDate));
+
+            edittextAddincomeMemo.setText(args.getString("Memo"));
+            edittextAddincomeMoney.setText(String.valueOf(args.getInt("Money")));
+
+
+        }
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_set_main_menu, container, false);
-        final Button bt_set_credit = (Button)root.findViewById(R.id.bt_set_credit);
-        final Button bt_set_parttimejob = (Button)root.findViewById(R.id.bt_set_parttimejob);
-
-        bt_set_credit.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                SetCreditListFragment fragment = new SetCreditListFragment();
-                Bundle bundle = new Bundle();
-
-                fragment.setArguments(bundle);
-                //一覧画面を呼び出す
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.set_mainsection, fragment);
-                transaction.commit();
-            }
-        });
-
-        bt_set_parttimejob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SetParttimejobListFragment fragment = new SetParttimejobListFragment();
-                Bundle bundle = new Bundle();
-
-                fragment.setArguments(bundle);
-                //一覧画面を呼び出す
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.set_mainsection, fragment);
-                transaction.commit();
-            }
-        });
-
         return root;
     }
+
+    int selected;
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -118,13 +141,13 @@ public class SetMainMenuFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
+//
+//    }  if (context instanceof OnFragmentInteractionListener) {
 //            mListener = (OnFragmentInteractionListener) context;
 //        } else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
-//        }
-    }
+        }
 
     @Override
     public void onDetach() {
@@ -145,5 +168,17 @@ public class SetMainMenuFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void updateIncome(SQLiteDatabase db,String day, String money, String memo){
+        ContentValues values = new ContentValues();
+        values.put("income_day", day);
+        values.put("income_money", money);
+        values.put("income_memo", memo);
+
+
+        String[] whereArgs = {String.valueOf(selected)};
+
+        db.update("t_income",values, "income_code=?",whereArgs);
     }
 }

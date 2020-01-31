@@ -1,6 +1,8 @@
 package com.example.sonota.ui.rc;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -164,6 +166,53 @@ public class ReceiveListFragment extends CustomFragment {
 
         listload();
 
+        // ここにダイアログイベントを発生
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedPosition = position;
+                final String[] items = {"変更", "削除", "キャンセル"};
+                new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //                             item_which pressed
+                        switch (which) {
+                            case 0:
+                                UpdateReceiveFragment fragment = new UpdateReceiveFragment();
+                                Bundle bundle = new Bundle();
+
+                                bundle.putInt("selected", (int)arrayAdapter.getItemId(selectedPosition));
+                                bundle.putString("Memo", arrayAdapter.getCurrentMemo(selectedPosition));
+                                bundle.putInt("Money", arrayAdapter.getMoney(selectedPosition));
+                                bundle.putString("addDay", arrayAdapter.getCurrentDay(selectedPosition));
+
+                                fragment.setArguments(bundle);
+                                // 変更画面を呼び出す
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                transaction.replace(R.id.rc_mainsection, fragment);
+                                // 戻るボタンで戻ってこれるように
+                                transaction.addToBackStack("IncomeList");
+                                transaction.commit();
+                                break;
+                            case 1:
+                                arrayAdapter.getItemId(selectedPosition);
+                                String[] whereId = new String[1];
+                                whereId[0] = String.valueOf(arrayAdapter.getItemId(selectedPosition));
+                                db.delete(
+                                        "t_income",
+                                        "income_code=?",
+                                        whereId
+                                );
+                                listload();
+                                break;
+                            case 2:
+                                break;
+                        }
+                    }
+                }).show();
+            }
+        });
+
         // idがlistのListViewを取得
         ListView listView = (ListView) root.findViewById(R.id.listview);
         listView.setOnTouchListener(new View.OnTouchListener() {
@@ -193,12 +242,12 @@ public class ReceiveListFragment extends CustomFragment {
         });
         listView.setAdapter(arrayAdapter);
 
-        // セルを選択されたら一覧画面フラグメント呼び出す
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-            }
-        });
+//        // セルを選択されたら一覧画面フラグメント呼び出す
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+//            }
+//        });
 
 
 

@@ -75,7 +75,7 @@ public class ReceiveListAdapter extends BaseAdapter {
          */
 
         TextView memo = (TextView) convertView.findViewById(R.id.tv_rc_title);
-        memo.setText(data.getMemo() + "  ");
+        memo.setText(data.getMemo() + "");
 
 
 
@@ -88,7 +88,14 @@ public class ReceiveListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public String getCurrentDateText(int position){
-        return dateTextList.get(position);
+    public String getCurrentMemo(int position){
+        return data.get(position).getMemo();
     }
+    public String getCurrentDay(int position){
+        return data.get(position).getDay();
+    }
+    public int getMoney(int position){
+        return data.get(position).getMoney();
+    }
+
 }

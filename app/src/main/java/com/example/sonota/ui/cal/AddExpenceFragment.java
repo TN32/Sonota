@@ -1,5 +1,6 @@
 package com.example.sonota.ui.cal;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -158,9 +159,20 @@ public class AddExpenceFragment extends CustomFragment {
         Button bt_cal_registration = root.findViewById(R.id.bt_cal_registration);
         bt_cal_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
+
+                if (et_cal_add_money.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("金額が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+
                 String insnumber = et_caladd_insnumber.getText().toString();
                 String memo = et_caladd_memo.getText().toString();
                 String money = et_cal_add_money.getText().toString();
+
 
                 if (helper == null){
                     helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
@@ -180,6 +192,7 @@ public class AddExpenceFragment extends CustomFragment {
 
                 Toast.makeText(getContext(),  "登録が完了しました!" ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("CalenderContent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
             }
         });
 
