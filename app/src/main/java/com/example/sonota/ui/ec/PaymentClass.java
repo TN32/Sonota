@@ -11,8 +11,6 @@ public class PaymentClass {
     private String memo;
     private long creditcode;
 
-
-
     public PaymentClass( int code,String date,String memo, int amount){
         this.id = code;
         this.date = date;

@@ -21,7 +21,7 @@ public class ClcFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_clc, container, false);
 
-        PagerFragment fragment = new PagerFragment();
+        CreditFragment fragment = new CreditFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.clc_mainsection, fragment);

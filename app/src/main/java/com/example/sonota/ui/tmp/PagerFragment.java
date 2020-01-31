@@ -108,7 +108,6 @@ public class PagerFragment extends Fragment {
         credit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 viewPager.setCurrentItem(0);
             }
         });
@@ -116,7 +115,6 @@ public class PagerFragment extends Fragment {
         loan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 viewPager.setCurrentItem(1);
             }
         });

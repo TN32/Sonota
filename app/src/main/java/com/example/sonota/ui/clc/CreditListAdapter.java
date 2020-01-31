@@ -78,13 +78,29 @@ public class CreditListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-//        ((TextView) convertView.findViewById(R.id.tv_clc_creditdetail_title)).setText(data.getTitle());
+        ((TextView) convertView.findViewById(R.id.tv_clc_credit_title)).setText(data.getMemo());
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
         TextView sub = (TextView) convertView.findViewById(R.id.tv_clc_creditdetail_amout);
-        sub.setText(data.getAmout() + "円");
+        sub.setText(data.getrAmount() + "円");
         // idがdescriptionのTextViewに、指定されたデータのdescriptionの値を格納している
         ((TextView) convertView.findViewById(R.id.tv_clc_loandetail_count)).setText("残り" + data.getTimes() + "回");
 
         return convertView;
+    }
+
+    public String getMemo(int position){
+        return data.get(position).getMemo();
+    }
+
+    public int getPayAmout(int position){
+        return (data.get(position).getrAmount() / data.get(position).getTimes());
+    }
+
+    public int getrAmount(int position){
+        return data.get(position).getrAmount();
+    }
+
+    public int getTimes(int position){
+        return data.get(position).getTimes();
     }
 }
