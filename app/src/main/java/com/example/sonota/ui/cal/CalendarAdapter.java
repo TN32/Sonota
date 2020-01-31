@@ -114,7 +114,7 @@ public class CalendarAdapter extends BaseAdapter {
         if(mDateManager.isToday(dateArray.get(position))){
             int textColor = Color.WHITE;
             if(colorId == Color.BLACK){
-                colorId = Color.GREEN;
+                colorId = mContext.getResources().getColor(android.R.color.holo_orange_dark);
                 textColor = Color.BLACK;
             }
             holder.dateText.setBackgroundColor(colorId);
