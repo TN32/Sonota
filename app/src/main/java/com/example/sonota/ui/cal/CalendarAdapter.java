@@ -196,7 +196,7 @@ public class CalendarAdapter extends BaseAdapter {
             TextView tv = new TextView(mContext);
             tv.setBackgroundColor(Color.RED);
             tv.setTextColor(Color.WHITE);
-            tv.setTextSize(12);
+            tv.setTextSize(6);
             String jName = getPNameById(cursor.getInt(1),pPlace);
             tv.setText(jName);
             holder.contentArea.addView(tv);
@@ -222,7 +222,7 @@ public class CalendarAdapter extends BaseAdapter {
             TextView tv = new TextView(mContext);
             tv.setBackgroundColor(Color.BLUE);
             tv.setTextColor(Color.WHITE);
-            tv.setTextSize(12);
+            tv.setTextSize(6);
             tv.setText(cursor.getString(1));
             holder.contentArea.addView(tv);
             cursor.moveToNext();

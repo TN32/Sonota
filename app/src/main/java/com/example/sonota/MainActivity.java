@@ -76,9 +76,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-
-
         fab = findViewById(R.id.fab_parent);
         fab1 = findViewById(R.id.fab_child_1);
         fab2 = findViewById(R.id.fab_child_2);
@@ -239,7 +236,12 @@ public class MainActivity extends AppCompatActivity
             view_dark.setVisibility(View.VISIBLE);
             isOpen=true;
         }
+    }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        animeup();
     }
 
     @Override
@@ -347,7 +349,8 @@ public class MainActivity extends AppCompatActivity
         if (currentFragment instanceof CalenderContentFragment){
             final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.cal_CalenderSection);
             final LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) linearLayout.getLayoutParams();
-            originalWeight = ((LinearLayout.LayoutParams) linearLayout.getLayoutParams()).weight;
+            originalWeight = 100
+            ;
         }
     }
     public class ResizeAnimation extends Animation {
@@ -392,7 +395,7 @@ public class MainActivity extends AppCompatActivity
         final ResizeAnimation expandAnimation = new ResizeAnimation(linearLayout, originalWeight, 0);
         expandAnimation.setDuration(200);
         linearLayout.clearAnimation();
-        if(params.weight <99)
+        if(params.weight < 99)
             linearLayout.startAnimation(expandAnimation);
 
         //Toast.makeText(this , "上", Toast.LENGTH_LONG).show();
@@ -409,7 +412,7 @@ public class MainActivity extends AppCompatActivity
         collapseAnimation.setDuration(200);
         // 下フリック
         linearLayout.clearAnimation();
-        if(params.weight >99)
+        if(params.weight > 99)
             linearLayout.startAnimation(collapseAnimation);
         // Toast.makeText(this, "下", Toast.LENGTH_LONG).show();
     }
