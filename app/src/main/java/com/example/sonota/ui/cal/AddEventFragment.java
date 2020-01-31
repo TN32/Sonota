@@ -1,5 +1,6 @@
 package com.example.sonota.ui.cal;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -73,6 +74,15 @@ public class AddEventFragment extends CustomFragment {
                 String eventName = eventNameTextView.getText().toString();
                 String eventDate = tv_cal_adddate.getText().toString();
 
+                if (eventName.equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("イベント名が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+
                 figures[0] = String.valueOf(numPicker0.getValue());
                 figures[1] = String.valueOf(numPicker1.getValue());
                 figures[2] = String.valueOf(numPicker2.getValue());
@@ -114,6 +124,7 @@ public class AddEventFragment extends CustomFragment {
 
         db.insert("t_schedule",null, values);
     }
+
 
 
 }

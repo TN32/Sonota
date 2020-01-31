@@ -1,5 +1,6 @@
 package com.example.sonota.ui.cal;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -125,6 +126,16 @@ public class AddParttimejobFragment extends CustomFragment {
         bt_cal_registration = root.findViewById(R.id.bt_cal_registration);
         bt_cal_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
+
+                if(spinner.getSelectedItem() == null){
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("アルバイト先が登録されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+
                 String eventDate = tv_cal_adddate.getText().toString();
                 int byteaheadCode = Integer.valueOf(listId.get((int)spinner.getAdapter().getItemId(spinner.getSelectedItemPosition())));
 
@@ -135,8 +146,6 @@ public class AddParttimejobFragment extends CustomFragment {
                 else {
                     btime = Integer.valueOf(bTime.getText().toString());
                 }
-
-
                 figures[0] = String.valueOf(numPicker0.getValue());
                 figures[1] = String.valueOf(numPicker1.getValue());
                 figures[2] = String.valueOf(numPicker2.getValue());

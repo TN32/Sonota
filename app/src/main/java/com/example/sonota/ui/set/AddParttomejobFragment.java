@@ -1,5 +1,6 @@
 package com.example.sonota.ui.set;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -105,10 +106,63 @@ public class AddParttomejobFragment extends CustomFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (name.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("アルバイト名が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+                if (hwage.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("時給が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+                if (pday.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("入金日が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+                if (cday.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("締め日が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+
                 String jobName = name.getText().toString();
                 int jobhwage = Integer.valueOf(hwage.getText().toString()) ;
                 int jobpday =  Integer.valueOf(pday.getText().toString());
                 int jobcday = Integer.valueOf(cday.getText().toString());
+
+
+                if (jobpday < 1 || jobpday > 31 ) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("入金日は1から31の間で入力してください。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+                if (jobcday < 1 || jobcday > 31 ) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("締め日は1から31の間で入力してください。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+
 
                 if (helper == null){
                     helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.sonota.R;
@@ -73,7 +74,12 @@ public class PaymentListAdapter extends BaseAdapter {
         /**
          * ここから各項目に値を割り当てる処理
          */
-
+        ImageView img = convertView.findViewById(R.id.im_Ec_PaymentIcon);
+        if (data.isCregitPayment()== true){
+            img.setImageResource(R.mipmap.ic_credit2_foreground);
+        }else {
+            img.setImageResource(R.mipmap.ic_money2_foreground);
+        }
 
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
         String[] dateText = data.getDate().split("_");
