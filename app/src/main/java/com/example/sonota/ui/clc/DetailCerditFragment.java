@@ -1,5 +1,6 @@
 package com.example.sonota.ui.clc;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -68,12 +69,47 @@ public class DetailCerditFragment extends CustomFragment {
         bt_clc_credit_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (etName.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("メモが入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+                if (etAmout.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("合計金額が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+                if (etSprit.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("月額が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+                if (etPerm.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("残り金額が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
+
                 String name = etName.getText().toString();
                 String amout = etAmout.getText().toString();
                 String split = etSprit.getText().toString();
                 String perm = etPerm.getText().toString();
                 String remaining = etRemaining.getText().toString();
                 Boolean capy = true;
+
 
                 if(isNewItem ==true)
                 {

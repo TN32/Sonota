@@ -1,5 +1,6 @@
 package com.example.sonota.ui.tmp;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -136,11 +137,20 @@ public class DetailParttimejobFragment extends CustomFragment {
         bt_tmp_registration = root.findViewById(R.id.bt_tmp_registration);
         bt_tmp_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
+                if(spinner.getSelectedItem() == null){
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("アルバイト先が登録されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
                 int byteaheadCode = Integer.valueOf(listId.get((int)spinner.getAdapter().getItemId(spinner.getSelectedItemPosition())));
                 int breakTime;
 
                 if(et_tmp_braekTime.getText().toString() == null || et_tmp_braekTime.getText().toString().equals("")){
                     breakTime = 0;
+
                 }
                 else {
                     breakTime = Integer.valueOf(et_tmp_braekTime.getText().toString());

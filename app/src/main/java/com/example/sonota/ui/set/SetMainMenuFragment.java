@@ -75,6 +75,7 @@ public class SetMainMenuFragment extends Fragment {
         final Button bt_set_parttimejob = (Button)root.findViewById(R.id.bt_set_parttimejob);
 
         bt_set_credit.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 SetCreditListFragment fragment = new SetCreditListFragment();

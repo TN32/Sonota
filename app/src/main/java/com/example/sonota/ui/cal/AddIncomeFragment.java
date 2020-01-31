@@ -1,5 +1,6 @@
 package com.example.sonota.ui.cal;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -98,6 +99,15 @@ public class AddIncomeFragment extends CustomFragment {
                 String memo = editTextAddincomeMemo.getText().toString();
                 String date = textviewAddincomeToday.getText().toString();
                 String money = edittextAddincomeMoney.getText().toString();
+
+                if (edittextAddincomeMoney.getText().toString().equals("")) {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("登録できませんでした！")
+                            .setMessage("金額が入力されていません。")
+                            .setPositiveButton("OK", null)
+                            .show();
+                    return;
+                }
 
 
                 if (helper == null){

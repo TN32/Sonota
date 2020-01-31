@@ -1,5 +1,6 @@
 package com.example.sonota.ui.tmp;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class DetailEventFragment extends CustomFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
 
+
         View root = inflater.inflate(R.layout.fragment_tmp_detail_event, container, false);
 
         pickerTextView = root.findViewById(R.id.text_view);
@@ -65,6 +67,15 @@ public class DetailEventFragment extends CustomFragment {
         bt_tmp_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 String eventName = et_tmp_eventName.getText().toString();
+
+                if (eventName.equals("")) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("登録できませんでした！")
+                                .setMessage("イベント名が入力されていません。")
+                                .setPositiveButton("OK", null)
+                                .show();
+                        return;
+                }
 
                 figures[0] = String.valueOf(numPicker0.getValue());
                 figures[1] = String.valueOf(numPicker1.getValue());
