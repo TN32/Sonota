@@ -166,8 +166,6 @@ public class RevenueFragment extends CustomFragment {
 
         cursor.moveToFirst();
         ArrayList<RevenueListClass> listData = new ArrayList<RevenueListClass>();
-        int total = 0,cash = 0,credit = 0;
-        String[] thisMonthSplit = splitDate(truncDate(new Date()));
 
         for (int i = 0; i < cursor.getCount();) {
             String[] monthSplit = splitDate(cursor.getString(1));
@@ -190,9 +188,61 @@ public class RevenueFragment extends CustomFragment {
             listData.add(data);
         }
 
-        tv_rc_revenue.setText(String.valueOf(total));
+        cursor.close();
+
+        cursor = db.query(
+                "t_byteahead",
+                new String[]{"byteahead_code","byteahead_hwage"},
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        ArrayList<ByteaheadClass> ByteaheadData = new ArrayList<ByteaheadClass>();
+
+        for (int l = 0 ; l < cursor.getCount(); l++) {
+            ByteaheadClass data = new ByteaheadClass(cursor.getInt(0),cursor.getInt(1));
+            ByteaheadData.add(data);
+            cursor.moveToNext();
+        }
 
         cursor.close();
+
+        String[] dateSplit = splitDate(truncDate(new Date()));
+        String[] whereText = new String[1];
+        whereText[0] = dateSplit[0] + "_" + dateSplit[1] + "%";
+
+        cursor = db.query(
+                "t_shift",
+                new String[]{"shift_code","byteahead_code","shift_stime","shift_etime","shift_btime"},
+                "shift_date like ?",
+                whereText,
+                null,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+        ArrayList<ShiftClass> shiftData = new ArrayList<ShiftClass>();
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+            ShiftClass data = new ShiftClass(cursor.getInt(0),cursor.getInt(1),cursor.getString(2),cursor.getString(3),cursor.getInt(4),ByteaheadData);
+            shiftData.add(data);
+            cursor.moveToNext();
+        }
+
+        int incomeTotal = 0;
+        for (int i = 0; i < shiftData.size(); i++) {
+             incomeTotal += shiftData.get(i).getAmount();
+        }
+
+        cursor.close();
+
+        tv_rc_revenue.setText(String.valueOf(incomeTotal));
 
         /**
          * CustomarrayAdapterを生成
