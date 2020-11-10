@@ -75,15 +75,15 @@ public class ReceiveListAdapter extends BaseAdapter {
          */
 
         TextView memo = (TextView) convertView.findViewById(R.id.tv_rc_title);
-        memo.setText(data.getMemo() + "");
-
+        memo.setText("メモ：" + data.getMemo());
 
 
         TextView worktime = (TextView) convertView.findViewById(R.id.tv_rc_money);
-        worktime.setText(data.getMoney() + "");
+        worktime.setText("￥" + data.getMoney());
 
+        String[] dateText = data.getDay().split("_");
         TextView enduranc = (TextView) convertView.findViewById(R.id.tv_rc_day);
-        enduranc.setText(  data.getDay() );
+        enduranc.setText(  dateText[0] + "年" + dateText[1] + "月" + dateText[2] + "日" );
 
         return convertView;
     }

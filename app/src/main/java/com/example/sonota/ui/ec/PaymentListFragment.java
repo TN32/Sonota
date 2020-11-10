@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -178,7 +179,7 @@ public class PaymentListFragment extends CustomFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedPosition = position;
                 final String[] items = {"変更", "削除", "キャンセル"};
-                new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getActivity()).setTitle("選択").setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //                             item_which pressed
@@ -206,15 +207,29 @@ public class PaymentListFragment extends CustomFragment {
                                 transaction.commit();
                                 break;
                             case 1:
-                                adapter.getItemId(selectedPosition);
-                                String[] whereId = new String[1];
-                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
-                                db.delete(
-                                        "t_payment",
-                                        "payment_code=?",
-                                        whereId
-                                );
-                                listload();
+                                final String[] items = { "削除する", "キャンセル"};
+                                new AlertDialog.Builder(getActivity()).setTitle("本当に削除しますか？").setItems(items, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //                             item_which pressed
+                                        switch (which) {
+                                            case 0:
+                                                adapter.getItemId(selectedPosition);
+                                                String[] whereId = new String[1];
+                                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
+                                                db.delete(
+                                                        "t_payment",
+                                                        "payment_code=?",
+                                                        whereId
+                                                );
+                                                listload();
+                                                break;
+                                            case 1:
+                                                break;
+                                        }
+
+                                    }
+                                }).show();
                                 break;
                             case 2:
                                 break;
@@ -225,6 +240,13 @@ public class PaymentListFragment extends CustomFragment {
         });
 
         return root;
+    }
+
+    @Override
+    public boolean onBackPressed(){
+        getActivity().getSupportFragmentManager().popBackStack("Expence", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        return true;
     }
 
     public void listload(){

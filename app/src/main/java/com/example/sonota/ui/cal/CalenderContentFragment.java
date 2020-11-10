@@ -1,6 +1,8 @@
 package com.example.sonota.ui.cal;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -49,20 +51,23 @@ public class CalenderContentFragment extends CustomFragment {
         View root = inflater.inflate(R.layout.fragment_cal_calender_content, container, false);
 
         calendarPager = root.findViewById(R.id.CalendarPager);
+        schedulePager = root.findViewById(R.id.SchedulePager);
+        setListtener(root);
+
         mCalendarPagerAdapter = new CalendarPagerAdapter(getChildFragmentManager(),CALENDARPAGER_MAX_COUNT);
 
         calendarPager.setAdapter(mCalendarPagerAdapter);
         calendarPager.setCurrentItem(CALENDARPAGER_MAX_COUNT / 2);
 
-        schedulePager = root.findViewById(R.id.SchedulePager);
         mSchedulePagerAdapter = new SchedulePagerAdapter(getChildFragmentManager(),SCHEDULEPAGER_MAX_COUNT);
 
         schedulePager.setAdapter(mSchedulePagerAdapter);
         schedulePager.setCurrentItem(SCHEDULEPAGER_MAX_COUNT / 2);
 
-        setListtener(root);
-
         return root;
+    }
+
+    public void CalendarLoad(){
     }
 
     public void setListtener(View root){
@@ -124,6 +129,8 @@ public class CalenderContentFragment extends CustomFragment {
         beforeDate = afterDate;
         mSchedulePagerAdapter.setBeforePosition(schedulePager.getCurrentItem());
     }
+
+    private boolean isFnish = true;
 
     //表示されているカレンダーの外の日付が選択されたとき、カレンダーのページを移動する
     public void onCheckedNotCurrentMonth(boolean isNextMonth,boolean isOverCount){

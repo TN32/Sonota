@@ -45,10 +45,10 @@ public class CreditFragment extends CustomFragment {
         //セルを選択された詳細画面フラグメントを呼び出す
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 selectedPosition = position;
                 int payAmount = adapter.getPayAmout(selectedPosition);
-                final String[] items = {"支払い登録" , "変更", "削除", "キャンセル"};
+                final String[] items = {"支払い登録" ,  "削除", "キャンセル"};
                 new AlertDialog.Builder(getActivity()).setTitle("一度の支払い額:" + payAmount).setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -56,16 +56,33 @@ public class CreditFragment extends CustomFragment {
                         switch (which) {
                             case 0:
                                 int payAmount = adapter.getPayAmout(selectedPosition);
-                                final String[] items = {"登録する", "キャンセル"};
+                                final String[] items = {"金利等を補正して登録する","このまま登録する", "キャンセル"};
                                 new AlertDialog.Builder(getActivity()).setTitle("分割支払いの登録をしますか？").setItems(items, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         //                             item_which pressed
+                                        String memoText = "分割払いの支払い(" + adapter.getMemo(selectedPosition) + ")";
+                                        int payAmount = adapter.getPayAmout(selectedPosition);
                                         switch (which) {
-                                            case 0:
-                                                String memoText = "分割払いの支払い(" + adapter.getMemo(selectedPosition) + ")";
-                                                int payAmount = adapter.getPayAmout(selectedPosition);
+                                            case 0 :
+                                                ApplyPaymentFragment fragment = new ApplyPaymentFragment();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putInt("selected",selectedPosition);
+                                                bundle.putString("Date", truncDate(new Date()));
+                                                bundle.putString("Name",memoText);
+                                                bundle.putString("Amout",String.valueOf(payAmount));
 
+                                                fragment.adapter = adapter;
+                                                fragment.setArguments(bundle);
+                                                //詳細画面を呼び出す
+                                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                                transaction.replace(R.id.clc_mainsection, fragment);
+                                                //戻るボタンで戻ってこれるように
+                                                transaction.addToBackStack("Credit");
+                                                transaction.commit();
+                                                break;
+                                            case 1:
                                                 ContentValues values = new ContentValues();
                                                 values.put("payment_date", truncDate(new Date()));
                                                 values.put("payment_money", payAmount);
@@ -97,14 +114,14 @@ public class CreditFragment extends CustomFragment {
                                                     );
                                                 }
                                                 break;
-                                            case 3:
+                                            case 2:
                                                 break;
                                         }
                                         listload();
                                     }
                                 }).show();
                                 break;
-                            case 1:
+                            case 300:
                                 // 詳細画面へ値を渡す
                                 Fragment fragment = new DetailCerditFragment();
                                 CreditListDataClass currentClass =(CreditListDataClass)adapter.getItem(selectedPosition);
@@ -125,17 +142,32 @@ public class CreditFragment extends CustomFragment {
                                 transaction.addToBackStack("Credit");
                                 transaction.commit();
                                 break;
-                            case 2:
-                                adapter.getItemId(selectedPosition);
-                                String[] whereId = new String[1];
-                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
-                                db.delete(
-                                        "t_partial",
-                                        "partial_code=?",
-                                        whereId
-                                );
+                            case 1:
+                                final String[] item = { "削除する", "キャンセル"};
+                                new AlertDialog.Builder(getActivity()).setTitle("本当に削除しますか？").setItems(item, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //                             item_which pressed
+                                        switch (which) {
+                                            case 0:
+                                                adapter.getItemId(selectedPosition);
+                                                String[] whereId = new String[1];
+                                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
+                                                db.delete(
+                                                        "t_partial",
+                                                        "partial_code=?",
+                                                        whereId
+                                                );
+                                                listload();
+                                                break;
+                                            case 1:
+                                                break;
+                                        }
+
+                                    }
+                                }).show();
                                 break;
-                            case 3:
+                            case 2:
                                 break;
                         }
                     }

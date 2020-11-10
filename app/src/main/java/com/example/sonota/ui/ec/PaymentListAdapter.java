@@ -76,9 +76,9 @@ public class PaymentListAdapter extends BaseAdapter {
          */
         ImageView img = convertView.findViewById(R.id.im_Ec_PaymentIcon);
         if (data.isCregitPayment()== true){
-            img.setImageResource(R.mipmap.ic_credit2_foreground);
+            img.setImageResource(R.mipmap.ic_fab_credit2_foreground);
         }else {
-            img.setImageResource(R.mipmap.ic_money2_foreground);
+            img.setImageResource(R.mipmap.ic_fab_money2_foreground);
         }
 
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
@@ -88,7 +88,7 @@ public class PaymentListAdapter extends BaseAdapter {
 
 
         ((TextView) convertView.findViewById(R.id.ExpenceList_TextView_Memo)).setText(data.getMemo());
-        dateTextList.add(data.getMemo());
+        dateTextList.add("メモ：" +data.getMemo());
 
 
         TextView Amount = (TextView) convertView.findViewById(R.id.ExpenceList_TextView_Price);

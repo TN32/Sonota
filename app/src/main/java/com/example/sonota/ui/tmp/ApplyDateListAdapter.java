@@ -11,19 +11,18 @@ import com.example.sonota.R;
 
 import java.util.ArrayList;
 
-public class ParttimeJobListAdapter extends BaseAdapter {
-
+public class ApplyDateListAdapter extends BaseAdapter {
     // contextはおまじないと思って記述してください（説明が難しいため）
     private Context context = null;
 
     // ArrayListの中に独自クラスのCustomDataClassを指定
-    private ArrayList<ParttimeJobListClass> data = null;
+    private ArrayList<ApplyDateListClass> data = null;
 
     private int resource = 0;
 
 
     // コンストラクタ  MainActivityでアダプターを生成する箇所で呼ばれている
-    public ParttimeJobListAdapter(Context context, ArrayList<ParttimeJobListClass> data, int resource){
+    public ApplyDateListAdapter(Context context, ArrayList<ApplyDateListClass> data, int resource){
         this.context = context;
         this.data = data;
         this.resource = resource;
@@ -63,7 +62,7 @@ public class ParttimeJobListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Activity activity = (Activity) context;
         // 指定された位置のデータを取得
-        ParttimeJobListClass data = (ParttimeJobListClass) getItem(position);
+        ApplyDateListClass data = (ApplyDateListClass) getItem(position);
 
         // 再利用可能なビューが無かったら生成する
         if(convertView == null){
@@ -74,38 +73,13 @@ public class ParttimeJobListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
         // 画像割り当て
-        ((TextView) convertView.findViewById(R.id.tv_cal_event_tille)).setText(data.getTitle());
-        // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-        String[] sTime = data.getStarttime().split("_");
-        ((TextView) convertView.findViewById(R.id.tv_tem_event_start)).setText(sTime[0] + "時" + sTime[1] + "分");
-        // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
-        String[] eTime = data.getFinishtime().split("_");
-        ((TextView) convertView.findViewById(R.id.tv_tem_event_filsh)).setText(eTime[0] + "時" + eTime[1] + "分");
-        // idがdescriptionのTextViewに、指定されたデータのdescriptionの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_tem_parttimejob_breaktime)).setText( data.getBreaktime() + "分");
+        String[] dateSplit = data.getDate().split("_");
+        ((TextView) convertView.findViewById(R.id.tv_tmp_apply_date)).setText(dateSplit[0] + "年" + dateSplit[1] + "月" + dateSplit[2] + "日");
 
         return convertView;
     }
 
-    public String getCurrentTitle(int position){
-        return data.get(position).getTitle();
-    }
-
-    public String getCurrentStartTime(int position){
-        return data.get(position).getStarttime();
-    }
-
-    public String getCurrentFinishTime(int position){
-        return data.get(position).getFinishtime();
-    }
-
-    public int getCurrentBreakTime(int position){
-        return data.get(position).getBreaktime();
-    }
-
-    public int getCurrentPJId(int position){
-        return data.get(position).getParttimejobId();
+    public String getDate(int position){
+        return data.get(position).getDate();
     }
 }
-
-

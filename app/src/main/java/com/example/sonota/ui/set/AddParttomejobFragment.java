@@ -2,6 +2,7 @@ package com.example.sonota.ui.set;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class AddParttomejobFragment extends CustomFragment {
     private Button button;
 
     private int selected;
+    boolean isNewItem = true;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -95,7 +97,7 @@ public class AddParttomejobFragment extends CustomFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.fragment_add_parttomejob, container, false);
+        View root = inflater.inflate(R.layout.fragment_set_add_parttomejob, container, false);
         super.onCreate(savedInstanceState);
         Button button = root.findViewById(R.id.button4);
         name = root.findViewById(R.id.et_set_name);
@@ -171,7 +173,12 @@ public class AddParttomejobFragment extends CustomFragment {
                     db = helper.getWritableDatabase();
                 }
 
-                insertData(db,jobName,jobhwage,jobpday,jobcday);
+                if(isNewItem) {
+                    insertData(db,jobName,jobhwage,jobpday,jobcday);
+                }
+                else{
+                    updateData(db,jobName,jobhwage,jobpday,jobcday);
+                }
                 Toast.makeText(getContext(),"完了しました！" ,Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().popBackStack("SetParttimejobList", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
@@ -195,6 +202,28 @@ public class AddParttomejobFragment extends CustomFragment {
         }
 
         return root;
+    }
+
+    @Override
+    public boolean onBackPressed(){
+        final String[] items = { "破棄する", "このページに留まる"};
+        new AlertDialog.Builder(getActivity()).setTitle("登録内容を破棄しますか？").setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //                             item_which pressed
+                switch (which) {
+                    case 0:
+                        Toast.makeText(getContext(),"登録内容が破棄されました。" ,Toast.LENGTH_SHORT).show();
+                        getActivity().getSupportFragmentManager().popBackStack("SetParttimejobList", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        break;
+                    case 1:
+                        break;
+                }
+
+            }
+        }).show();
+
+        return true;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -248,7 +277,7 @@ public class AddParttomejobFragment extends CustomFragment {
         db.insert("t_byteahead",null,values);
     }
 
-    private void updata(SQLiteDatabase db,String name,int hwage,int pday,int cday){
+    private void updateData(SQLiteDatabase db,String name,int hwage,int pday,int cday){
         ContentValues values = new ContentValues();
         values.put("byteahead_name",name);
         values.put("byteahead_hwage",hwage);

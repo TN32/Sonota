@@ -8,6 +8,7 @@ public class ScheduleListClass {
     private String starttime;
     private String finishtime;
     private int breaktime;
+    private String amount = null;
 
     public ScheduleListClass(long id, int aheadId, String starttime, String finishtime, int breaktime, ArrayList<ParttimejobPlaceClass> pDatat) {
         this.id = id;
@@ -22,6 +23,13 @@ public class ScheduleListClass {
         this.title = "[イベント]　" + title;
         this.starttime = starttime;
         this.finishtime = finishtime;
+        this.breaktime = -1;
+    }
+
+    public ScheduleListClass(long id, String title, String amount) {
+        this.id = id;
+        this.title = "[支出予定]　" + title;
+        this.amount = amount;
         this.breaktime = -1;
     }
 
@@ -73,5 +81,13 @@ public class ScheduleListClass {
 
     public void setBreaktime(int breaktime) {
         this.breaktime = breaktime;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

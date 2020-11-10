@@ -122,7 +122,7 @@ public class ExpenceFragment extends CustomFragment {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.ec_mainsection, fragment);
                 // 戻るボタンで戻ってこれるように
-                transaction.addToBackStack(null);
+                transaction.addToBackStack("Expence");
                 transaction.commit();
             }
         });

@@ -20,6 +20,7 @@ public class ScheduleListAdapter extends BaseAdapter {
     private ArrayList<ScheduleListClass> data = null;
 
     private int resource = 0;
+    ArrayList<String> paymentTextList;
 
 
     // コンストラクタ  MainActivityでアダプターを生成する箇所で呼ばれている
@@ -75,6 +76,18 @@ public class ScheduleListAdapter extends BaseAdapter {
          */
         // idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
         ((TextView) convertView.findViewById(R.id.tv_cal_schedule_title)).setText(data.getTitle());
+
+        if(data.getAmount() != null){
+            ((TextView) convertView.findViewById(R.id.tv_cal_parttimejob_breaktime)).setText(data.getAmount() + "円");
+
+
+            TextView sub = (TextView) convertView.findViewById(R.id.tv_cal_schedule_starttime);
+            sub.setText("");
+            ((TextView) convertView.findViewById(R.id.tv_cal_schedule_endtime)).setText("");
+            ((TextView) convertView.findViewById(R.id.tv_cal_wave)).setText("");
+            return convertView;
+        }
+
         // こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
         TextView sub = (TextView) convertView.findViewById(R.id.tv_cal_schedule_starttime);
         String[] sTime = data.getStarttime().split("_");
@@ -89,13 +102,19 @@ public class ScheduleListAdapter extends BaseAdapter {
         } else {
             ((TextView) convertView.findViewById(R.id.tv_cal_parttimejob_breaktime)).setText("");
         }
+
         return convertView;
     }
+
     public boolean isPtj(int position){
         String[] split = data.get(position).getTitle().split("]");
         if(split[0].equals("[アルバイト")) {
             return true;
         }
         return false;
+    }
+
+    public String getCurrentAmount(int position){
+        return data.get(position).getAmount();
     }
 }

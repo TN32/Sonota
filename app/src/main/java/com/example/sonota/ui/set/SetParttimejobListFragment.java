@@ -91,9 +91,10 @@ public class SetParttimejobListFragment extends CustomFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedPosition = position;
                 final String[] items = {"変更", "削除", "キャンセル"};
-                new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getActivity()).setTitle("選択").setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         //                             item_which pressed
                         switch (which) {
                             case 0:
@@ -117,15 +118,35 @@ public class SetParttimejobListFragment extends CustomFragment {
 
                                 break;
                             case 1:
-                                adapter.getItemId(selectedPosition);
-                                String[] whereId = new String[1];
-                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
-                                db.delete(
-                                        "t_byteahead",
-                                        "byteahead_code=?",
-                                        whereId
-                                );
-                                listload();
+                                final String[] items = { "削除する", "キャンセル"};
+                                new AlertDialog.Builder(getActivity()).setTitle("本当にアルバイト先を削除しますか？").setItems(items, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //                             item_which pressed
+                                        switch (which) {
+                                            case 0:
+                                                adapter.getItemId(selectedPosition);
+                                                String[] whereId = new String[1];
+                                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
+                                                db.delete(
+                                                        "t_byteahead",
+                                                        "byteahead_code=?",
+                                                        whereId
+                                                );
+                                                listload();
+                                                break;
+                                            case 1:
+                                                break;
+                                        }
+
+                                    }
+                                }).show();
+
+                                new AlertDialog.Builder(getActivity())
+                                        .setTitle("警告")
+                                        .setMessage("アルバイト先を削除すると、そのアルバイト先の過去のシフトが正常に表示できなくなります。" )
+                                        .setPositiveButton("次へ", null)
+                                        .show();
                                 break;
                             case 2:
                                 break;

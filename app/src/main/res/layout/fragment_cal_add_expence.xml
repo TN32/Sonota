@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.cal.AddExpenceFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <LinearLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -197,7 +201,7 @@
                                     android:ems="2"
                                     android:enabled="false"
                                     android:gravity="center"
-                                    android:inputType="textPersonName"
+                                    android:inputType="number"
                                     android:maxLength="2"
                                     android:paddingTop="30sp"
                                     android:text="3"
@@ -264,7 +268,7 @@
                 android:id="@+id/bt_cal_registration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
                 android:text="追加"
                 android:textColor="#C4020516"
@@ -274,5 +278,7 @@
 
     </LinearLayout>rent"
         android:orientation="vertical"/>
+
+    </ScrollView>
 
 </FrameLayout>

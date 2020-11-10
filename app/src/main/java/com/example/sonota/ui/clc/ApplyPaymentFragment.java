@@ -1,23 +1,26 @@
-package com.example.sonota.ui.cal;
+package com.example.sonota.ui.clc;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.sonota.CustomFragment;
 import com.example.sonota.R;
@@ -26,12 +29,12 @@ import com.example.sonota.SonotaDBOpenHelper;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AddIncomeFragment.OnFragmentInteractionListener} interface
+ * {@link ApplyPaymentFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AddIncomeFragment#newInstance} factory method to
+ * Use the {@link ApplyPaymentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddIncomeFragment extends CustomFragment {
+public class ApplyPaymentFragment extends CustomFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -42,16 +45,20 @@ public class AddIncomeFragment extends CustomFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
+    String payAmount;
     View root;
-    TextView textviewAddincomeToday;
-    EditText edittextAddincomeMoney;
-    EditText editTextAddincomeMemo;
-
+    TextView tv_cal_adddate;
+    EditText et_caladd_insnumber;
+    EditText et_caladd_memo;
+    EditText et_cal_add_money;
+    boolean isCreditPayment = false;
+    boolean isPartialPayment = false;
 
     String addDate;
+    int selected;
 
-    public AddIncomeFragment() {
+
+    public ApplyPaymentFragment() {
         // Required empty public constructor
     }
 
@@ -61,11 +68,11 @@ public class AddIncomeFragment extends CustomFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddIncomeFragment.
+     * @return A new instance of fragment ApplyPaymentFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AddIncomeFragment newInstance(String param1, String param2) {
-        AddIncomeFragment fragment = new AddIncomeFragment();
+    public static ApplyPaymentFragment newInstance(String param1, String param2) {
+        ApplyPaymentFragment fragment = new ApplyPaymentFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -85,23 +92,15 @@ public class AddIncomeFragment extends CustomFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        root = inflater.inflate(R.layout.fragment_cal_add_income, container, false);
+        root = inflater.inflate(R.layout.fragment_clc_apply_payment, container, false);
 
         super.onCreate(savedInstanceState);
 
-
-        edittextAddincomeMoney = (EditText)root.findViewById(R.id.edittextAddincomeMoney);
-        editTextAddincomeMemo = (EditText)root.findViewById(R.id.edittextAddincomeMemo);
-
-        Button buttonAddincomeAdd = root.findViewById(R.id.bt_cal_registration);
-        buttonAddincomeAdd.setOnClickListener(new View.OnClickListener(){
+        Button bt_cal_registration = root.findViewById(R.id.bt_clc_registration);
+        bt_cal_registration.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                String memo = editTextAddincomeMemo.getText().toString();
-                String date = textviewAddincomeToday.getText().toString();
-                String money = edittextAddincomeMoney.getText().toString();
 
-                if (edittextAddincomeMoney.getText().toString().equals("")) {
+                if (et_cal_add_money.getText().toString().equals("")) {
                     new AlertDialog.Builder(getActivity())
                             .setTitle("登録できませんでした！")
                             .setMessage("金額が入力されていません。")
@@ -110,6 +109,8 @@ public class AddIncomeFragment extends CustomFragment {
                     return;
                 }
 
+                String memo = et_caladd_memo.getText().toString();
+                String money = et_cal_add_money.getText().toString();
 
                 if (helper == null){
                     helper = new SonotaDBOpenHelper(getActivity().getApplicationContext());
@@ -119,21 +120,52 @@ public class AddIncomeFragment extends CustomFragment {
                     db = helper.getWritableDatabase();
                 }
 
+                insertDate(db,addDate,money,memo);
 
-                insertData(db, money, date, memo);
+                if(adapter.getTimes(selected) - 1 > 0){
+                    ContentValues values = new ContentValues();
+                    values = new ContentValues();
+                    values.put("partialr__amount", adapter.getrAmount(selected) - Integer.valueOf(payAmount));
+                    values.put("partial_times", adapter.getTimes(selected) - 1);
+                    values.put("partial_cpay", true);
+                    values.put("partial_pmemo", adapter.getMemo(selected));
 
-                Toast.makeText(getContext(),  memo + "が完了しました!\n " + money + "," + date ,Toast.LENGTH_SHORT).show();
-                getActivity().getSupportFragmentManager().popBackStack("CalenderContent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    int id = (int)adapter.getItemId(selected);
+
+                    db.update("t_partial",values, "partial_code = " + id,null);
+                }
+                else{
+                    adapter.getItemId(selected);
+                    String[] whereId = new String[1];
+                    whereId[ 0] = String.valueOf(adapter.getItemId(selected));
+                    db.delete(
+                            "t_partial",
+                            "partial_code=?",
+                            whereId
+                    );
+                }
+
+                Toast.makeText(getContext(),  "登録が完了しました!" ,Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().popBackStack("Credit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
 
+        et_caladd_memo = (EditText)root.findViewById(R.id.et_clc_add_memo);
+        et_cal_add_money = (EditText)root.findViewById(R.id.et_clc_add_money);
+
         Bundle args = getArguments();
         if(args != null){
-            addDate = args.getString("addDate");
-            textviewAddincomeToday = root.findViewById(R.id.textviewAddincomeToday);
-            textviewAddincomeToday.setText(sharpingDate(addDate));
+            selected = args.getInt("selected");
+            addDate = args.getString("Date");
+            tv_cal_adddate = root.findViewById(R.id.tv_clc_add_date);
+            tv_cal_adddate.setText(sharpingDate(addDate));
+
+            et_caladd_memo.setText(args.getString("Name"));
+            et_cal_add_money.setText(args.getString("Amout"));
+            payAmount = args.getString("Amout");
         }
 
+        // Inflate the layout for this fragment
         return root;
     }
 
@@ -147,16 +179,18 @@ public class AddIncomeFragment extends CustomFragment {
                 switch (which) {
                     case 0:
                         Toast.makeText(getContext(),"登録内容が破棄されました。" ,Toast.LENGTH_SHORT).show();
-                        getActivity().getSupportFragmentManager().popBackStack("CalenderContent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        getActivity().getSupportFragmentManager().popBackStack("Credit", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                         break;
                     case 1:
                         break;
                 }
+
             }
         }).show();
 
         return true;
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -197,12 +231,20 @@ public class AddIncomeFragment extends CustomFragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void insertData(SQLiteDatabase db, String money, String day, String memo){
+    private void insertDate(SQLiteDatabase db, String date, String money, String memo){
         ContentValues values = new ContentValues();
-        values.put("income_money", money);
-        values.put("income_day", addDate);
-        values.put("income_memo", memo);
+        values.put("payment_date", date);
+        values.put("payment_money", money);
+        values.put("payment_memo", memo);
+        values.put("payment_cpay", true);
 
-        db.insert("t_income",null, values);
+        db.insert("t_payment",null, values);
     }
+
+    CreditListAdapter adapter;
+
+    private void setAdapter(CreditListAdapter adapter){
+        this.adapter = adapter;
+    }
+
 }

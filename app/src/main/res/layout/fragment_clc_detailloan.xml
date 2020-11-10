@@ -229,7 +229,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/etSplit"
+                    android:id="@+id/etsplit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="8"

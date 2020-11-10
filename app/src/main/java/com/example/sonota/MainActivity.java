@@ -19,6 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -252,6 +253,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+
+        if (currentFragment instanceof CustomFragment) {
+            boolean isBack = currentFragment.onBackPressed();
+            if (isBack == true){
+                return;
+            }
+        }
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
@@ -387,6 +400,9 @@ public class MainActivity extends AppCompatActivity
 
     public void animeup(){
         final LinearLayout linearLayout = (LinearLayout)findViewById(R.id.cal_CalenderSection);
+        if(linearLayout == null)
+            return;
+
         final LinearLayout.LayoutParams params=(LinearLayout.LayoutParams) linearLayout.getLayoutParams();
 
         setFabCount(4);
@@ -415,5 +431,9 @@ public class MainActivity extends AppCompatActivity
         if(params.weight > 99)
             linearLayout.startAnimation(collapseAnimation);
         // Toast.makeText(this, "下", Toast.LENGTH_LONG).show();
+    }
+
+    public void CalenderLoad(){
+        mCalFragmentControllAdapter.CalenderLod();
     }
 }

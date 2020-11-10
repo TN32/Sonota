@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -128,7 +129,7 @@ public class ScheduleListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 selectedPosition = position;
                 final String[] items = { "削除", "キャンセル"};
-                new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getActivity()).setTitle("選択").setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //                             item_which pressed
@@ -156,22 +157,43 @@ public class ScheduleListFragment extends Fragment {
 //                                transaction.commit();
 //                                break;
                             case 0:
-                                adapter.getItemId(selectedPosition);
-                                String[] whereId = new String[1];
-                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
-                                if(adapter.isPtj(position)){
-                                    db.delete(
-                                            "t_shift",
-                                            "shift_code=?",
-                                            whereId
-                                    );
-                                } else {
-                                    db.delete(
-                                            "t_schedule",
-                                            "schedule_code=?",
-                                            whereId
-                                    );                                }
-                                listload();
+                                final String[] items = { "削除する", "キャンセル"};
+                                new AlertDialog.Builder(getActivity()).setTitle("本当に削除しますか？").setItems(items, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //                             item_which pressed
+                                        switch (which) {
+                                            case 0:
+                                                adapter.getItemId(selectedPosition);
+                                                String[] whereId = new String[1];
+                                                whereId[0] = String.valueOf(adapter.getItemId(selectedPosition));
+                                                if(adapter.getCurrentAmount(position) != null){
+                                                    db.delete(
+                                                            "t_payment",
+                                                            "payment_code=?",
+                                                            whereId
+                                                    );
+                                                }
+                                                else if(adapter.isPtj(position)){
+                                                    db.delete(
+                                                            "t_shift",
+                                                            "shift_code=?",
+                                                            whereId
+                                                    );
+                                                } else {
+                                                    db.delete(
+                                                            "t_schedule",
+                                                            "schedule_code=?",
+                                                            whereId
+                                                    );                                }
+                                                listload();
+                                                break;
+                                            case 1:
+                                                break;
+                                        }
+
+                                    }
+                                }).show();
                                 break;
                             case 1:
                                 break;
@@ -210,7 +232,31 @@ public class ScheduleListFragment extends Fragment {
         //  引数havingには、having句を指定します。
         //  引数orderByには、orderBy句を指定します。
         //  引数limitには、検索結果の上限レコードを数を指定します
-        Cursor cursor = db.query(
+        Cursor cursor;
+        if(mCalendar.getTime().after(new Date())){
+            cursor = db.query(
+                    "t_payment",
+                    new String[]{"payment_code","payment_date","payment_memo","payment_money","payment_cpay"},
+                    "payment_date like ?",
+                    selectData,
+                    null,
+                    null,
+                    null
+            );
+
+            cursor.moveToFirst();
+
+            for (int i = 0; i < cursor.getCount(); i++) {
+                ScheduleListClass data = new ScheduleListClass(cursor.getInt(0) ,cursor.getString(2),cursor.getString(3));
+                listData.add(data);
+                cursor.moveToNext();
+            }
+
+            cursor.close();
+        }
+
+
+        cursor = db.query(
                 "t_byteahead",
                 new String[]{"byteahead_code","byteahead_name","byteahead_hwage"},
                 null,
@@ -336,5 +382,6 @@ public class ScheduleListFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
         void onScheduleLIstPageChanged(Date newDate);
+        void CalenderLoad();
     }
 }

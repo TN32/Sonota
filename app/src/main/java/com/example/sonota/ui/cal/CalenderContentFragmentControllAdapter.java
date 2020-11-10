@@ -16,6 +16,10 @@ public class CalenderContentFragmentControllAdapter {
         flagment.onCheckedDateChanged(afterDate);
     }
 
+    public void CalenderLod(){
+        flagment.CalendarLoad();
+    }
+
     //表示されているカレンダーの外の日付が選択されたとき、カレンダーのページを移動する
     public void onCheckedNotCurrentMonth(boolean isNextMonth,boolean isOverCount){
         flagment.onCheckedNotCurrentMonth(isNextMonth,isOverCount);

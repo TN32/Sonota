@@ -3,6 +3,7 @@ package com.example.sonota.ui.cal;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.Uri;
@@ -205,6 +206,27 @@ public class AddExpenceFragment extends CustomFragment {
 
         // Inflate the layout for this fragment
         return root;
+    }
+
+    @Override
+    public boolean onBackPressed(){
+        final String[] items = { "破棄する", "このページに留まる"};
+        new AlertDialog.Builder(getActivity()).setTitle("登録内容を破棄しますか？").setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //                             item_which pressed
+                switch (which) {
+                    case 0:
+                        Toast.makeText(getContext(),"登録内容が破棄されました。" ,Toast.LENGTH_SHORT).show();
+                        getActivity().getSupportFragmentManager().popBackStack("CalenderContent", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                        break;
+                    case 1:
+                        break;
+                }
+            }
+        }).show();
+
+        return true;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -171,7 +171,7 @@ public class ReceiveListFragment extends CustomFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedPosition = position;
                 final String[] items = {"変更", "削除", "キャンセル"};
-                new AlertDialog.Builder(getActivity()).setTitle("Selector").setItems(items, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getActivity()).setTitle("選択").setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //                             item_which pressed
@@ -195,15 +195,29 @@ public class ReceiveListFragment extends CustomFragment {
                                 transaction.commit();
                                 break;
                             case 1:
-                                arrayAdapter.getItemId(selectedPosition);
-                                String[] whereId = new String[1];
-                                whereId[0] = String.valueOf(arrayAdapter.getItemId(selectedPosition));
-                                db.delete(
-                                        "t_income",
-                                        "income_code=?",
-                                        whereId
-                                );
-                                listload();
+                                final String[] item = { "削除する", "キャンセル"};
+                                new AlertDialog.Builder(getActivity()).setTitle("本当に削除しますか？").setItems(item, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //                             item_which pressed
+                                        switch (which) {
+                                            case 0:
+                                                arrayAdapter.getItemId(selectedPosition);
+                                                String[] whereId = new String[1];
+                                                whereId[0] = String.valueOf(arrayAdapter.getItemId(selectedPosition));
+                                                db.delete(
+                                                        "t_income",
+                                                        "income_code=?",
+                                                        whereId
+                                                );
+                                                listload();
+                                                break;
+                                            case 1:
+                                                break;
+                                        }
+
+                                    }
+                                }).show();
                                 break;
                             case 2:
                                 break;
@@ -248,10 +262,15 @@ public class ReceiveListFragment extends CustomFragment {
 //            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 //            }
 //        });
-
-
-
+        
         return root;
+    }
+
+    @Override
+    public boolean onBackPressed(){
+        getActivity().getSupportFragmentManager().popBackStack("Revenue", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        return true;
     }
 
     public void listload(){

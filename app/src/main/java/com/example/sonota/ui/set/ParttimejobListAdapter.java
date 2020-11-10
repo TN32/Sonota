@@ -86,10 +86,10 @@ public class ParttimejobListAdapter extends BaseAdapter {
          * ここから各項目に値を割り当てる処理
          */
 //         idがmainTextのTextViewに、指定されたデータのmainStringの値を格納している
-        ((TextView) convertView.findViewById(R.id.tv_parttimejobname)).setText(data.getName());
+        ((TextView) convertView.findViewById(R.id.tv_parttimejobname)).setText("アルバイト先名:" + data.getName());
 //         こっちの書き方のほうがいつもの書き方なのでわかりやすいかも？
         TextView Amount = (TextView) convertView.findViewById(R.id.tv_hwage);
-        Amount.setText("￥" + data.getHwage());
+        Amount.setText("時給" + data.getHwage() + "円");
 
         return convertView;
     }

@@ -171,15 +171,36 @@ public class CalendarAdapter extends BaseAdapter {
             setpPlace();
         }
 
-        if(pPlace == null){
-            setpPlace();
+        Cursor cursor;
+
+        if(dateArray.get(position).after(new Date())){
+            cursor = db.query(
+                    "t_payment",
+                    new String[]{"payment_code","payment_date","payment_memo","payment_money","payment_cpay"},
+                    "payment_date like ?",
+                    selectData,
+                    null,
+                    null,
+                    null
+            );
+
+            cursor.moveToFirst();
+
+            for (int i = 0; i < cursor.getCount(); i++) {
+                TextView tv = new TextView(mContext);
+                tv.setBackgroundColor(Color.YELLOW);
+                tv.setTextSize(10);
+                tv.setPadding(0,5,0,5);
+                String text = cursor.getString(2) + "\n" + cursor.getInt(3) + "円";
+                tv.setText(text);
+                holder.contentArea.addView(tv);
+                cursor.moveToNext();
+            }
+
+            cursor.close();
         }
 
-        int a = pPlace.size();
-
-        a = 110000;
-
-        Cursor cursor = db.query(
+        cursor = db.query(
                 "t_shift",
                 new String[]{"shift_code","byteahead_code","shift_stime","shift_etime","shift_btime"},
                 "shift_date=?",
@@ -196,7 +217,8 @@ public class CalendarAdapter extends BaseAdapter {
             TextView tv = new TextView(mContext);
             tv.setBackgroundColor(Color.RED);
             tv.setTextColor(Color.WHITE);
-            tv.setTextSize(6);
+            tv.setTextSize(10);
+            tv.setPadding(0,5,0,5);
             String jName = getPNameById(cursor.getInt(1),pPlace);
             tv.setText(jName);
             holder.contentArea.addView(tv);
@@ -222,7 +244,8 @@ public class CalendarAdapter extends BaseAdapter {
             TextView tv = new TextView(mContext);
             tv.setBackgroundColor(Color.BLUE);
             tv.setTextColor(Color.WHITE);
-            tv.setTextSize(6);
+            tv.setTextSize(10);
+            tv.setPadding(0,5,0,5);
             tv.setText(cursor.getString(1));
             holder.contentArea.addView(tv);
             cursor.moveToNext();

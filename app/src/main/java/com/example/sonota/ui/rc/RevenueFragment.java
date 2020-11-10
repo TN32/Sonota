@@ -126,7 +126,7 @@ public class RevenueFragment extends CustomFragment {
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.rc_mainsection, fragment);
                 // 戻るボタンで戻ってこれるように
-                transaction.addToBackStack(null);
+                transaction.addToBackStack("Revenue");
                 transaction.commit();
             }
         });

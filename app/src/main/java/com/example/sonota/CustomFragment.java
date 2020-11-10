@@ -3,6 +3,7 @@ package com.example.sonota;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.view.KeyEvent;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ public class CustomFragment extends Fragment {
     protected int selectedPosition;
 
     protected boolean isNewItem;
+    protected String pearentId = "";
 
     public String truncDate(Date date){
         SimpleDateFormat format = new SimpleDateFormat("yyyy_MM_dd", Locale.US);
@@ -79,4 +81,9 @@ public class CustomFragment extends Fragment {
     public void onFab1Clicked(int fabId){
         Toast.makeText(getContext() , "このFragmentのFAB" + fabId + "は未実装です。", Toast.LENGTH_LONG).show();
     }
+
+    public boolean onBackPressed(){
+        return false;
+    }
+
 }

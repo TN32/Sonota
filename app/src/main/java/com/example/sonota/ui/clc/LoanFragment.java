@@ -41,26 +41,7 @@ public class LoanFragment extends CustomFragment {
         ArrayList<LoanListDataClass> listData = new ArrayList<>();
         for(int i = 1; i <=  5; i++){
             switch (i){
-                case 1:
-                    LoanListDataClass data = new LoanListDataClass(R.mipmap.ic_launcher, "ベース", 275000, 11);
-                    listData.add(data);
-                    break;
-                case 2:
-                    LoanListDataClass data1 = new LoanListDataClass(R.mipmap.ic_launcher, "ギター", 100000, 2);
-                    listData.add(data1);
-                    break;
-                case 3:
-                    LoanListDataClass data2 = new LoanListDataClass(R.mipmap.ic_launcher, "バイク", 32000, 4);
-                    listData.add(data2);
-                    break;
-                case 4:
-                    LoanListDataClass data3 = new LoanListDataClass(R.mipmap.ic_launcher, "NintendoSwitch", 24000, 2);
-                    listData.add(data3);
-                    break;
-                case 5:
-                    LoanListDataClass data4 = new LoanListDataClass(R.mipmap.ic_launcher, "PlayStation4", 24000, 2);
-                    listData.add(data4);
-                    break;
+
             }
 
         }
